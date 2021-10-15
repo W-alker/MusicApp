@@ -6,8 +6,12 @@ import Vant from 'vant'
 import 'vant/lib/index.css';
 // import 'vant/lib/icon/local.css';
 import 'assets/font/font.css'
+import 'assets/font/svgFont.css'
+import 'assets/font/svgFont.js'
+// import { Icon } from 'vant';
 import 'assets/css/reset.scss'
 import 'vant/lib/index.less';
+
 
 Vue.use(Vant)
 

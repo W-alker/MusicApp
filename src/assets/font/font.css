@@ -1,8 +1,8 @@
 @font-face {
   font-family: "icon"; /* Project id 2608203 */
-  src: url('//at.alicdn.com/t/font_2608203_ity2i469kaj.woff2?t=1623605045492') format('woff2'),
-       url('//at.alicdn.com/t/font_2608203_ity2i469kaj.woff?t=1623605045492') format('woff'),
-       url('//at.alicdn.com/t/font_2608203_ity2i469kaj.ttf?t=1623605045492') format('truetype');
+  src: url('//at.alicdn.com/t/font_2608203_xt69s5tsbe.woff2?t=1634266516049') format('woff2'),
+       url('//at.alicdn.com/t/font_2608203_xt69s5tsbe.woff?t=1634266516049') format('woff'),
+       url('//at.alicdn.com/t/font_2608203_xt69s5tsbe.ttf?t=1634266516049') format('truetype');
 }
 
 .icon {
@@ -11,6 +11,42 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-yanzhengma:before {
+  content: "\e604";
+}
+
+.icon-yanzhengma1:before {
+  content: "\e60c";
+}
+
+.icon-mima:before {
+  content: "\e601";
+}
+
+.icon-weibo1:before {
+  content: "\e61f";
+}
+
+.icon-weibo:before {
+  content: "\e67b";
+}
+
+.icon-weixin:before {
+  content: "\e67c";
+}
+
+.icon-qq:before {
+  content: "\e746";
+}
+
+.icon-weixin1:before {
+  content: "\e665";
+}
+
+.icon-QQ:before {
+  content: "\e668";
 }
 
 .icon-zantingtingzhi:before {

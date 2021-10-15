@@ -6,9 +6,10 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
     state: {
         userInfo: {
+            id: ''
         },
         playSongList: [],
-        currentPlaylistId: 0
+        currentPlaylistId: 0,
     },
     mutations: {
         changePlaylistId(state,id){
