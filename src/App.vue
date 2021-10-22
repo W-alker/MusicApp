@@ -10,9 +10,11 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
+
 #app {
   width: 100vw;
-  height: 100vh;
+  padding-bottom: 60px;
+  
 }
 </style>

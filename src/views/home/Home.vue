@@ -1,13 +1,33 @@
 <template>
   <main class="home">
-    <van-row class="profile">
-      <van-col span="4" class="avatar">
-        <img :src="userInfo.avatarUrl" alt="" />
-      </van-col>
-      <van-col span="19" offset="1" class="nickname">
-        <h2>{{ userInfo.nickname }}</h2>
-      </van-col>
-    </van-row>
+    <section class="profile">
+      <h2 class="nickname">{{ userInfo.nickname }}</h2>
+      <div class="avatar">
+        <img :src="userInfo.nickname" alt="" />
+        <span class="badge">2</span>
+      </div>
+    </section>
+
+    <section class="search">
+      <label for="input-search" class="input-search">
+        <van-icon name="search" />
+        <input
+          type="text"
+          name="input-search"
+          placeholder="Where should we go?"
+        />
+      </label>
+    </section>
+
+    <banner :banners='banners' :banner_playSong='banner_playSong'></banner>
+
+    <today-recommend :userInfo="userInfo"></today-recommend>
+
+    <recommend-playlist></recommend-playlist>
+
+    <!-- <new-albums-list></new-albums-list> -->
+
+    <highquality-playlist></highquality-playlist>
 
     <section class="playlists">
       <section
@@ -34,7 +54,7 @@
         @nextSong="nextSong"
         @preSong="preSong"
         @changePlaymode="changePlaymode"
-        @pause='pause'
+        @pause="pause"
         ref="PlayInterface"
       >
       </play-interface>
@@ -71,14 +91,20 @@
 import PlayInterface from "./childComps/PlayInterface";
 import ListDetail from "./childComps/ListDetail";
 import FootBar from "./childComps/FootBar";
+import NewAlbumsList from './childComps/NewAlbumsList.vue';
+import TodayRecommend from './childComps/TodayRecommend.vue'
 
 import {
+  getBanner,
   getLoginStatus,
   getUserPlaylist,
   getListDetail,
   getSongUrl,
   getSongDetail,
 } from "network/home";
+import RecommendPlaylist from './childComps/RecommendPlaylist.vue';
+import HighqualityPlaylist from './childComps/HighqualityPlaylist.vue';
+import Banner from './childComps/Banner.vue';
 
 export default {
   name: "Home",
@@ -86,9 +112,15 @@ export default {
     PlayInterface,
     ListDetail,
     FootBar,
+    NewAlbumsList,
+    TodayRecommend,
+    RecommendPlaylist,
+    HighqualityPlaylist,
+    Banner
   },
   data() {
     return {
+      banners: [],
       userInfo: {},
       playlist: [], //歌单
       listDetail: {}, //歌单详情
@@ -103,6 +135,9 @@ export default {
     };
   },
   methods: {
+    banner_playSong(song) {
+      this.playSong(song)
+    },
     getListDetail(id) {
       getListDetail(id).then((res) => {
         this.show_listDetail = true;
@@ -131,7 +166,7 @@ export default {
       this.$store.commit("addSong", item); //加入播放列表
       this.addToPlaySongList([item]); //加入播放列表（用户可见）
       this.songDetail = item; //更改歌曲详情
-      this.$refs.PlayInterface.is_pause=false
+      this.$refs.PlayInterface.is_pause = false;
     },
     //播放全部
     playAll() {
@@ -152,7 +187,7 @@ export default {
         // console.log(res)
         this.songDetail = res.playlist.tracks[0];
       });
-      this.$refs.PlayInterface.is_pause=false
+      this.$refs.PlayInterface.is_pause = false;
     },
     //暂停
     pause(bol) {
@@ -163,26 +198,26 @@ export default {
       //如果是随机播放,使用home中的播放列表
       if (this.playmodeId === 1) {
         //生成一个在0到播放列表最大长度-1之间的数
-        const m = this.playSongList.length-1;
-        const rd = parseInt(Math.random()*m,10);
+        const m = this.playSongList.length - 1;
+        const rd = parseInt(Math.random() * m, 10);
         this.songId = this.playSongList[rd].id;
-        this.init_songData(this.songId)
+        this.init_songData(this.songId);
       }
       //更新播放列表
       else {
         this.$store.commit("nextSong");
         //获取播放列表第一首歌曲id
         this.songId = this.$store.state.playSongList[0].id;
-        this.init_songData(this.songId)
+        this.init_songData(this.songId);
       }
-      this.$refs.PlayInterface.is_pause=false
+      this.$refs.PlayInterface.is_pause = false;
     },
     //上一首
     preSong() {
       //更新播放列表
       this.$store.commit("preSong");
       this.songId = this.$store.state.playSongList[0].id;
-      this.init_songData(this.songId)
+      this.init_songData(this.songId);
     },
     //更改播放模式
     changePlaymode(mode) {
@@ -202,6 +237,10 @@ export default {
     },
   },
   created() {
+    // 获取banner
+    getBanner().then(res=> {
+      this.banners = res.banners
+    })
     //初始化用户信息和歌单
     getLoginStatus()
       .then((res) => {
@@ -219,30 +258,85 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .home {
   width: 100%;
   height: 100%;
-  padding: 30px 20px;
+  padding: 16px;
   color: aliceblue;
-  background-image: linear-gradient(
-    rgb(52, 53, 60),
-    rgb(42, 43, 48),
-    rgb(28, 29, 32)
-  );
+  background: #0e0b20;
+  font-size: 14px;
+}
+.sec-tit {
+  font-size: 15px;
+  margin-bottom: 14px;
 }
 .profile {
-  height: 10%;
+  height: 5vh;
+  display: flex;
+  justify-content: space-between;
+  line-height: 5vh;
+  .nickname {
+    font-size: 19px;
+    font-weight: 400;
+  }
   .avatar {
+    width: 5vh;
+    height: 5vh;
+    background: #ffffff;
+    border-radius: 50%;
+    position: relative;
+    .badge {
+      display: inline-block;
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 2vh;
+      height: 2vh;
+      background: #0e0b20;
+      border: 1px solid #ef019f;
+      border-radius: 50%;
+      color: #fff;
+      line-height: 2vh;
+      text-align: center;
+      font-size: 0.12rem;
+    }
     img {
-      width: 68px;
-      height: 68px;
+      width: 100%;
+      height: 100%;
       border-radius: 50%;
     }
   }
-  .nickname {
+}
+.search {
+  margin-top: 20px;
+
+  .input-search {
+    width: 100%;
+    height: 37px;
+    position: relative;
+    font-size: 14px;
+    line-height: 37px;
+    .van-icon {
+      margin: 0 16px;
+    }
+    input {
+      display: block;
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      left: 0;
+      top: 0;
+      padding-left: 40px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 10px;
+    }
   }
 }
+.recommend {
+  margin-top: 20px;
+}
+
 .playlists {
   margin-top: 20px;
   section {

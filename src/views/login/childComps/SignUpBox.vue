@@ -131,6 +131,7 @@ export default {
       }
     },
     async submit() {
+
       // 输入验证
       if (!this.signUpInfo.phone || !this.signUpInfo.captcha)
         return Toast({
@@ -176,6 +177,11 @@ export default {
                   message: res.message,
                   icon: "warning-o",
                 });
+              Toast({
+                message: res.message || '注册成功',
+                icon: "passed",
+              });
+              this.$emit('popupClose')
             } catch (err) {
               return Toast({
                 message: "未知错误。",

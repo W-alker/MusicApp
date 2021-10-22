@@ -57,8 +57,9 @@
       position="bottom"
       :close-on-popstate="true"
       :style="{ height: '100%', background: 'var(--black)' }"
+      
     >
-    <sign-up-box></sign-up-box>
+    <sign-up-box @popupClose="popup_signUp_show=false"></sign-up-box>
     </van-popup>
 
     <!-- 验证码登录弹出层 -->
@@ -123,8 +124,8 @@ export default {
       uniKey: "",
       interval: {},
       qrStatus: "",
-      id: "lu_xiuy@163.com",
-      pwd: "walker_314",
+      id: "18609664546",
+      pwd: "walker314",
       input_pwd_type: "password",
       loginOK: false,
       popup_useVerifycode_show: false,
@@ -209,7 +210,7 @@ export default {
   },
 
   created() {
-    /*     loginStatus.check().then((res) => {
+        loginStatus.check().then((res) => {
       if (res.code === 200) {
         const toast = Toast.loading({
           duration: 0, // 持续展示 toast
@@ -222,7 +223,7 @@ export default {
           this.loginOK = true;
         }, 1000);
       }
-    }); */
+    });
   },
   mounted() {},
 };
