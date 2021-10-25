@@ -1,20 +1,17 @@
 <template>
-    <main id='app'>
-      <router-view/>
-    </main>
+  <main id="app">
+    <router-view />
+  </main>
 </template>
 
 <script>
 export default {
-  name: 'App',
+  name: "App",
 };
 </script>
 
 <style>
-
 #app {
   width: 100vw;
-  padding-bottom: 60px;
-  
 }
 </style>

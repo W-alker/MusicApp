@@ -4,7 +4,6 @@
       class="my-swipe"
       :autoplay="3000"
       indicator-color="white"
-      :height="130"
     >
       <van-swipe-item
         v-for="(item, index) in banners"
@@ -43,14 +42,16 @@ export default {
 section {
   margin: 20px 0;
   width: 100%;
-  height: 120px;
+  height: 16.5vh;
 }
 .van-swipe {
   border-radius: 10px;
+  height: 100%;
   .van-swipe-item {
     background-color: rgb(89, 67, 67);
-    background-size: contain;
+    background-size: 100% 100%;
     position: relative;
+    background-repeat: no-repeat;
     .typeTitle {
       position: absolute;
       bottom: 0;

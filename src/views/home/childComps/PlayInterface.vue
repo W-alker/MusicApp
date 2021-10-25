@@ -102,7 +102,7 @@
 </template>
 
 <script>
-import { getSongLyric } from "network/home";
+import { getSongLyric } from "network/song";
 
 export default {
   name: "PlayInterface",

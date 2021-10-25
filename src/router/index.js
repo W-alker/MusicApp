@@ -2,6 +2,7 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 
 const Home = () => import("views/home/Home");
+const User = () => import("views/user/User");
 const Login = () => import('views/login/Login')
 
 Vue.use(VueRouter);
@@ -24,7 +25,15 @@ const routes = [
         name: "Home",
         component: Home,
         meta: {
-            title: '主页'
+            title: '首页'
+        }
+    },
+    {
+        path: "/user",
+        name: "User",
+        component: User,
+        meta: {
+            title: '我的'
         }
     },
 ];

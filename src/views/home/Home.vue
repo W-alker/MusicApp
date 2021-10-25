@@ -1,9 +1,9 @@
 <template>
   <main class="home">
     <section class="profile">
-      <h2 class="nickname">{{ userInfo.nickname }}</h2>
+      <h2 class="nickname">{{ userProfile.nickname }}</h2>
       <div class="avatar">
-        <img :src="userInfo.nickname" alt="" />
+        <img :src="userProfile.avatarUrl" alt="" />
         <span class="badge">2</span>
       </div>
     </section>
@@ -19,15 +19,15 @@
       </label>
     </section>
 
-    <banner :banners='banners' :banner_playSong='banner_playSong'></banner>
+    <banner :banners="banners" :banner_playSong="banner_playSong"></banner>
 
-    <today-recommend :userInfo="userInfo"></today-recommend>
+    <today-recommend :userProfile="userProfile"></today-recommend>
 
-    <recommend-playlist></recommend-playlist>
+    <personalized-playlist></personalized-playlist>
 
     <!-- <new-albums-list></new-albums-list> -->
 
-    <highquality-playlist></highquality-playlist>
+    <!-- <highquality-playlist></highquality-playlist> -->
 
     <section class="playlists">
       <section
@@ -76,51 +76,57 @@
       </list-detail>
     </van-popup>
 
-    <van-row @click="showPopup_playInterface" class="footBar">
-      <foot-bar
-        :audioUrl="audioUrl"
-        :isAutoplay="true"
-        :isPause="is_Pause"
-        @nextSong="nextSong"
-      ></foot-bar>
-    </van-row>
+    <foot-playbar></foot-playbar>
+    <foot-bar
+      :activeIndex="0"
+      :audioUrl="audioUrl"
+      :isAutoplay="true"
+      :isPause="is_Pause"
+      @nextSong="nextSong"
+    ></foot-bar>
   </main>
 </template>
 
 <script>
+import Banner from "./childComps/Banner.vue";
+
+import FootPlaybar from "common/FootPlaybar";
+import FootBar from "common/FootBar";
+
 import PlayInterface from "./childComps/PlayInterface";
 import ListDetail from "./childComps/ListDetail";
-import FootBar from "./childComps/FootBar";
-import NewAlbumsList from './childComps/NewAlbumsList.vue';
-import TodayRecommend from './childComps/TodayRecommend.vue'
+import NewAlbumsList from "./childComps/NewAlbumsList.vue";
+import TodayRecommend from "./childComps/TodayRecommend.vue";
+import PersonalizedPlaylist from "./childComps/PersonalizedPlaylist";
+import HighqualityPlaylist from "./childComps/HighqualityPlaylist.vue";
 
 import {
   getBanner,
   getLoginStatus,
   getUserPlaylist,
   getListDetail,
-  getSongUrl,
-  getSongDetail,
 } from "network/home";
-import RecommendPlaylist from './childComps/RecommendPlaylist.vue';
-import HighqualityPlaylist from './childComps/HighqualityPlaylist.vue';
-import Banner from './childComps/Banner.vue';
+import { getSongUrl, getSongDetail } from "network/song";
+import { getUserInfo, getUserAccount } from "network/user";
 
 export default {
   name: "Home",
   components: {
     PlayInterface,
     ListDetail,
-    FootBar,
     NewAlbumsList,
     TodayRecommend,
-    RecommendPlaylist,
+    PersonalizedPlaylist,
     HighqualityPlaylist,
-    Banner
+    Banner,
+    FootBar,
+    FootPlaybar,
   },
   data() {
     return {
       banners: [],
+      userAccount: {},
+      userProfile: {},
       userInfo: {},
       playlist: [], //歌单
       listDetail: {}, //歌单详情
@@ -136,7 +142,7 @@ export default {
   },
   methods: {
     banner_playSong(song) {
-      this.playSong(song)
+      this.playSong(song);
     },
     getListDetail(id) {
       getListDetail(id).then((res) => {
@@ -236,24 +242,20 @@ export default {
       this.show_playInterface = false;
     },
   },
-  created() {
+  async created() {
     // 获取banner
-    getBanner().then(res=> {
-      this.banners = res.banners
-    })
-    //初始化用户信息和歌单
-    getLoginStatus()
-      .then((res) => {
-        // console.log(res.data.profile);
-        this.$store.state.userInfo = res.data.profile;
-        this.userInfo = this.$store.state.userInfo;
-      })
-      .then(() => {
-        getUserPlaylist(this.userInfo.userId).then((res) => {
-          // console.log(res.playlist);
-          this.playlist = res.playlist;
-        });
-      });
+    getBanner().then((res) => {
+      this.banners = res.banners;
+    });
+    //初始化用户信息
+    const loginInfo = await getLoginStatus();
+    this.userAccount = loginInfo.data.account;
+    this.userProfile = loginInfo.data.profile;
+
+    getUserPlaylist(this.userInfo.userId).then((res) => {
+      // console.log(res.playlist);
+      this.playlist = res.playlist;
+    });
   },
 };
 </script>
@@ -261,10 +263,10 @@ export default {
 <style lang="scss">
 .home {
   width: 100%;
-  height: 100%;
+  height: calc(100vh - 60px);
   padding: 16px;
   color: aliceblue;
-  background: #0e0b20;
+  background: var(--themeBgc);
   font-size: 14px;
 }
 .sec-tit {
@@ -289,8 +291,8 @@ export default {
     .badge {
       display: inline-block;
       position: absolute;
-      top: 0;
-      right: 0;
+      top: -0.5vh;
+      right: -0.5vh;
       width: 2vh;
       height: 2vh;
       background: #0e0b20;
