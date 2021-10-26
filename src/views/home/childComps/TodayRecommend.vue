@@ -15,6 +15,7 @@
           <div
             class="cover"
             :style="{ backgroundImage: 'url(' + fmsongDetail.al.picUrl + ')' }"
+            @click="playSong"
           >
             <van-icon name="play-circle-o" />
           </div>
@@ -29,7 +30,8 @@
       <div class="item songs">
         <div
           class="container"
-          :style="{ backgroundImage: 'url(' + dailysongDetail.al.picUrl + ')' }"
+          :style="{ backgroundImage: 'url(' + dailySongs[0].al.picUrl + ')' }"
+          @click="showList"
         ></div>
         <p class="item-name textover-eclipse">今日推荐</p>
       </div>
@@ -41,7 +43,7 @@
 <script>
 import { getPersonalFM, getTodaySongs } from "network/recommend";
 
-import { getSongDetail } from "network/song";
+import { getSongDetail, getSongUrl } from "network/song";
 
 export default {
   name: "TodayRecommend",
@@ -55,6 +57,7 @@ export default {
   data() {
     return {
       fm: {},
+      fmSongs: [],
       fmsongDetail: {
         al: {
           picUrl: "",
@@ -65,16 +68,18 @@ export default {
           },
         ],
       },
-      dailysongDetail: {
-        al: {
-          picUrl: "",
-        },
-        ar: [
-          {
-            name: "",
+      dailySongs: [
+        {
+          al: {
+            picUrl: "",
           },
-        ],
-      },
+          ar: [
+            {
+              name: "",
+            },
+          ],
+        },
+      ],
       hello: {
         time() {
           const hour = new Date().getHours();
@@ -83,7 +88,7 @@ export default {
           if (hour >= 11 && hour < 12) return "中午好";
           if (hour >= 12 && hour < 15) return "下午好";
           if (hour >= 15 && hour < 0) return "晚上好";
-          return 'Hi'
+          return "Hi";
         },
         speech() {
           const hour = new Date().getHours();
@@ -92,7 +97,7 @@ export default {
           if (hour >= 11 && hour < 12) return "来点歌曲放松吧~";
           if (hour >= 12 && hour < 15) return "听点宝藏歌曲提提神";
           if (hour >= 15 && hour < 0) return "晚上好";
-          return ''
+          return "";
         },
       },
     };
@@ -106,7 +111,22 @@ export default {
     },
     async initTodaySongs() {
       const res = await getTodaySongs();
-      this.dailysongDetail = res.data.dailySongs[0];
+      this.dailySongs = res.data.dailySongs;
+    },
+    async playSong() {
+      // 判断是否首次加载
+      if (!this.$store.state.ac.songInfo.url) {
+        // 查询播放链接并拼接到一起
+        const res = await getSongUrl(this.fmsongDetail.id);
+        this.fmsongDetail.url = res.data[0].url;
+        // 触发公共事件
+        this.$store.commit("init", this.fmsongDetail);
+      }
+      // 如果不是则只执行暂停或播放
+      this.$store.commit("playOrPause");
+    },
+    showList() {
+      this.$emit("showDailyPL", this.dailySongs);
     },
   },
   created() {
@@ -123,62 +143,62 @@ export default {
 h3 {
   display: flex;
   align-items: center;
-  margin-bottom: 10px;
+  margin-bottom: 0.1rem;
   .avatar {
     width: 10vw;
     height: 10vw;
     border-radius: 50%;
   }
   .nickname {
-    margin: 0 12px;
+    margin: 0 0.12rem;
   }
 }
 .inner {
   display: flex;
   .item {
-    margin-right: 10px;
+    margin-right: 0.1rem;
     cursor: pointer;
     .container {
-      border-radius: 8px;
+      border-radius: 0.08rem;
       height: 12vh;
       background-color: rgb(138, 138, 138);
     }
     .item-name {
-      margin-top: 6px;
-      font-size: 12px;
+      margin-top: 0.06rem;
+      font-size: 0.12rem;
     }
   }
   .personal_fm {
     width: 55vw;
     .container {
       background: linear-gradient(#8fb2c9, #baccd9);
-      border-radius: 8px;
-      padding: 14px 12px;
+      border-radius: 0.08rem;
+      padding: 0.14rem 0.12rem;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       position: relative;
 
       p {
-        font-size: 9px;
+        font-size: 0.09rem;
         span {
-          font-size: 12px;
+          font-size: 0.12rem;
         }
       }
       .cover {
         position: absolute;
-        right: 12px;
-        width: calc(12vh - 28px);
-        height: calc(12vh - 28px);
+        right: 0.12rem;
+        width: calc(12vh - 0.28rem);
+        height: calc(12vh - 0.28rem);
         background-color: rgb(138, 132, 132);
-        border-radius: 8px;
+        border-radius: 0.08rem;
         background-size: 100% 100%;
 
         .van-icon {
           position: absolute;
-          bottom: 6px;
-          left: 6px;
-          font-size: 20px;
+          bottom: 0.06rem;
+          left: 0.06rem;
+          font-size: 0.2rem;
         }
       }
     }

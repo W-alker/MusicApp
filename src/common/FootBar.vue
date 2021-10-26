@@ -10,8 +10,11 @@
 <script>
 export default {
   name: "FootBar",
-  prop: {
-    activeIndex: Number,
+  props: {
+    activeIndex: {
+      type: Number,
+      default: 0,
+    },
   },
   data() {
     return {};
@@ -25,6 +28,10 @@ export default {
   height: 7vh;
   padding-top: 2.5vh;
   background-color: var(--footbarBgc);
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: 1060;
   &:after {
     border-width: 0;
   }

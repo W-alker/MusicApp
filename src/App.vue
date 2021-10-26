@@ -1,6 +1,7 @@
 <template>
   <main id="app">
     <router-view />
+    <audio src="" style="" id="audio" controls></audio>
   </main>
 </template>
 
@@ -10,8 +11,12 @@ export default {
 };
 </script>
 
-<style>
+<style lang='scss'>
 #app {
-  width: 100vw;
+  width: 100%;
+  audio {
+    position: fixed;
+    z-index: 999999;
+  }
 }
 </style>

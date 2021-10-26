@@ -56,6 +56,10 @@ section {
 }
 .inner {
   overflow: auto;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  -webkit-overflow-scrolling: touch;
   ul {
     // width: 168vw;
     display: flex;

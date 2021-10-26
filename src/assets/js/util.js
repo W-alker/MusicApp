@@ -42,3 +42,15 @@ export function debounce(fn, delay = 3000) {
     }, delay)
   }
 }
+
+// 对数组形式的作者姓名进行封装
+// [{"id":16993,"name":"Lia","tns":[],"alias":[]}]
+export function songArToStr(ars) {
+  let str = ars[0].name
+  if (ars.length > 1) {
+    for (let i = 1; i < ars.length; i++) {
+      str += ` / ${ars[i].name}`
+    }
+  }
+  return str
+}

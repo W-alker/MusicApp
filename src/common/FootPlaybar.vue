@@ -1,27 +1,86 @@
 <template>
-  <div class="foot-playbar--fixed">
+  <div class="foot-playbar--fixed" @click="showPI">
     <div class="cover-thumb">
-      <img src="" alt="" />
+      <img :src="songPicUrl" alt="" />
     </div>
-    <p class="songInfo"><span>测试文本</span> - 测试文本测文本</p>
+    <p class="songInfo textover-eclipse">
+      <span>{{ songName }}</span> - {{ arName }}
+    </p>
     <div class="ctrlBtns">
-      <div class="playBtn btn">
-        <van-icon name="pause-circle-o" />
+      <div class="playBtn btn" @click.stop="playCtrl">
+        <van-icon :name="!isPause ? 'pause-circle-o' : 'play-circle-o'" />
       </div>
-      <div class="playinglistBtn btn">
+      <div class="playinglistBtn btn" @click.stop="showPL">
         <i class="icon icon-bofangliebiao"></i>
       </div>
     </div>
+
+    <van-popup
+      v-model="isShowPI"
+      position="bottom"
+      closeable
+      close-icon="revoke"
+      close-icon-position="top-left"
+      overlay
+      get-container="#app"
+      style="width: 100%; height: 100%"
+    >
+      <player-ui></player-ui>
+    </van-popup>
+
+    <van-popup
+      v-model="isShowPL"
+      position="bottom"
+      overlay
+      get-container="#app"
+      duration='.15'
+    >
+      <playing-list-card></playing-list-card>
+    </van-popup>
   </div>
 </template>
 
 <script>
+import PlayerUi from "common/PlayerUi";
+import PlayingListCard from "common/PlayingListCard";
+
 export default {
   name: "FootPlaybar",
-  data() {
-    return {};
+  components: {
+    PlayerUi,
+    PlayingListCard,
   },
-  methods: {},
+  data() {
+    return {
+      isShowPI: false,
+      isShowPL: false,
+    };
+  },
+  computed: {
+    songPicUrl() {
+      return this.$store.state.ac.songInfo.al.picUrl;
+    },
+    songName() {
+      return this.$store.state.ac.songInfo.al.name;
+    },
+    arName() {
+      return this.$store.state.ac.songInfo.arName;
+    },
+    isPause() {
+      return this.$store.state.ac.isPause;
+    },
+  },
+  methods: {
+    playCtrl() {
+      this.$store.commit("playOrPause");
+    },
+    showPI() {
+      this.isShowPI = true;
+    },
+    showPL() {
+      this.isShowPL = true;
+    },
+  },
 };
 </script>
 
@@ -34,7 +93,7 @@ export default {
   height: 6vh;
   background-color: var(--footplaybarBgc);
   border-radius: 2vh;
-  z-index: 99999;
+  z-index: 1070;
   display: flex;
   align-items: center;
   .cover-thumb {
@@ -47,13 +106,14 @@ export default {
   }
 
   .songInfo {
-    font-size: 11px;
-    line-height: 14px;
     width: 50%;
     max-width: 50%;
-    margin-left: 10px;
+    margin-left: 0.1rem;
+    font-size: 0.1rem;
+    line-height: 0.13rem;
+
     span {
-      font-size: 14px;
+      font-size: 0.13rem;
     }
   }
 
@@ -70,5 +130,12 @@ export default {
       line-height: 6vh;
     }
   }
+}
+
+.van-popup {
+  background-color: transparent;
+}
+.van-popup--bottom {
+  width: unset;
 }
 </style>
