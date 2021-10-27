@@ -23,7 +23,7 @@
 
     <today-recommend :userProfile="userProfile" @showDailyPL="showDailyPL" />
 
-    <personalized-playlist />
+    <personalized-playlist @showPLD='showPLD'/>
 
     <!-- <new-albums-list></new-albums-list> -->
 
@@ -36,7 +36,7 @@
       closeable
       get-container='#app'
     >
-      <playlist-detail :list="curPL"/>
+      <playlist-detail :pl="curPL"/>
     </van-popup>
 
     <foot-playbar />
@@ -80,7 +80,7 @@ export default {
       userAccount: {},
       userProfile: {},
       userInfo: {},
-      curPL: [], // 当前歌单
+      curPL: [], // 当前歌单详情
 
       isShowPLD: false, //是否显示歌单详情页
     };
@@ -91,7 +91,8 @@ export default {
       this.curPL = list;
       this.showPLD(); // 展开歌单
     },
-    showPLD() {
+    showPLD(pl) {
+      this.curPL = pl
       this.isShowPLD = true;
     },
   },

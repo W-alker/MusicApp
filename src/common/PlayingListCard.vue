@@ -3,11 +3,16 @@
     <h3>当前播放</h3>
     <div class="row actions"></div>
     <ul class="list">
-      <li>
+      <li
+        v-for="(item, index) in list"
+        :key="index"
+        @click="changeSong(item)"
+        :class="[{ active: item.id === curSongId }]"
+      >
         <p class="textover-eclipse">
-          <span class="songName">{{ songName }}</span>
+          <span class="songName">{{ item.al.name }}</span>
           -
-          {{ arName }}
+          {{ songArToStr(item.ar) }}
         </p>
         <van-icon name="close" />
       </li>
@@ -16,6 +21,9 @@
 </template>
 
 <script>
+import { getSongUrl } from "network/song";
+import { songArToStr } from "assets/js/util";
+
 export default {
   name: "PlayingListCard",
   computed: {
@@ -25,9 +33,22 @@ export default {
     arName() {
       return this.$store.state.ac.songInfo.arName;
     },
+    list() {
+      return this.$store.state.pl.playingList;
+    },
+    curSongId() {
+      return this.$store.state.ac.songInfo.id;
+    },
   },
   data() {
-    return {};
+    return {
+      songArToStr(ars) {
+        return songArToStr(ars);
+      },
+      async changeSong(item) {
+        this.$store.dispatch("init_song", item);
+      },
+    };
   },
   methods: {},
 };
@@ -41,6 +62,7 @@ export default {
   background-color: #fff;
   border-radius: 0.16rem;
   padding: 0.16rem;
+  overflow: auto;
 }
 .list {
   margin-top: 20px;
@@ -49,6 +71,9 @@ export default {
     justify-content: space-between;
     align-items: center;
     height: 48px;
+    &.active {
+      background-color: red;
+    }
     p {
       font-size: 11px;
       width: 60%;
@@ -58,8 +83,7 @@ export default {
       }
     }
     .van-icon {
-        display: inline-block;
-
+      display: inline-block;
     }
   }
 }

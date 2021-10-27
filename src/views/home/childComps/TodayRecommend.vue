@@ -114,15 +114,12 @@ export default {
       this.dailySongs = res.data.dailySongs;
     },
     async playSong() {
-      // 判断是否首次加载
-      if (!this.$store.state.ac.songInfo.url) {
-        // 查询播放链接并拼接到一起
-        const res = await getSongUrl(this.fmsongDetail.id);
-        this.fmsongDetail.url = res.data[0].url;
+      // 判断是否是当前歌曲
+      if (this.$store.state.ac.songInfo.id !== this.fmsongDetail.id)
         // 触发公共事件
-        this.$store.commit("init", this.fmsongDetail);
-      }
-      // 如果不是则只执行暂停或播放
+        this.$store.dispatch("init_song", this.fmsongDetail);
+
+      // 如果是这首个则只执行暂停或播放
       this.$store.commit("playOrPause");
     },
     showList() {

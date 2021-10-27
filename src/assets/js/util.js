@@ -54,3 +54,11 @@ export function songArToStr(ars) {
   }
   return str
 }
+
+export function playcountComputed(cnt) {
+  cnt = cnt.toString()
+  let len = cnt.length
+  if (len >= 9) return cnt.slice(0, len - 8) + '.' + cnt.slice(len - 8, len - 7) + '亿'
+  if (len >= 6 && len <= 9) return cnt.slice(0, len - 4) + '万'
+  return cnt
+}

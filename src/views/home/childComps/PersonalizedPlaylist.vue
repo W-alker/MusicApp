@@ -3,7 +3,7 @@
     <h3 class="sec-tit">你的每日私荐歌单</h3>
     <div class="inner">
       <ul>
-        <li v-for="(item, index) in recommnedPlaylists">
+        <li v-for="(item, index) in recommnedPlaylists" @click="showPLD(item)">
           <div
             class="cover"
             :style="{ backgroundImage: 'url(' + item.picUrl + ')' }"
@@ -22,6 +22,9 @@
 
 <script>
 import { getTodayPlaylist } from "network/recommend";
+import { playcountComputed } from "assets/js/util";
+
+import { getPlaylistDetail } from "network/playlist.js";
 
 export default {
   name: "PersonalizedPlaylist",
@@ -36,12 +39,12 @@ export default {
       this.recommnedPlaylists = res.recommend;
     },
     playcountComputed(cnt) {
-      cnt = cnt.toString();
-      let len = cnt.length;
-      if (len >= 8)
-        return cnt.slice(0, len - 8) + "." + cnt.slice(len - 8, len - 7) + "亿";
-      if (len >= 6 && len <= 9) return cnt.slice(0, len - 4) + "万";
-      return cnt;
+      return playcountComputed(cnt);
+    },
+    async showPLD(pl) {
+      // 查询当前歌单详情(包括歌曲列表)
+      const res = await getPlaylistDetail(pl.id);
+      this.$emit("showPLD", res.playlist);
     },
   },
   created() {
