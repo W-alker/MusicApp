@@ -19,11 +19,11 @@ export const audioControl = {
       cf: '',
       al: {
         id: 35067010,
-        name: 'ddddddddddddddddddd',
+        name: '',
         picUrl: '',
         tns: [],
-        pic_str: '18745573743612130',
-        pic: 18745573743612130
+        pic_str: '',
+        pic: 0
       },
       dt: 261915,
       h: { br: 320000, fid: 0, size: 10479325, vd: -79529 },
@@ -56,9 +56,14 @@ export const audioControl = {
       url: '', // 这是后加的
       arName: '' // 这是后加的
     }, // 歌曲信息
-    isPause: true
+    isPause: true,
+    duration: 0
   },
   mutations: {
+    recover_ac(state) {
+      const data = localStorage.getItem('songInfo')
+      /* if (data)  */ state.songInfo = JSON.parse(data)
+    },
     play(state) {
       const audio = document.getElementById('audio')
       audio.play()
@@ -73,7 +78,8 @@ export const audioControl = {
       const audio = document.getElementById('audio')
       state.isPause ? audio.play() : audio.pause()
       state.isPause = !state.isPause
-    }
+    },
+    next() {}
   },
   actions: {
     async init_song(context, songDetail) {
@@ -87,12 +93,19 @@ export const audioControl = {
 
       const audio = document.getElementById('audio')
       audio.src = res.data[0].url
-      context.commit('play')
+
+      audio.load()
+      audio.addEventListener('canplay',() => {
+        context.state.duration = audio.duration
+      })
+      context.commit('play') // 这里会报错，我也不知道为啥。不过不影响功能
 
       // 给音频添加自动下一首事件
       audio.addEventListener('ended', () => {
         context.dispatch('nextSong')
       })
+      // 本次信息存入本地
+      localStorage.setItem('songInfo', JSON.stringify(context.state.songInfo))
     }
   },
   getters: {}

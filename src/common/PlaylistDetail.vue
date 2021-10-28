@@ -74,7 +74,7 @@ export default {
       return this.pl.tracks;
     },
     curSongId() {
-      return this.$store.state.ac.songInfo.id
+      return this.$store.state.ac.songInfo.id;
     },
   },
   data() {
@@ -88,7 +88,11 @@ export default {
       return playcountComputed(cnt);
     },
     playStart(index = 0) {
-      this.$store.dispatch("updatePIL", { list: this.list, index });
+      // 如果是第一次使用该列表，(虽然updatePIL方法已经有处理)
+      if (this.$store.state.pl.playingList[0].id !== this.list[0].id)
+        this.$store.dispatch("updatePIL", { list: this.list, index });
+      // 如果不是则直接更改歌曲就行
+      else this.$store.dispatch("changeSong", index);
     },
   },
   created() {},
@@ -213,7 +217,7 @@ export default {
       display: flex;
       justify-content: space-between;
       height: $li-h;
-      transition: all ease .2s;
+      transition: all ease 0.2s;
       &.active {
         background-color: red;
       }

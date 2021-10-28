@@ -6,7 +6,7 @@
       <li
         v-for="(item, index) in list"
         :key="index"
-        @click="changeSong(item)"
+        @click="changeSong(index)"
         :class="[{ active: item.id === curSongId }]"
       >
         <p class="textover-eclipse">
@@ -45,8 +45,8 @@ export default {
       songArToStr(ars) {
         return songArToStr(ars);
       },
-      async changeSong(item) {
-        this.$store.dispatch("init_song", item);
+      async changeSong(index) {
+        this.$store.dispatch("changeSong", index);
       },
     };
   },

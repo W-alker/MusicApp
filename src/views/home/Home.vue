@@ -23,7 +23,7 @@
 
     <today-recommend :userProfile="userProfile" @showDailyPL="showDailyPL" />
 
-    <personalized-playlist @showPLD='showPLD'/>
+    <personalized-playlist @showPLD="showPLD" />
 
     <!-- <new-albums-list></new-albums-list> -->
 
@@ -34,9 +34,9 @@
       :overlay="true"
       position="bottom"
       closeable
-      get-container='#app'
+      get-container="#app"
     >
-      <playlist-detail :pl="curPL"/>
+      <playlist-detail :pl="curPL" />
     </van-popup>
 
     <foot-playbar />
@@ -59,7 +59,7 @@ import HighqualityPlaylist from "./childComps/HighqualityPlaylist.vue";
 
 import { getBanner, getLoginStatus } from "network/home";
 import { getSongUrl, getSongDetail } from "network/song";
-import { getUserInfo, getUserAccount } from "network/user";
+import { getUserRecord,getUserInfo, getUserAccount } from "network/user";
 
 export default {
   name: "Home",
@@ -91,8 +91,9 @@ export default {
       this.curPL = list;
       this.showPLD(); // 展开歌单
     },
+    // 显示歌单
     showPLD(pl) {
-      this.curPL = pl
+      this.curPL = pl;
       this.isShowPLD = true;
     },
   },
@@ -105,7 +106,11 @@ export default {
     const loginInfo = await getLoginStatus();
     this.userAccount = loginInfo.data.account;
     this.userProfile = loginInfo.data.profile;
+
+    // const record = await getUserRecord(this.userAccount.id)
   },
+
+
 };
 </script>
 
