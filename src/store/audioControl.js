@@ -1,5 +1,5 @@
 import { getSongUrl } from 'network/song'
-import { songArToStr } from 'assets/js/util.js'
+import { songArToStr,throttle } from 'assets/js/util.js'
 
 export const audioControl = {
   state: {
@@ -57,12 +57,14 @@ export const audioControl = {
       arName: '' // 这是后加的
     }, // 歌曲信息
     isPause: true,
-    duration: 0
+    duration: 0,
+    currentTime: 0
   },
   mutations: {
     recover_ac(state) {
       const data = localStorage.getItem('songInfo')
       /* if (data)  */ state.songInfo = JSON.parse(data)
+      state.duration = Number(localStorage.getItem('duration'))
     },
     play(state) {
       const audio = document.getElementById('audio')
@@ -79,7 +81,15 @@ export const audioControl = {
       state.isPause ? audio.play() : audio.pause()
       state.isPause = !state.isPause
     },
-    next() {}
+
+    timeUpdate(state, time) {
+      state.currentTime = time
+    },
+    change_playingCourse(state, time) {
+      const audio = document.getElementById('audio')
+      audio.currentTime = time
+      this.commit('timeUpdate',time)
+    }
   },
   actions: {
     async init_song(context, songDetail) {
@@ -91,19 +101,18 @@ export const audioControl = {
       const res = await getSongUrl(songDetail.id)
       context.state.songInfo.url = res.data[0].url
 
+      // 更改音频链接
       const audio = document.getElementById('audio')
       audio.src = res.data[0].url
 
       audio.load()
-      audio.addEventListener('canplay',() => {
+      // 等待音频可以播放
+      await audio.addEventListener('canplay', () => {
         context.state.duration = audio.duration
+        localStorage.setItem('duration', context.state.duration)
+        context.commit('play')
       })
-      context.commit('play') // 这里会报错，我也不知道为啥。不过不影响功能
 
-      // 给音频添加自动下一首事件
-      audio.addEventListener('ended', () => {
-        context.dispatch('nextSong')
-      })
       // 本次信息存入本地
       localStorage.setItem('songInfo', JSON.stringify(context.state.songInfo))
     }

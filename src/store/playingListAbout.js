@@ -33,6 +33,7 @@ export const playingListAbout = {
       context.state.curIndex = index
       // 调用ac音频控制模块播放歌曲
       context.dispatch('init_song', songDetail, { root: true })
+      
     },
     updatePIL(context, args) {
       // index代表从当前播放列表哪里开始播放

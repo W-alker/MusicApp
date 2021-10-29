@@ -42,6 +42,18 @@ export function debounce(fn, delay = 3000) {
     }, delay)
   }
 }
+export const throttle = function (func, delay) {
+  let timer = null
+  return function () {
+    const args = arguments
+    if (!timer) {
+      timer = setTimeout(() => {
+        func.apply(this, args)
+        timer = null
+      }, delay)
+    }
+  }
+}
 
 // 对数组形式的作者姓名进行封装
 // [{"id":16993,"name":"Lia","tns":[],"alias":[]}]
@@ -61,4 +73,22 @@ export function playcountComputed(cnt) {
   if (len >= 9) return cnt.slice(0, len - 8) + '.' + cnt.slice(len - 8, len - 7) + '亿'
   if (len >= 6 && len <= 9) return cnt.slice(0, len - 4) + '万'
   return cnt
+}
+
+// 将歌曲时间的秒数转化为分秒形式
+export function secondsToMS(time) {
+  time = parseInt(time)
+  let m = parseInt(time / 60)
+  let s = time % 60
+  m <= 9 ? (m = '0' + m) : m
+  s <= 9 ? (s = '0' + s) : s
+  return m + ':' + s
+}
+
+export function getStyle(obj, name) {
+  if (obj.currentStyle) {
+    return obj.currentStyle[name]
+  } else {
+    return getComputedStyle(obj, false)[name]
+  }
 }
