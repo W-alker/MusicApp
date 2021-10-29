@@ -118,12 +118,14 @@ export default {
       return secondsToMS(this.$store.state.ac.duration);
     },
     time_MS() {
-      return secondsToMS(
-        this.$store.state.ac.currentTime + this.panMove_curTime
-      );
+      let sum = this.$store.state.ac.currentTime + this.panMove_curTime;
+      sum < 0 ? (sum = 0) : sum;
+      sum > this.duration ? (sum = this.duration) : sum;
+      return secondsToMS(sum);
     },
     panMove_curTime() {
-      return this.panMove_curTimePercentage * this.duration;
+      let res = this.panMove_curTimePercentage * this.duration;
+      return res;
     },
     // 拖拽进度条变化的额外进度
     panMove_curTimePercentage() {
@@ -197,20 +199,18 @@ export default {
     // 给进度条添加拖拽事件
     const progress_point = document.querySelector(".progress .point");
     const progress_move = new Hammer(progress_point);
-    progress_move.on(
-      "panmove",
-      throttle((ev) => {
-        // 记录当前偏移量,同时会影响进度条，但是不触发变化事件
-        this.panMoveX = ev.deltaX;
-      }, 50)
-    );
+    progress_move.on("panmove", (ev) => {
+      // 记录当前偏移量,同时会影响进度条，但是不触发变化事件
+      // if (ev.isFinal) this.panMoveX = 0;
+      this.panMoveX = ev.deltaX;
+    });
     progress_move.on("panend", (ev) => {
       // 触发时间进度改变事件，传入需要改变的百分比
       let changePercentage =
         this.curTimePercentage + this.panMove_curTimePercentage;
       // 防止越界
-      changePercentage < 0 ? (changePercentage = 0.01) : changePercentage;
-      changePercentage > 1 ? (changePercentage = 0.99) : changePercentage;
+      changePercentage < 0 ? (changePercentage = 0.0001) : changePercentage;
+      changePercentage > 1 ? (changePercentage = 0.9999) : changePercentage;
       this.playingCourseToCurTime(changePercentage);
       this.panMoveX = 0;
     });

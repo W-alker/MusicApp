@@ -25,7 +25,7 @@
             @click="change_pwd_type"
           />
         </label>
-        <span @click="popup_signUp_show = true" >忘记密码?</span>
+        <span @click="popup_signUp_show = true">忘记密码?</span>
         <span style="float: right" @click="verifycode_login">用验证码登录</span>
 
         <van-button
@@ -57,9 +57,8 @@
       position="bottom"
       :close-on-popstate="true"
       :style="{ height: '100%', background: 'var(--black)' }"
-      
     >
-    <sign-up-box @popupClose="popup_signUp_show=false"></sign-up-box>
+      <sign-up-box @popupClose="popup_signUp_show = false"></sign-up-box>
     </van-popup>
 
     <!-- 验证码登录弹出层 -->
@@ -114,7 +113,7 @@ import {
 } from "assets/js/util.js";
 import { Dialog, Notify, Toast } from "vant";
 import UseVerifycodeBox from "./childComps/UseVerifycodeBox.vue";
-import SignUpBox from './childComps/SignUpBox.vue'
+import SignUpBox from "./childComps/SignUpBox.vue";
 
 export default {
   name: "Login",
@@ -136,7 +135,7 @@ export default {
     [Dialog.Component.name]: Dialog.Component,
     [Notify.Component.name]: Notify.Component,
     UseVerifycodeBox,
-    SignUpBox
+    SignUpBox,
   },
   watch: {
     loginOK() {
@@ -210,7 +209,8 @@ export default {
   },
 
   created() {
-        loginStatus.check().then((res) => {
+    loginStatus.check().then((res) => {
+      console.log(res);
       if (res.code === 200) {
         const toast = Toast.loading({
           duration: 0, // 持续展示 toast
