@@ -1,19 +1,25 @@
 import { request } from './request'
 
 export function getUserRecord(uid) {
-    return request({
-        url: `/user/record?uid=${uid}&type=1`
-    })
+  return request({
+    url: `/user/record?uid=${uid}&type=1`
+  })
 }
 export function getUserAccount() {
-    return request({
-        url: '/user/account'
-    })
+  return request({
+    url: '/user/account'
+  })
 }
 
 export function getUserDetail(uid) {
-    return request({
-        url: `/user/detail?uid=${uid}`
-    })
+  return request({
+    url: `/user/detail?uid=${uid}`
+  })
 }
-
+export const personalAbout = {
+  getLikelist(uid) {
+    return request({
+      url: `/likelist?uid=${uid}`
+    })
+  }
+}

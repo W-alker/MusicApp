@@ -174,6 +174,8 @@ export default {
 .list-container {
   margin-top: 30px;
   padding: 16px;
+  padding-bottom: var(--footplaybarHeight);
+
   background-color: var(--silveryWhite);
   color: var(--black);
   .ctrlBtns {

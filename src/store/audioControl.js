@@ -1,5 +1,6 @@
-import { getSongUrl } from 'network/song'
+import { getSongUrl,checkSong } from 'network/song'
 import { songArToStr,throttle } from 'assets/js/util.js'
+import { Toast } from 'vant';
 
 export const audioControl = {
   state: {
@@ -97,6 +98,8 @@ export const audioControl = {
       context.state.songInfo = songDetail
       context.state.songInfo.arName = songArToStr(context.state.songInfo.ar)
 
+      const check = checkSong(songDetail.id)
+      if(check.success) return Toast.fail('该歌曲暂无版权，无法播放')
       //  获取音频链接
       const res = await getSongUrl(songDetail.id)
       context.state.songInfo.url = res.data[0].url

@@ -39,7 +39,7 @@
       <playlist-detail :pl="curPL" />
     </van-popup>
 
-    <foot-playbar />
+    <foot-playbar ref="FootPlaybar" :isSlideDown="isShowPLD" />
     <foot-bar :activeIndex="0" />
   </main>
 </template>
@@ -59,7 +59,7 @@ import HighqualityPlaylist from "./childComps/HighqualityPlaylist.vue";
 
 import { getBanner, getLoginStatus } from "network/home";
 import { getSongUrl, getSongDetail } from "network/song";
-import { getUserRecord,getUserInfo, getUserAccount } from "network/user";
+import { getUserRecord, getUserInfo, getUserAccount } from "network/user";
 
 export default {
   name: "Home",
@@ -74,11 +74,18 @@ export default {
 
     PlaylistDetail,
   },
+  computed: {
+    userAccount() {
+      return this.$store.state.ua.account;
+    },
+    userProfile() {
+      return this.$store.state.ua.profile;
+    },
+  },
   data() {
     return {
       banners: [],
-      userAccount: {},
-      userProfile: {},
+
       userInfo: {},
       curPL: [], // 当前歌单详情
 
@@ -97,20 +104,17 @@ export default {
       this.isShowPLD = true;
     },
   },
-  async created() {
+  created() {
+    // 初始化信息
+    this.$store.dispatch("INIT_INFO");
+
     // 获取banner
     getBanner().then((res) => {
       this.banners = res.banners;
     });
-    //初始化用户信息
-    const loginInfo = await getLoginStatus();
-    this.userAccount = loginInfo.data.account;
-    this.userProfile = loginInfo.data.profile;
 
     // const record = await getUserRecord(this.userAccount.id)
   },
-
-
 };
 </script>
 

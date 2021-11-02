@@ -1,5 +1,11 @@
 import { request } from './request'
 
+export function checkSong(sid) {
+  return request({
+    url: `/check/music?id=${sid}`
+  })
+  
+}
 export function getSongDetail(sid) {
   return request({
     url: `/song/detail?ids=${sid}`
@@ -10,9 +16,9 @@ export function getSongUrl(sid) {
     url: `/song/url?id=${sid}`
   })
 }
-export function getSongLyric(sid) {
+export function likeSong(sid, like = true) {
   return request({
-    url: `/lyric?id=${sid}`
+    url: `/like?id=${sid}&like=${like}`
   })
 }
 

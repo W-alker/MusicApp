@@ -1,42 +1,50 @@
 <template>
-  <div class="foot-playbar--fixed" @click="showPI">
-    <div class="cover-thumb">
-      <img :src="songPicUrl" alt="" />
-    </div>
-    <p class="songInfo textover-eclipse">
-      <span>{{ songName }}</span> - {{ arName }}
-    </p>
-    <div class="ctrlBtns">
-      <div class="playBtn btn" @click.stop="playCtrl">
-        <van-icon :name="!isPause ? 'pause-circle-o' : 'play-circle-o'" />
+  <div
+    class="foot-playbar"
+    :style="[
+      { bottom: isSlideDown ? '0' : 'var(--footplaybarHeight' },
+      { zIndex: isSlideDown ? '3060' : '1070' },
+    ]"
+  >
+    <div class="foot-playbar--fixed" @click="showPI">
+      <div class="cover-thumb">
+        <img :src="songPicUrl" alt="" />
       </div>
-      <div class="playinglistBtn btn" @click.stop="showPL">
-        <i class="icon icon-bofangliebiao"></i>
+      <p class="songInfo textover-eclipse">
+        <span>{{ songName }}</span> - {{ arName }}
+      </p>
+      <div class="ctrlBtns">
+        <div class="playBtn btn" @click.stop="playCtrl">
+          <van-icon :name="!isPause ? 'pause-circle-o' : 'play-circle-o'" />
+        </div>
+        <div class="playinglistBtn btn" @click.stop="showPL">
+          <i class="icon icon-bofangliebiao"></i>
+        </div>
       </div>
+
+      <van-popup
+        v-model="isShowPI"
+        position="bottom"
+        closeable
+        close-icon="revoke"
+        close-icon-position="top-left"
+        :overlay="false"
+        get-container="#app"
+        style="width: 100%; height: 100%"
+      >
+        <player-ui></player-ui>
+      </van-popup>
+
+      <van-popup
+        v-model="isShowPL"
+        position="bottom"
+        overlay
+        duration=".15"
+        get-container="#app"
+      >
+        <playing-list-card></playing-list-card>
+      </van-popup>
     </div>
-
-    <van-popup
-      v-model="isShowPI"
-      position="bottom"
-      closeable
-      close-icon="revoke"
-      close-icon-position="top-left"
-      overlay
-      get-container="#app"
-      style="width: 100%; height: 100%"
-    >
-      <player-ui></player-ui>
-    </van-popup>
-
-    <van-popup
-      v-model="isShowPL"
-      position="bottom"
-      overlay
-      get-container="#app"
-      duration='.15'
-    >
-      <playing-list-card></playing-list-card>
-    </van-popup>
   </div>
 </template>
 
@@ -46,6 +54,12 @@ import PlayingListCard from "common/PlayingListCard";
 
 export default {
   name: "FootPlaybar",
+  props: {
+    isSlideDown: {
+      type: Boolean,
+      default: false,
+    },
+  },
   components: {
     PlayerUi,
     PlayingListCard,
@@ -85,15 +99,23 @@ export default {
 </script>
 
 <style scoped lang='scss'>
-.foot-playbar--fixed {
+.foot-playbar {
   position: fixed;
-  bottom: 6.5vh;
-  left: 5%;
-  width: 90%;
-  height: 6vh;
+  height: 3vh;
+  left: 0;
+  bottom: 7vh;
+  width: 100%;
+  background-color: var(--footbarBgc);
+  z-index: 1070;
+  transition: all ease 0.3s;
+}
+.foot-playbar--fixed {
+  position: relative;
+  margin: -3vh 0 0 5vw;
+  width: 90vw;
+  height: 200%;
   background-color: var(--footplaybarBgc);
   border-radius: 2vh;
-  z-index: 1070;
   display: flex;
   align-items: center;
   .cover-thumb {

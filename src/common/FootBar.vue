@@ -26,7 +26,6 @@ export default {
 <style scoped lang='scss'>
 .van-tabbar {
   height: 7vh;
-  padding-top: 2.5vh;
   background-color: var(--footbarBgc);
   position: fixed;
   bottom: 0;

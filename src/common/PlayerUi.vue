@@ -1,69 +1,81 @@
 <template>
   <section class="player-ui">
     <div class="row top">
-      <!-- <i class="icon icon-zuojiantou"></i> -->
-      <!--       <div class="name">
-        <h4 class="songName textover-eclipse">{{ songName }}</h4>
-        <h5 class="arName textover-eclipse">{{ arName }}</h5>
-      </div> -->
-    </div>
-
-    <div class="center">
-      <div class="cover">
-        <img :src="coverUrl" alt="" />
-      </div>
-    </div>
-
-    <div class="row info">
       <div class="name">
-        <h4 class="songName textover-eclipsis-2">{{ songName }}</h4>
+        <van-notice-bar scrollable :text="songName" class="songName" />
         <h5 class="arName textover-eclipse">{{ arName }}</h5>
       </div>
     </div>
 
-    <div class="row actions">
-      <i class="icon icon-xiazai1"></i>
-      <i class="icon icon-xihuan-tianjia"></i>
-      <i class="icon icon-renwuzhongxin-huodepinglun"></i>
-      <i class="icon icon-icon"></i>
-    </div>
+    <main class="container">
+      <div class="main part" :class="{ active: !isShowLyric }">
+        <div class="center">
+          <div class="cover" @click="isShowLyric = true">
+            <img :src="coverUrl" alt="" />
+          </div>
+        </div>
 
-    <div class="progress">
-      <!-- <van-progress :percentage="50" /> -->
-      <div class="track" @click="change_playingCourse($event)">
-        <div
-          class="pivot"
-          :style="{
-            width:
-              Math.min(curTimePercentage + panMove_curTimePercentage, 1) * 100 +
-              '%',
-          }"
-        >
-          <div class="point"></div>
+        <div class="row info"></div>
+
+        <div class="row actions">
+          <a :href="audioUrl" :download="songName">
+            <i class="icon icon-xiazai1"></i>
+          </a>
+          <i
+            :class="[
+              'icon',
+              { 'icon-xihuan-tianjia': !isLikeSong },
+              { 'icon-xihuan-xuanzhong': isLikeSong },
+            ]"
+            @click="likeSong"
+          ></i>
+          <i class="icon icon-renwuzhongxin-huodepinglun"></i>
+          <i class="icon icon-icon"></i>
+        </div>
+
+        <player-ui-progress></player-ui-progress>
+
+        <div class="ctrlBtns row">
+          <i :class="['icon', playMode_icon]" @click="change_playMode"></i>
+          <i class="icon icon-next" @click="prevSong"></i>
+          <i
+            :class="[
+              'icon',
+              { 'icon-zantingtingzhi': !isPause },
+              { 'icon-bofang1': isPause },
+              'pauseBtn',
+            ]"
+            @click="pauseCtrl"
+          ></i>
+          <i class="icon icon-next" @click="nextSong"></i>
+          <i class="icon icon-bofangliebiao" @click="showPL"></i>
         </div>
       </div>
 
-      <p class="timeShow">
-        <span>{{ time_MS }}</span
-        ><span>{{ duration_MS }}</span>
-      </p>
-    </div>
+      <div
+        class="lyric part"
+        :class="{ active: isShowLyric }"
+        @click="isShowLyric = false"
+      >
+        <player-ui-lyric
+          :lyric_withTime="lyric_withTime"
+          :tlyric_withTime="tlyric_withTime"
+          :nolyric="false"
+        ></player-ui-lyric>
 
-    <div class="ctrlBtns row">
-      <i class="icon icon-shunxubofang"></i>
-      <i class="icon icon-next" @click="prevSong"></i>
-      <i
-        :class="[
-          'icon',
-          { 'icon-zantingtingzhi': !isPause },
-          { 'icon-bofang1': isPause },
-          'pauseBtn',
-        ]"
-        @click="pauseCtrl"
-      ></i>
-      <i class="icon icon-next" @click="nextSong"></i>
-      <i class="icon icon-bofangliebiao" @click="showPL"></i>
-    </div>
+        <div class="btns">
+          <i
+            :class="[
+              'icon',
+              { 'icon-zantingtingzhi': !isPause },
+              { 'icon-bofang1': isPause },
+              'pauseBtn',
+            ]"
+            @click="pauseCtrl"
+          ></i>
+        </div>
+      </div>
+    </main>
 
     <van-popup
       v-model="isShowPL"
@@ -79,16 +91,20 @@
 
 <script>
 import PlayingListCard from "common/PlayingListCard";
+import PlayerUiProgress from "common/childComps/PlayerUiProgress";
+import playerUiLyric from "./childComps/playerUiLyric.vue";
 import { getSongLyric, Lyric, Mlog } from "network/song";
-import { secondsToMS, getStyle, throttle } from "assets/js/util";
-import "hammerjs";
+import { getStyle } from "assets/js/util";
 
 export default {
   name: "PlayerUi",
   components: {
     PlayingListCard,
+    PlayerUiProgress,
+    playerUiLyric,
   },
   computed: {
+    // 信息相关
     sid() {
       return this.$store.state.ac.songInfo.id;
     },
@@ -104,40 +120,35 @@ export default {
     coverUrl() {
       return this.$store.state.ac.songInfo.al.picUrl;
     },
+    audioUrl() {
+      return this.$store.state.ac.songInfo.url;
+    },
+    isLikeSong() {
+      return this.$store.state.ua.likeList.has(this.sid);
+    },
 
-    duration() {
-      return this.$store.state.ac.duration;
+    // 播放控制
+    playMode() {
+      return this.$store.state.pl.playMode;
     },
-    curTime() {
-      return this.$store.state.ac.currentTime;
-    },
-    curTimePercentage() {
-      return this.curTime / this.duration;
-    },
-    duration_MS() {
-      return secondsToMS(this.$store.state.ac.duration);
-    },
-    time_MS() {
-      let sum = this.$store.state.ac.currentTime + this.panMove_curTime;
-      sum < 0 ? (sum = 0) : sum;
-      sum > this.duration ? (sum = this.duration) : sum;
-      return secondsToMS(sum);
-    },
-    panMove_curTime() {
-      let res = this.panMove_curTimePercentage * this.duration;
-      return res;
-    },
-    // 拖拽进度条变化的额外进度
-    panMove_curTimePercentage() {
-      // 防止越界
-      return this.panMoveX / this.trackWidth;
+    playMode_icon() {
+      switch (this.playMode) {
+        case 0:
+          return "icon-shunxubofang";
+        case 1:
+          return "icon-suijibofang";
+        case 2:
+          return "icon-danquxunhuan";
+      }
     },
   },
   data() {
     return {
       isShowPL: false,
-      panMoveX: 0, // 进度条移动过程中，上一次的偏移量
-      trackWidth: 0,
+      isShowLyric: true,
+      nolyric: false,
+      lyric_withTime: [],
+      tlyric_withTime: [],
     };
   },
   methods: {
@@ -148,20 +159,20 @@ export default {
     },
     async init_lyric() {
       const res = await Lyric.get(this.sid);
+      console.log(res);
+      if (res.lrc) {
+        this.nolyric = false;
+        this.lyric_withTime = res.lrc.lyric.split("\n");
+      } else {
+        this.nolyric = true;
+      }
+
+      if (res.tlyric) {
+        this.nolyric = false;
+        this.tlyric_withTime = res.tlyric.lyric.split("\n");
+      } else this.tlyric_withTime = [];
     },
-    change_playingCourse($event) {
-      const click_clientX = $event.x; // 点击相对于屏幕的位置
-      // 获取点击的当前进度
-      const clientWidth =
-        document.documentElement.clientWidth || document.body.clientWidth; // 屏幕宽
-      const clickX = click_clientX - (clientWidth - this.trackWidth) / 2; // 计算获得在轨道上点击的位置
-      const percentage = clickX / this.trackWidth; // 点击位置相对于轨道长度的百分比
-      this.playingCourseToCurTime(percentage);
-    },
-    playingCourseToCurTime(percentage) {
-      //将当前播放的百分比转化为对应时间节点并更改播放位置
-      this.$store.commit("change_playingCourse", percentage * this.duration);
-    },
+
     pauseCtrl() {
       this.$store.commit("playOrPause");
     },
@@ -175,10 +186,17 @@ export default {
       this.isShowPL = true;
     },
 
+    likeSong() {
+      this.$store.dispatch("likeSong", this.sid);
+    },
+
+    change_playMode() {
+      this.$store.commit("change_playMode");
+    },
     CHANGE() {
-      const audio = document.getElementById("audio");
       this.init_lyric();
       this.panMoveX = 0;
+      this.activeLyricIndex = 0;
     },
   },
   mounted() {},
@@ -191,43 +209,58 @@ export default {
     // this.init_mlog();
     this.CHANGE();
   },
-  mounted() {
-    this.trackWidth = parseInt(
-      getStyle(document.querySelector(".track"), "width")
-    );
-
-    // 给进度条添加拖拽事件
-    const progress_point = document.querySelector(".progress .point");
-    const progress_move = new Hammer(progress_point);
-    progress_move.on("panmove", (ev) => {
-      // 记录当前偏移量,同时会影响进度条，但是不触发变化事件
-      // if (ev.isFinal) this.panMoveX = 0;
-      this.panMoveX = ev.deltaX;
-    });
-    progress_move.on("panend", (ev) => {
-      // 触发时间进度改变事件，传入需要改变的百分比
-      let changePercentage =
-        this.curTimePercentage + this.panMove_curTimePercentage;
-      // 防止越界
-      changePercentage < 0 ? (changePercentage = 0.0001) : changePercentage;
-      changePercentage > 1 ? (changePercentage = 0.9999) : changePercentage;
-      this.playingCourseToCurTime(changePercentage);
-      this.panMoveX = 0;
-    });
-  },
 };
 </script>
 
 <style scoped lang='scss'>
+.icon-xihuan-xuanzhong {
+  color: red;
+}
 .player-ui {
   width: 100%;
   height: 100%;
   padding: 32px;
-  z-index: 9999;
   background: var(--commonPageBgc);
   color: #f1f0ed;
   display: flex;
   flex-direction: column;
+
+  main {
+    position: relative;
+    height: 100%;
+    .part {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      transition: all 0.3s ease;
+
+      opacity: 0;
+      &.main {
+        z-index: 90;
+      }
+      &.lyric {
+        z-index: 80;
+        .lyric-container {
+          margin-top: 10%;
+          height: 80%;
+          transition: all linear 0.3s;
+          overflow: auto;
+          position: relative;
+        }
+        .btns {
+          height: 10%;
+          margin-top: 10%;
+        }
+      }
+      &.active {
+        opacity: 1;
+        z-index: 110;
+      }
+    }
+  }
+
   .row {
     display: flex;
     width: 100%;
@@ -239,8 +272,26 @@ export default {
     justify-content: center;
     .name {
       text-align: center;
-      width: 30%;
+      width: 50%;
       height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      .songName {
+        width: 100%;
+        height: 50%;
+        background-color: unset;
+        padding: 0;
+        color: var(--white);
+        font-size: 16px;
+        transition: all ease 8s;
+      }
+      .arName {
+        font-size: 13px;
+        opacity: 0.6;
+      }
     }
   }
   .center {
@@ -259,22 +310,7 @@ export default {
       }
     }
   }
-  .info {
-    height: 10%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    .songName {
-      font-size: 18px;
-    }
-    .arName {
-      margin-top: 1vh;
-      font-size: 14px;
-      opacity: 0.6;
-    }
-  }
+
   .actions {
     height: 7%;
     .icon {
@@ -282,35 +318,9 @@ export default {
       font-size: 20px;
     }
   }
-  .progress {
+
+  .player-ui-progress {
     height: 9%;
-    $track-h: 4;
-    .track {
-      height: #{$track-h}px;
-      background-color: #fff;
-      position: relative;
-      border-radius: 6px;
-      .pivot {
-        position: absolute;
-        height: 100%;
-        background-color: rgb(99, 65, 65);
-        border-radius: 6px;
-        .point {
-          position: absolute;
-          right: 0;
-          top: -3px;
-          width: #{$track-h + 6}px;
-          height: #{$track-h + 6}px;
-          border-radius: 50%;
-          background-color: saddlebrown;
-          transform: translateX(50%);
-        }
-      }
-    }
-    .timeShow {
-      display: flex;
-      justify-content: space-between;
-    }
   }
   .ctrlBtns {
     height: 10%;

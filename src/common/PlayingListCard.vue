@@ -63,6 +63,7 @@ export default {
   border-radius: 0.16rem;
   padding: 0.16rem;
   overflow: auto;
+  color: var(--black);
 }
 .list {
   margin-top: 20px;
