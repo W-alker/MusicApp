@@ -61,6 +61,7 @@
           :lyric_withTime="lyric_withTime"
           :tlyric_withTime="tlyric_withTime"
           :nolyric="false"
+          :songName='songName'
         ></player-ui-lyric>
 
         <div class="btns">
@@ -237,6 +238,7 @@ export default {
       transition: all 0.3s ease;
 
       opacity: 0;
+      // display: none;
       &.main {
         z-index: 90;
       }
@@ -246,8 +248,7 @@ export default {
           margin-top: 10%;
           height: 80%;
           transition: all linear 0.3s;
-          overflow: auto;
-          position: relative;
+
         }
         .btns {
           height: 10%;
@@ -255,6 +256,7 @@ export default {
         }
       }
       &.active {
+        // display: block;
         opacity: 1;
         z-index: 110;
       }

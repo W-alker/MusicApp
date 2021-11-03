@@ -2,10 +2,9 @@
   <div class="lyric-container">
     <div
       class="inner"
-      :style="{
-        transform: 'translateY(-' + translateY + 'px)',
-      }"
       v-show="!nolyric"
+      :style="{ transform: 'translateY(-' + translateY + 'px)' }"
+      ref="wrapper"
     >
       <p
         v-for="(item, index) in lyric"
@@ -18,13 +17,15 @@
         <span>{{ item.tlrc }}</span>
       </p>
     </div>
-    <div class="inner inner-empty">
-      <p v-show="nolyric">该歌曲暂无歌词</p>
+    <div class="inner inner-empty" v-if="nolyric">
+      <p>该歌曲暂无歌词</p>
     </div>
   </div>
 </template>
 
 <script>
+// import BScroll from "@better-scroll/core";
+
 export default {
   name: "playerUiLyric",
   computed: {
@@ -52,7 +53,7 @@ export default {
             if (this.tlyric_withTime[i].split("]")[0].slice(1) == res[j].time) {
               res[j].tlrc = this.tlyric_withTime[i].split("]")[1];
               break;
-            } else j++;
+            }
           }
         }
       }
@@ -67,6 +68,9 @@ export default {
     },
   },
   props: {
+    songName: {
+      type: String,
+    },
     lyric_withTime: {
       type: Array,
       required: true,
@@ -85,6 +89,8 @@ export default {
       activeLyricIndex: 0,
       activeLyricHeight: 0,
       translateY: 0,
+      BScroll: {},
+      panMoveY: 0,
     };
   },
   watch: {
@@ -92,10 +98,20 @@ export default {
       //   console.log(this.$refs.lrc[this.activeLyricIndex - 1].clientHeight);
       this.translateY = this.moveTranslateY(this.activeLyricIndex);
     },
+    lyric() {
+      this.translateY = 0;
+    },
   },
   mounted() {},
+  updated() {},
   created() {},
   methods: {
+    /*     init_scroll() {
+      this.BScroll = new BScroll(this.$refs.wrapper, {
+        scrollY: true,
+        click: true,
+      });
+    }, */
     lyricTimeToSeconds(time) {
       return (
         parseInt(time.split(":")[0]) * 60000 +
@@ -103,6 +119,16 @@ export default {
       );
     },
     isActiveLyricIndex(index) {
+      // 最后一句的话直接返回，防止越界报错
+      if (
+        this.currentTime * 1000 >=
+          this.lyricTimeToSeconds(this.lyric[index].time) &&
+        index === this.lyric.length - 1
+      ) {
+        this.activeLyricIndex = index;
+        return true;
+      }
+
       if (
         this.currentTime * 1000 >=
           this.lyricTimeToSeconds(this.lyric[index].time) &&
@@ -125,8 +151,11 @@ export default {
 </script>
 
 <style scoped lang='scss'>
+.lyric-container {
+  overflow: hidden;
+}
 .inner {
-  margin-top: 70%;
+  margin-top: 300px;
   p {
     transition: all linear 0.3s;
     font-size: 14px;

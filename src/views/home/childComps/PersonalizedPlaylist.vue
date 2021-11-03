@@ -1,8 +1,8 @@
 <template>
   <section>
     <h3 class="sec-tit">你的每日私荐歌单</h3>
-    <div class="inner">
-      <ul>
+    <div class="inner" ref="wrapper">
+      <ul ref="content">
         <li v-for="(item, index) in recommnedPlaylists" @click="showPLD(item)">
           <div
             class="cover"
@@ -26,17 +26,24 @@ import { playcountComputed } from "assets/js/util";
 
 import { getPlaylistDetail } from "network/playlist.js";
 
+import BScroll from "@better-scroll/core";
+
 export default {
   name: "PersonalizedPlaylist",
   data() {
     return {
       recommnedPlaylists: [],
+      scroll: {},
+      contentWidth: 0,
     };
   },
   methods: {
     async getTodayPlaylist() {
       const res = await getTodayPlaylist();
       this.recommnedPlaylists = res.recommend;
+      setTimeout(() => {
+        this.contentWidth = this.$refs.content.clientWidth;
+      }, 200);
     },
     playcountComputed(cnt) {
       return playcountComputed(cnt);
@@ -46,8 +53,21 @@ export default {
       const res = await getPlaylistDetail(pl.id);
       this.$emit("showPLD", res.playlist);
     },
+    init_scroll() {
+      this.scroll = new BScroll(this.$refs.wrapper, {
+        scrollX: true,
+      });
+    },
   },
-  created() {
+  watch: {
+    contentWidth() {
+      this.init_scroll();
+    },
+  },
+  mounted() {
+    this.$nextTick(() => {});
+  },
+  async created() {
     this.getTodayPlaylist();
   },
 };
@@ -58,24 +78,27 @@ section {
   margin-top: 20px;
 }
 .inner {
-  overflow: auto;
+  // overflow: auto;
+  overflow: hidden;
   &::-webkit-scrollbar {
     display: none;
   }
   -webkit-overflow-scrolling: touch;
   ul {
-    // width: 168vw;
-    display: flex;
+    white-space: nowrap;
+    display: inline-flex;
+    // display: flex;
     // flex-wrap: wrap;
     li {
-      width: 25vw;
+      float: left;
+      width: 0.95rem;
       flex-shrink: 0;
-      margin: 0 3vw 0 0;
+      margin: 0 0.1rem 0 0;
       .cover {
         width: 100%;
-        height: 25vw;
+        height: 0.95rem;
         background-color: #fff;
-        border-radius: 8px;
+        border-radius: 0.08rem;
         background-size: contain;
         position: relative;
         overflow: hidden;
@@ -83,21 +106,21 @@ section {
         .playcount {
           display: inline;
           position: absolute;
-          right: 4px;
-          top: 4px;
-          padding: 4px 6px;
+          right: 0.04rem;
+          top: 0.04rem;
+          padding: 0.04rem 0.06rem;
           background-color: rgba(0, 0, 0, 0.3);
-          font-size: 11px;
-          line-height: 10px;
-          border-radius: 8px;
+          font-size: 0.11rem;
+          line-height: 0.1rem;
+          border-radius: 0.08rem;
           .icon {
-            font-size: 11px;
+            font-size: 0.11rem;
           }
         }
       }
       .list-name {
-        margin-top: 5px;
-        font-size: 11px;
+        margin-top: 0.05rem;
+        font-size: 0.11rem;
       }
     }
   }
