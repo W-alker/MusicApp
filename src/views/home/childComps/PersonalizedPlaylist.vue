@@ -1,7 +1,7 @@
 <template>
   <section>
     <h3 class="sec-tit">你的每日私荐歌单</h3>
-    <div class="inner" ref="wrapper">
+    <div class="inner hideScroll" ref="wrapper">
       <ul ref="content">
         <li v-for="(item, index) in recommnedPlaylists" @click="showPLD(item)">
           <div
@@ -26,7 +26,7 @@ import { playcountComputed } from "assets/js/util";
 
 import { getPlaylistDetail } from "network/playlist.js";
 
-import BScroll from "@better-scroll/core";
+// import BScroll from "@better-scroll/core";
 
 export default {
   name: "PersonalizedPlaylist",
@@ -53,15 +53,15 @@ export default {
       const res = await getPlaylistDetail(pl.id);
       this.$emit("showPLD", res.playlist);
     },
-    init_scroll() {
+    /*     init_scroll() {
       this.scroll = new BScroll(this.$refs.wrapper, {
         scrollX: true,
       });
-    },
+    }, */
   },
   watch: {
     contentWidth() {
-      this.init_scroll();
+      // this.init_scroll();
     },
   },
   mounted() {
@@ -78,12 +78,8 @@ section {
   margin-top: 20px;
 }
 .inner {
-  // overflow: auto;
-  overflow: hidden;
-  &::-webkit-scrollbar {
-    display: none;
-  }
-  -webkit-overflow-scrolling: touch;
+  // overflow: hidden;
+
   ul {
     white-space: nowrap;
     display: inline-flex;

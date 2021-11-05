@@ -1,5 +1,5 @@
 <template>
-  <van-tabbar v-model="activeIndex">
+  <van-tabbar v-model="index">
     <van-tabbar-item icon="home-o" to="/home">首页</van-tabbar-item>
     <van-tabbar-item icon="user-o" to="/user">我的</van-tabbar-item>
     <!--     <van-tabbar-item icon="friends-o">标签</van-tabbar-item>
@@ -16,8 +16,11 @@ export default {
       default: 0,
     },
   },
+  computed: {},
   data() {
-    return {};
+    return {
+      index: this.activeIndex,
+    };
   },
   methods: {},
 };
@@ -31,11 +34,14 @@ export default {
   bottom: 0;
   left: 0;
   z-index: 1060;
+  color: var(--silveryWhite);
   &:after {
     border-width: 0;
   }
   &-item {
     font-size: 11px;
+    color: var(--silveryWhite);
+
     &--active {
       color: #f04b22;
       background-color: var(--footbarBgc);

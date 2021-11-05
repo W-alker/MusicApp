@@ -1,5 +1,5 @@
 <template>
-  <div class="lyric-container">
+  <div class="lyric-container hideScroll" >
     <div
       class="inner"
       v-show="!nolyric"
@@ -151,9 +151,9 @@ export default {
 </script>
 
 <style scoped lang='scss'>
-.lyric-container {
+/* .lyric-container {
   overflow: hidden;
-}
+} */
 .inner {
   margin-top: 300px;
   p {

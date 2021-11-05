@@ -24,16 +24,27 @@ input[type=number]::-webkit-outer-spin-button {
   --black: #1d1d1d;
   --white: rgb(243, 243, 243);
   --blue: rgb(25, 137, 250);
+
+  --themeRed:#ec2b24;
   --themeBgc: #131124;
   --footbarBgc: #302f4b;
   --footplaybarBgc: #1f2040;
   --commonPageBgc: #0e0b20;
 
   --silveryWhite: #f1f0ed; //银白
-  --brightRed: #f04b22;  // 大红
-  --auroraRed: #f33b1f;  // 极光红
+  --brightRed: #f04b22; // 大红
+  --auroraRed: #f33b1f; // 极光红
+  --darkRed:#ac1f18;
 
-  --footplaybarHeight:6vh;
+  --qiuhaitanghong:#ec2b24;
+  --xinhui:#7a7374;
+  --yinhui:#918072;
+  --shenhui:#81776e;
+  --anlongdanzi:#22202e;
+  --anlanzi:#131124;
+  --shuiniuhui:#2f2f35;
+
+  --footplaybarHeight: 6vh;
 }
 
 textarea,
@@ -68,6 +79,40 @@ body {
   background-color: var(--black);
 }
 
+html,
+body {
+  width: 100%;
+  height: 100%;
+  overflow: scroll;
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  width: 0px;
+  height: 0px;
+}
+body {
+  margin: 0;
+}
+
+// 隐藏滚动条
+.hideScroll {
+  overflow: auto;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  -ms-overflow-style: none;
+  /*火狐下隐藏滚动条*/
+  scrollbar-width: none;
+  /*解决ios上滑动不流畅*/
+  -webkit-overflow-scrolling: touch;
+}
+
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 .textover-eclipse {
   white-space: nowrap;
   text-overflow: ellipsis;

@@ -4,6 +4,7 @@
     :style="[
       { bottom: isSlideDown ? '0' : 'var(--footplaybarHeight' },
       { zIndex: isSlideDown ? '3060' : '1070' },
+      { display: isShowPI ? 'none' : 'block' },
     ]"
   >
     <div class="foot-playbar--fixed" @click="showPI">
@@ -106,8 +107,11 @@ export default {
   bottom: 7vh;
   width: 100%;
   background-color: var(--footbarBgc);
+  color: var(--silveryWhite);
+
   z-index: 1070;
   transition: all ease 0.3s;
+  
 }
 .foot-playbar--fixed {
   position: relative;

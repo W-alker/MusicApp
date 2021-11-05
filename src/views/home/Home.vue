@@ -122,9 +122,7 @@ export default {
 .home {
   width: 100%;
   height: calc(100vh - 60px);
-  padding: 1em;
   color: aliceblue;
-  background: var(--themeBgc);
   font-size: 14px;
 }
 .sec-tit {

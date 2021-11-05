@@ -1,15 +1,15 @@
 <template>
-  <main id="app">
+  <div id="app">
     <router-view />
     <audio
       :src="audioUrl"
-      style=""
+      style="display:none"
       id="audio"
       controls
       @ended="autoNext"
       @timeupdate="timeUpdate"
     ></audio>
-  </main>
+  </div>
 </template>
 
 <script>
@@ -56,7 +56,10 @@ export default {
 
 <style lang='scss'>
 #app {
-  width: 100%;
+  height: 100%;
+  padding: 1em;
+  background: var(--themeBgc);
+
   audio {
     position: fixed;
     z-index: 999999;

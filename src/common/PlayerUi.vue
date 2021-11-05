@@ -37,17 +37,17 @@
 
         <div class="ctrlBtns row">
           <i :class="['icon', playMode_icon]" @click="change_playMode"></i>
-          <i class="icon icon-next" @click="prevSong"></i>
+          <i class="icon icon-shangyishou" @click="prevSong"></i>
           <i
             :class="[
               'icon',
-              { 'icon-zantingtingzhi': !isPause },
-              { 'icon-bofang1': isPause },
+              { 'icon-zanting': !isPause },
+              { 'icon-play': isPause },
               'pauseBtn',
             ]"
             @click="pauseCtrl"
           ></i>
-          <i class="icon icon-next" @click="nextSong"></i>
+          <i class="icon icon-xiayishou" @click="nextSong"></i>
           <i class="icon icon-bofangliebiao" @click="showPL"></i>
         </div>
       </div>
@@ -336,10 +336,12 @@ export default {
       cursor: pointer;
     }
     .pauseBtn {
-      width: 69px;
-      height: 69px;
-      background: #ef019f;
-      border-radius: 50%;
+      width: 80px;
+      height: 80px;
+      // background: #ef019f;
+      font-size:80px;
+      line-height: 80px;
+      color: #ff2313;
     }
   }
 }

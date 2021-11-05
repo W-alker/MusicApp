@@ -1,5 +1,5 @@
 <template>
-  <section class="playing-list-card--fixed">
+  <section class="playing-list-card--fixed  hideScroll">
     <h3>当前播放</h3>
     <div class="row actions"></div>
     <ul class="list">

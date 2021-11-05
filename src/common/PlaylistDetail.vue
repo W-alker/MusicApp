@@ -1,5 +1,5 @@
 <template>
-  <section class="playlist-detail">
+  <section class="playlist-detail hideScroll">
     <div class="intro">
       <h2>歌单</h2>
 

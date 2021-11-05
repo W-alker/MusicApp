@@ -5,6 +5,11 @@ export function getUserRecord(uid) {
     url: `/user/record?uid=${uid}&type=1`
   })
 }
+export function getUserPlaylists(uid) {
+  return request({
+    url: `/user/playlist?uid=${uid}`
+  })
+}
 export function getUserAccount() {
   return request({
     url: '/user/account'
