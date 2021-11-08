@@ -2,23 +2,62 @@
   <section class="playlists">
     <div class="tab">
       <div class="tab_navs">
-        <div class="tab_nav active">
+        <div
+          :class="['tab_nav', { active: showCreatePls }]"
+          @click="showCreatePls = true"
+        >
           <p>创建歌单</p>
         </div>
-        <div class="tab_nav">
+        <div
+          :class="['tab_nav', { active: !showCreatePls }]"
+          @click="showCreatePls = false"
+        >
           <p>收藏歌单</p>
         </div>
       </div>
 
       <div class="tab_items">
-        <div class="tab_item box">
+        <div class="tab_item box" v-show="showCreatePls">
           <h4>
-            <span v-cloak>创建歌单{{ createPlaylists.length }}个</span>
+            <span v-cloak>创建歌单({{ createPlaylists.length }}个)</span>
             <i class="icon icon-gengduo"></i>
           </h4>
           <ul>
             <li
               v-for="(item, index) in createPlaylists"
+              @touchstart="addActive(index)"
+              @touchend="showPLD(index, item)"
+              ref="list_item"
+            >
+              <div
+                class="cover"
+                :style="{ backgroundImage: 'url(' + item.coverImgUrl + ')' }"
+              ></div>
+              <div class="info">
+                <p class="textover-eclipse" v-text="item.name"></p>
+                <span v-cloak>{{ item.trackCount }}首</span>
+              </div>
+              <i
+                class="icon icon-gengduo"
+                @touchstart.stop="
+                  ($event) => $event.target.classList.add('active')
+                "
+                @touchend.stop="
+                  ($event) => $event.target.classList.remove('active')
+                "
+                @click.stop="showActions(item)"
+              ></i>
+            </li>
+          </ul>
+        </div>
+        <div class="tab_item box" v-show="!showCreatePls">
+          <h4>
+            <span v-cloak>收藏歌单({{ collectPlaylists.length }}个)</span>
+            <i class="icon icon-gengduo"></i>
+          </h4>
+          <ul>
+            <li
+              v-for="(item, index) in collectPlaylists"
               @touchstart="addActive(index)"
               @touchend="showPLD(index, item)"
               ref="list_item"
@@ -37,16 +76,41 @@
         </div>
       </div>
     </div>
+    <!-- <van-action-sheet v-model="show" :actions="actions" :description="actionSheetDes" @select="onSelect" /> -->
+    <van-popup v-model="isShowActions" position="bottom">
+      <h4 v-text="actionSheetTit"></h4>
+      <ul>
+        <li
+          @touchstart.stop="($event) => $event.target.classList.add('active')"
+          @touchend.stop="($event) => $event.target.classList.remove('active')"
+          @click="editPLInfo(choosedPl)"
+        >
+          <i class="icon icon-bianji"></i>编辑歌单信息
+        </li>
+        <li
+          @touchstart.stop="($event) => $event.target.classList.add('active')"
+          @touchend.stop="($event) => $event.target.classList.remove('active')"
+        >
+          <van-icon name="delete-o" />删除
+        </li>
+      </ul>
+    </van-popup>
+
+    <edit-pl-info :show="isShowEPI" :pl="choosedPl"></edit-pl-info>
   </section>
 </template>
 
 <script>
 import { getPlaylistDetail } from "network/playlist";
+import EditPlInfo from "common/childComps/EditPlInfo";
 
 export default {
   name: "AllPlaylists",
   props: {
     data: Array,
+  },
+  components: {
+    EditPlInfo,
   },
   computed: {
     playlists() {
@@ -62,9 +126,25 @@ export default {
       }
       return res;
     },
+    collectPlaylists() {
+      const userId = this.$store.state.ua.account.id;
+      const res = [];
+      for (let item of this.playlists) {
+        if (item.userId !== userId) {
+          res.push(item);
+        }
+      }
+      return res;
+    },
   },
   data() {
-    return {};
+    return {
+      isShowActions: false,
+      actionSheetTit: "",
+      choosedPl: {},
+      isShowEPI: false,
+      showCreatePls: true,
+    };
   },
   methods: {
     addActive(index) {
@@ -74,6 +154,20 @@ export default {
       this.$refs.list_item[index].classList.remove("active");
       const res = await getPlaylistDetail(item.id);
       this.$emit("showPLD", res.playlist);
+    },
+    showActions(pl) {
+      this.actionSheetTit = "歌单：" + pl.name;
+      this.choosedPl = pl;
+      this.isShowActions = true;
+    },
+    editPLInfo(pl) {
+      this.isShowActions = false;
+      return false;
+
+      this.isShowEPI = true;
+    },
+    getSTop(node) {
+      return node.scrollTop || node.pageYOffset;
     },
   },
 };
@@ -88,6 +182,7 @@ export default {
   color: var(--black);
   font-size: 14px;
 }
+$touchColor: rgba(0, 0, 0, 0.4);
 .playlists {
   margin-top: 16px;
   .tab {
@@ -98,6 +193,7 @@ export default {
       .tab_nav {
         width: 50%;
         text-align: center;
+        transition: all ease .3s;
         p {
           line-height: 12px;
           opacity: 0.8;
@@ -176,15 +272,49 @@ export default {
             .icon {
               position: absolute;
               right: 16px;
+              top: 20%;
+              width: 28px;
+              height: 60%;
               display: flex;
               justify-content: center;
               align-items: center;
-              width: 28px;
-              height: 100%;
+
               color: var(--xinhui);
+              &.active {
+                background-color: rgba(0, 0, 0, 0.4);
+              }
             }
           }
         }
+      }
+    }
+  }
+}
+.van-popup {
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+  background-color: var(--silveryWhite) !important;
+  color: var(--anlongdanzi);
+  font-size: 14px;
+  h4 {
+    padding: 12px;
+    border-bottom: 1px solid var(--qianhui);
+    opacity: 0.8;
+    font-size: small;
+    font-weight: normal;
+  }
+  ul {
+    margin-bottom: 10px;
+    li {
+      padding: 0 12px;
+      height: 40px;
+      line-height: 40px;
+      .icon,
+      .van-icon {
+        margin-right: 12px;
+      }
+      &.active {
+        background-color: $touchColor;
       }
     }
   }

@@ -37,16 +37,30 @@
       </div>
       <div></div>
     </div>
+
+    <van-popup
+      position="bottom"
+      get-container="#app"
+      v-model="isShowDaliyList"
+      :overlay="false"
+      closeable
+    >
+      <daily-recommend-songs :list="dailySongs"></daily-recommend-songs>
+    </van-popup>
   </section>
 </template>
 
 <script>
 import { getPersonalFM, getTodaySongs } from "network/recommend";
+import DailyRecommendSongs from "./DailyRecommendSongs.vue";
 
 import { getSongDetail, getSongUrl } from "network/song";
 
 export default {
   name: "TodayRecommend",
+  components: {
+    DailyRecommendSongs,
+  },
   props: {
     userProfile: {
       type: Object,
@@ -100,6 +114,7 @@ export default {
           return "";
         },
       },
+      isShowDaliyList: false,
     };
   },
   methods: {
@@ -123,7 +138,7 @@ export default {
       this.$store.commit("playOrPause");
     },
     showList() {
-      this.$emit("showDailyPL", this.dailySongs);
+      this.isShowDaliyList = true;
     },
   },
   created() {
@@ -206,5 +221,9 @@ h3 {
       background-size: 100% 100%;
     }
   }
+}
+.van-popup {
+  width: 100%;
+  height: 100%;
 }
 </style>

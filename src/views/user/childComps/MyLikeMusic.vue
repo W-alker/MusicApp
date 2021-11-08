@@ -1,5 +1,11 @@
 <template>
-  <section class="myLikeMusic box" @click="showPLD">
+  <section
+    class="myLikeMusic box"
+    ref="myLikeMusicBox"
+    @click="showPLD"
+    @touchstart="()=>this.$refs.myLikeMusicBox.classList.add('active')"
+    @touchend="()=>this.$refs.myLikeMusicBox.classList.remove('active')"
+  >
     <div
       class="cover"
       :style="{ backgroundImage: 'url(' + detail.coverImgUrl + ')' }"
@@ -50,6 +56,11 @@ export default {
   display: flex;
   align-items: center;
   position: relative;
+  transition: all ease 0.3s;
+  background-color: var(--silveryWhite);
+  &.active {
+    background-color: rgba(146, 146, 144,1);
+  }
   .cover {
     width: 50px;
     height: 50px;

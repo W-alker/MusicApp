@@ -211,8 +211,8 @@ export default {
   created() {
     loginStatus.check().then((res) => {
       console.log(res);
-      if (res.code === 200) {
-        const toast = Toast.loading({
+      if (res.code === 200 && res.account) {
+        Toast.loading({
           duration: 0, // 持续展示 toast
           message: "检测到您已登录，正在为您自动跳转至主界面",
           forbidClick: true,
@@ -236,6 +236,7 @@ export default {
   justify-content: center;
   align-items: center;
   padding: 0 0.3rem;
+  height: 100%;
 }
 .logo {
   margin-top: 12vh;

@@ -21,7 +21,7 @@
 
     <banner :banners="banners" />
 
-    <today-recommend :userProfile="userProfile" @showDailyPL="showDailyPL" />
+    <today-recommend :userProfile="userProfile" />
 
     <personalized-playlist @showPLD="showPLD" />
 
@@ -93,11 +93,6 @@ export default {
     };
   },
   methods: {
-    // 显示日推歌单
-    showDailyPL(list) {
-      this.curPL = list;
-      this.showPLD(); // 展开歌单
-    },
     // 显示歌单
     showPLD(pl) {
       this.curPL = pl;

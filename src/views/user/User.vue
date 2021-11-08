@@ -1,5 +1,5 @@
 <template>
-  <main class="">
+  <main class="hideScroll">
     <section class="top">
       <i class="icon icon-caidan"></i>
       <i class="icon icon-sousuo"></i>
@@ -28,7 +28,7 @@
         </li>
         <li>
           <i class="icon icon-yigou1"></i>
-          <p>已购物</p>
+          <p>已购</p>
         </li>
         <li>
           <i class="icon icon-haoyou"></i>
@@ -66,7 +66,7 @@
     >
       <playlist-detail :pl="curPL" />
     </van-popup>
-
+    
     <foot-playbar ref="FootPlaybar" :isSlideDown="isShowPLD" />
     <foot-bar :activeIndex="1" />
   </main>
@@ -125,11 +125,14 @@ export default {
 main {
   color: var(--silveryWhite);
   height: 100%;
+  overflow: auto;
 }
 
 .top {
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  height: 34px;
   .van-icon,
   .icon {
     display: inline-block;
