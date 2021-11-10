@@ -35,21 +35,7 @@
 
         <player-ui-progress></player-ui-progress>
 
-        <div class="ctrlBtns row">
-          <i :class="['icon', playMode_icon]" @click="change_playMode"></i>
-          <i class="icon icon-shangyishou" @click="prevSong"></i>
-          <i
-            :class="[
-              'icon',
-              { 'icon-zanting': !isPause },
-              { 'icon-play': isPause },
-              'pauseBtn',
-            ]"
-            @click="pauseCtrl"
-          ></i>
-          <i class="icon icon-xiayishou" @click="nextSong"></i>
-          <i class="icon icon-bofangliebiao" @click="showPL"></i>
-        </div>
+        <ctrl-btns></ctrl-btns>
       </div>
 
       <div
@@ -61,7 +47,7 @@
           :lyric_withTime="lyric_withTime"
           :tlyric_withTime="tlyric_withTime"
           :nolyric="false"
-          :songName='songName'
+          :songName="songName"
         ></player-ui-lyric>
 
         <div class="btns">
@@ -77,32 +63,22 @@
         </div>
       </div>
     </main>
-
-    <van-popup
-      v-model="isShowPL"
-      position="bottom"
-      overlay
-      get-container="#app"
-      duration=".15"
-    >
-      <playing-list-card></playing-list-card>
-    </van-popup>
   </section>
 </template>
 
 <script>
-import PlayingListCard from "common/PlayingListCard";
 import PlayerUiProgress from "common/childComps/PlayerUiProgress";
 import playerUiLyric from "./childComps/playerUiLyric.vue";
+import CtrlBtns from "./childComps/CtrlBtns.vue";
 import { getSongLyric, Lyric, Mlog } from "network/song";
 import { getStyle } from "assets/js/util";
 
 export default {
   name: "PlayerUi",
   components: {
-    PlayingListCard,
     PlayerUiProgress,
     playerUiLyric,
+    CtrlBtns,
   },
   computed: {
     // 信息相关
@@ -126,21 +102,6 @@ export default {
     },
     isLikeSong() {
       return this.$store.state.ua.likeList.has(this.sid);
-    },
-
-    // 播放控制
-    playMode() {
-      return this.$store.state.pl.playMode;
-    },
-    playMode_icon() {
-      switch (this.playMode) {
-        case 0:
-          return "icon-shunxubofang";
-        case 1:
-          return "icon-suijibofang";
-        case 2:
-          return "icon-danquxunhuan";
-      }
     },
   },
   data() {
@@ -173,18 +134,8 @@ export default {
         this.tlyric_withTime = res.tlyric.lyric.split("\n");
       } else this.tlyric_withTime = [];
     },
-
     pauseCtrl() {
       this.$store.commit("playOrPause");
-    },
-    nextSong() {
-      this.$store.dispatch("nextSong");
-    },
-    prevSong() {
-      this.$store.dispatch("prevSong");
-    },
-    showPL() {
-      this.isShowPL = true;
     },
 
     likeSong() {
@@ -248,7 +199,6 @@ export default {
           margin-top: 10%;
           height: 80%;
           transition: all linear 0.3s;
-
         }
         .btns {
           height: 10%;
@@ -323,26 +273,6 @@ export default {
 
   .player-ui-progress {
     height: 9%;
-  }
-  .ctrlBtns {
-    height: 10%;
-    i {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 15%;
-      height: 80%;
-      font-size: 24px;
-      cursor: pointer;
-    }
-    .pauseBtn {
-      width: 80px;
-      height: 80px;
-      // background: #ef019f;
-      font-size:80px;
-      line-height: 80px;
-      color: #ff2313;
-    }
   }
 }
 </style>

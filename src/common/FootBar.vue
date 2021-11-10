@@ -1,10 +1,10 @@
 <template>
-  <van-tabbar v-model="index">
-    <van-tabbar-item icon="home-o" to="/home">首页</van-tabbar-item>
-    <van-tabbar-item icon="user-o" to="/user">我的</van-tabbar-item>
-    <!--     <van-tabbar-item icon="friends-o">标签</van-tabbar-item>
-    <van-tabbar-item icon="setting-o">标签</van-tabbar-item> -->
-  </van-tabbar>
+  <div class="footbar">
+    <van-tabbar v-model="index">
+      <van-tabbar-item icon="home-o" to="/home">首页</van-tabbar-item>
+      <van-tabbar-item icon="user-o" to="/user">我的</van-tabbar-item>
+    </van-tabbar>
+  </div>
 </template>
 
 <script>
@@ -27,13 +27,19 @@ export default {
 </script>
 
 <style scoped lang='scss'>
-.van-tabbar {
-  height: 7vh;
-  background-color: var(--footbarBgc);
+.footbar {
   position: fixed;
   bottom: 0;
   left: 0;
+  width: 100%;
+  height: var(--footbarHeight);
+  padding-top: 0.05rem;
+  background-color: var(--footbarBgc);
+}
+.van-tabbar {
   z-index: 1060;
+  background-color: var(--footbarBgc);
+
   color: var(--silveryWhite);
   &:after {
     border-width: 0;

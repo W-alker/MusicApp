@@ -1,9 +1,8 @@
 <template>
   <main class="hideScroll">
-    <section class="top">
-      <i class="icon icon-caidan"></i>
-      <i class="icon icon-sousuo"></i>
-    </section>
+
+    <top></top>
+
     <section class="profile">
       <div class="avatar"><img :src="userProfile.avatarUrl" alt="" /></div>
       <div class="info">
@@ -79,6 +78,7 @@ import PlaylistDetail from "common/PlaylistDetail";
 
 import FootPlaybar from "common/FootPlaybar";
 import FootBar from "common/FootBar";
+import Top from 'common/Top.vue';
 
 export default {
   name: "User",
@@ -89,9 +89,11 @@ export default {
     PlaylistDetail,
     FootBar,
     FootPlaybar,
+    Top
   },
   computed: {
-    userAccount() {
+
+   userAccount() {
       return this.$store.state.ua.account;
     },
     userProfile() {
@@ -128,20 +130,7 @@ main {
   overflow: auto;
 }
 
-.top {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  height: 34px;
-  .van-icon,
-  .icon {
-    display: inline-block;
-    height: 24px;
-    width: 24px;
-    font-size: 22px;
-    line-height: 24px;
-  }
-}
+
 .profile {
   display: flex;
   height: 45px;

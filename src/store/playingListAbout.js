@@ -42,8 +42,7 @@ export const playingListAbout = {
     },
     updatePIL(context, args) {
       // index代表从当前播放列表哪里开始播放
-      const { list, index } = args
-      //   console.log(args, list, index)
+      const { list, index = 0 } = args
       // 判断是否需要重新录入
       /* if (context.state.playingList[0].id !== list[0].id)  */ context.state.playingList = list
       context.state.playedIndexArray.clear()
@@ -54,6 +53,9 @@ export const playingListAbout = {
     },
     nextSong(context) {
       const index = context.state.curIndex
+      // 如果已经全部播完就重新计数
+      if ((context.state.playedIndexArray.size === context.state.playingList, length))
+        context.state.playedIndexArray.clear()
       // 记录此次播放
       context.state.playedIndexArray.add(index)
       // 顺序播放
@@ -69,7 +71,7 @@ export const playingListAbout = {
           if (!context.state.playedIndexArray.has(index)) return index
           else randomIndex()
         })()
-        return this.dispatch('changeSong',randomIndex)
+        return this.dispatch('changeSong', randomIndex)
       }
       // 单曲循环
       else return this.dispatch('changeSong', index)

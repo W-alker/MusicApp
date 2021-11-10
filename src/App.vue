@@ -57,7 +57,7 @@ export default {
 <style lang='scss'>
 #app {
   height: 100%;
-  padding: 1em;
+  padding: var(--topBarHeight) 16px 0 16px;
   background: var(--themeBgc);
 
   audio {

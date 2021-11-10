@@ -2,7 +2,7 @@
   <div
     class="foot-playbar"
     :style="[
-      { bottom: isSlideDown ? '0' : 'var(--footplaybarHeight' },
+      { bottom: isSlideDown ? '0' : 'var(--footbarHeight)' },
       { zIndex: isSlideDown ? '3060' : '1070' },
       { display: isShowPI ? 'none' : 'block' },
     ]"
@@ -102,9 +102,9 @@ export default {
 <style scoped lang='scss'>
 .foot-playbar {
   position: fixed;
-  height: 3vh;
+  height: .48rem;
   left: 0;
-  bottom: 7vh;
+  bottom: var(--footbarHeight);
   width: 100%;
   background-color: var(--footbarBgc);
   color: var(--silveryWhite);
@@ -115,11 +115,7 @@ export default {
 }
 .foot-playbar--fixed {
   position: relative;
-  margin: -3vh 0 0 5vw;
-  width: 90vw;
-  height: 200%;
   background-color: var(--footplaybarBgc);
-  border-radius: 2vh;
   display: flex;
   align-items: center;
   .cover-thumb {

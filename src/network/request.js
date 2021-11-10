@@ -13,6 +13,7 @@ export function request(options) {
     // 过滤器(拦截器)
     instance.interceptors.response.use(
       (res) => {
+        if (res.status === 301) return reject('尚未登录!')
         if (res.status === 401) return reject('错误状态码!')
         if (res.status === 500) return reject('服务器错误!')
         return res.data

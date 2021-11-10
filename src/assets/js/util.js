@@ -67,6 +67,7 @@ export function songArToStr(ars) {
   return str
 }
 
+// 播放量转换
 export function playcountComputed(cnt) {
   cnt = cnt.toString()
   let len = cnt.length
@@ -85,10 +86,27 @@ export function secondsToMS(time) {
   return m + ':' + s
 }
 
+// 获取样式
 export function getStyle(obj, name) {
   if (obj.currentStyle) {
     return obj.currentStyle[name]
   } else {
     return getComputedStyle(obj, false)[name]
+  }
+}
+
+// 按压效果样式
+export function ontouchActive(ele,fn) {
+  // 单个元素和元素数组都包装成元素数组
+  if (!ele.length) ele = [].concat(ele)
+  const len = ele.length
+  for (let i = 0; i < len; i++) {
+    ele[i].addEventListener('touchstart', (ev) => {
+      ev.target.classList.add('active')
+    })
+    ele[i].addEventListener('touchend', (ev) => {
+      ev.target.classList.remove('active')
+      if(fn) fn()
+    })
   }
 }

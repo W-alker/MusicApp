@@ -1,8 +1,8 @@
 <template>
   <section>
     <h3 class="sec-tit">你的每日私荐歌单</h3>
-    <div class="inner hideScroll" ref="wrapper">
-      <ul ref="content">
+    <div class="inner hideScroll playlists-show-wrapper" ref="wrapper">
+      <ul ref="content" class="playlists-show-list">
         <li v-for="(item, index) in recommnedPlaylists" @click="showPLD(item)">
           <div
             class="cover"
@@ -77,48 +77,5 @@ export default {
 section {
   margin-top: 20px;
 }
-.inner {
-  // overflow: hidden;
 
-  ul {
-    white-space: nowrap;
-    display: inline-flex;
-    // display: flex;
-    // flex-wrap: wrap;
-    li {
-      float: left;
-      width: 0.95rem;
-      flex-shrink: 0;
-      margin: 0 0.1rem 0 0;
-      .cover {
-        width: 100%;
-        height: 0.95rem;
-        background-color: #fff;
-        border-radius: 0.08rem;
-        background-size: contain;
-        position: relative;
-        overflow: hidden;
-
-        .playcount {
-          display: inline;
-          position: absolute;
-          right: 0.04rem;
-          top: 0.04rem;
-          padding: 0.04rem 0.06rem;
-          background-color: rgba(0, 0, 0, 0.3);
-          font-size: 0.11rem;
-          line-height: 0.1rem;
-          border-radius: 0.08rem;
-          .icon {
-            font-size: 0.11rem;
-          }
-        }
-      }
-      .list-name {
-        margin-top: 0.05rem;
-        font-size: 0.11rem;
-      }
-    }
-  }
-}
 </style>

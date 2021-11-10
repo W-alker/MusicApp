@@ -1,7 +1,6 @@
 <template>
   <section class="playlist-detail hideScroll">
-    <div class="intro">
-      <h2>歌单</h2>
+    <div class="top" :style="{backgroundImage:list[0].coverImgUrl}">
     </div>
     <div class="list-container">
       <div class="ctrlBtns left">
@@ -80,8 +79,9 @@ export default {
   background-color: var(--commonPageBgc);
   color: var(--silveryWhite);
 }
-.intro {
-  padding: 16px;
+.top {
+  height: 200px;
+
 }
 .pl-info {
   margin-top: 30px;

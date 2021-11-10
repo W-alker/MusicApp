@@ -1,27 +1,35 @@
 <template>
-  <main class="home">
-    <section class="profile">
+  <main class="home hideScroll">
+    <!--     <section class="profile">
       <h2 class="nickname">{{ userProfile.nickname }}</h2>
       <div class="avatar">
         <img :src="userProfile.avatarUrl" alt="" />
         <span class="badge">2</span>
       </div>
-    </section>
+    </section> -->
 
-    <section class="search">
-      <label for="input-search" class="input-search">
-        <van-icon name="search" />
+    <top>
+      <label for="input-search" class="input-search" slot="center">
+        <i class="fa fa-search" aria-hidden="true"></i>
         <input
           type="text"
           name="input-search"
           placeholder="Where should we go?"
         />
       </label>
-    </section>
+    </top>
 
     <banner :banners="banners" />
 
-    <today-recommend :userProfile="userProfile" />
+    <dragon-balls></dragon-balls>
+
+    <block-rcmd-playlists
+      :data="blocks[1]"
+      @showPLD='showPLD'
+      v-if="blocks.length !== 0"
+    ></block-rcmd-playlists>
+
+    <!-- <today-recommend :userProfile="userProfile" /> -->
 
     <personalized-playlist @showPLD="showPLD" />
 
@@ -45,7 +53,10 @@
 </template>
 
 <script>
+import Top from "common/Top.vue";
 import Banner from "./childComps/Banner.vue";
+import DragonBalls from "./childComps/DragonBalls";
+import BlockRcmdPlaylists from "./childComps/BlockRcmdPlaylists";
 
 import PlaylistDetail from "common/PlaylistDetail";
 
@@ -53,20 +64,21 @@ import FootPlaybar from "common/FootPlaybar";
 import FootBar from "common/FootBar";
 
 import NewAlbumsList from "./childComps/NewAlbumsList.vue";
-import TodayRecommend from "./childComps/TodayRecommend.vue";
 import PersonalizedPlaylist from "./childComps/PersonalizedPlaylist";
 import HighqualityPlaylist from "./childComps/HighqualityPlaylist.vue";
 
-import { getBanner, getLoginStatus } from "network/home";
+import { getHomePageContent, getBanner, getLoginStatus } from "network/home";
 import { getSongUrl, getSongDetail } from "network/song";
 import { getUserRecord, getUserInfo, getUserAccount } from "network/user";
 
 export default {
   name: "Home",
   components: {
+    Top,
     Banner,
+    DragonBalls,
+    BlockRcmdPlaylists,
 
-    TodayRecommend,
     PersonalizedPlaylist,
 
     FootBar,
@@ -84,7 +96,9 @@ export default {
   },
   data() {
     return {
+      homePageContent: {},
       banners: [],
+      blocks: [],
 
       userInfo: {},
       curPL: [], // 当前歌单详情
@@ -93,6 +107,14 @@ export default {
     };
   },
   methods: {
+    async INIT_CONTENT() {
+      const res = await getHomePageContent.Blocks();
+      this.blocks = res.data.blocks;
+      // 获取banner
+      getBanner().then((res) => {
+        this.banners = res.banners;
+      });
+    },
     // 显示歌单
     showPLD(pl) {
       this.curPL = pl;
@@ -100,14 +122,9 @@ export default {
     },
   },
   created() {
+    this.INIT_CONTENT();
     // 初始化信息
     this.$store.dispatch("INIT_INFO");
-
-    // 获取banner
-    getBanner().then((res) => {
-      this.banners = res.banners;
-    });
-
     // const record = await getUserRecord(this.userAccount.id)
   },
 };
@@ -116,15 +133,22 @@ export default {
 <style lang="scss">
 .home {
   width: 100%;
-  height: calc(100vh - 60px);
+  height: 100%;
   color: aliceblue;
   font-size: 14px;
+  position: relative;
+  padding-bottom: var(--bottomBarHeight);
+}
+.top {
+  position: absolute;
+  top: 0;
+  width: 100%;
 }
 .sec-tit {
   font-size: 15px;
   margin-bottom: 14px;
 }
-.profile {
+/* .profile {
   height: 5vh;
   display: flex;
   justify-content: space-between;
@@ -160,32 +184,30 @@ export default {
       border-radius: 50%;
     }
   }
-}
-.search {
-  margin-top: 20px;
+} */
 
-  .input-search {
+.input-search {
+  width: 100%;
+  height: 30px;
+  position: relative;
+  font-size: 14px;
+  line-height: 30px;
+  .fa {
+    margin: 0 16px;
+  }
+  input {
+    display: block;
     width: 100%;
-    height: 37px;
-    position: relative;
-    font-size: 14px;
-    line-height: 37px;
-    .van-icon {
-      margin: 0 16px;
-    }
-    input {
-      display: block;
-      width: 100%;
-      height: 100%;
-      position: absolute;
-      left: 0;
-      top: 0;
-      padding-left: 40px;
-      background: rgba(255, 255, 255, 0.05);
-      border-radius: 10px;
-    }
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    padding-left: 35px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 15px;
   }
 }
+
 .recommend {
   margin-top: 20px;
 }

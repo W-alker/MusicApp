@@ -25,28 +25,31 @@ input[type=number]::-webkit-outer-spin-button {
   --white: rgb(243, 243, 243);
   --blue: rgb(25, 137, 250);
 
-  --themeRed:#ec2b24;
+  --themeRed: #ec2b24;
   --themeBgc: #131124;
   --footbarBgc: #302f4b;
   --footplaybarBgc: #1f2040;
   --commonPageBgc: #0e0b20;
 
   --silveryWhite: #f1f0ed; //银白
-  
+
   --brightRed: #f04b22; // 大红
   --auroraRed: #f33b1f; // 极光红
-  --darkRed:#ac1f18;
-  --qiuhaitanghong:#ec2b24;
+  --darkRed: #ac1f18;
+  --qiuhaitanghong: #ec2b24;
 
-  --xinhui:#7a7374;
-  --yinhui:#918072;
-  --qianhui:rgb(209, 209, 209);
-  --shenhui:#81776e;
-  --anlongdanzi:#22202e;
-  --anlanzi:#131124;
-  --shuiniuhui:#2f2f35;
+  --xinhui: #7a7374;
+  --yinhui: #918072;
+  --qianhui: rgb(209, 209, 209);
+  --shenhui: #81776e;
+  --anlongdanzi: #22202e;
+  --anlanzi: #131124;
+  --shuiniuhui: #2f2f35;
 
-  --footplaybarHeight: 6vh;
+  --topBarHeight: 0.5rem;
+
+  --footbarHeight: .55rem;
+  --bottomBarHeight: 110px;
 }
 
 textarea,
@@ -122,9 +125,56 @@ body {
 }
 @for $i from 2 through 6 {
   .textover-eclipsis-#{$i} {
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
     -webkit-line-clamp: $i;
+    display: -webkit-box;
     overflow: hidden;
+    text-overflow: ellipsis;
+    text-overflow: -o-ellipsis-lastline;
+    line-clamp: $i;
+    -webkit-box-orient: vertical;
+  }
+}
+
+// 歌单展示列表
+.playlists-show-wrapper {
+  .playlists-show-list {
+    white-space: nowrap;
+    display: inline-flex;
+    // display: flex;
+    // flex-wrap: wrap;
+    li {
+      float: left;
+      width: 0.95rem;
+      flex-shrink: 0;
+      margin: 0 0.1rem 0 0;
+      .cover {
+        width: 100%;
+        height: 0.95rem;
+        background-color: #fff;
+        border-radius: 0.08rem;
+        background-size: contain;
+        position: relative;
+        overflow: hidden;
+
+        .playcount {
+          display: inline;
+          position: absolute;
+          right: 0.04rem;
+          top: 0.04rem;
+          padding: 0.04rem 0.06rem;
+          background-color: rgba(0, 0, 0, 0.3);
+          font-size: 0.11rem;
+          line-height: 0.1rem;
+          border-radius: 0.08rem;
+          .icon {
+            font-size: 0.11rem;
+          }
+        }
+      }
+      .list-name {
+        margin-top: 0.05rem;
+        font-size: 0.11rem;
+      }
+    }
   }
 }

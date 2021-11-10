@@ -26,5 +26,18 @@ export const personalAbout = {
     return request({
       url: `/likelist?uid=${uid}`
     })
+  },
+  // 云贝签到
+  yunbeiSign() {
+    return request({
+      url: `/yunbei/sign?timestamp=${Date.now()}`
+    })
+  }
+}
+export const Msg = {
+  getPrivateLetter() {
+    return request({
+      url: `/msg/private?limit=20`
+    })
   }
 }

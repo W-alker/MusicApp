@@ -2,7 +2,7 @@ import { request } from './request'
 
 export function getPersonalFM() {
     return request({
-        url: '/personal_fm'
+        url: `/personal_fm?timestamp=${Date.now()}`
     })
 }
 export function getTodaySongs() {
