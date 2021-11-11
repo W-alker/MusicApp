@@ -14,6 +14,16 @@ export const playingListAbout = {
   mutations: {
     addToPIL(state, song) {
       state.playingList.push(song)
+      localStorage.setItem('playingList', JSON.stringify(state.playingList))
+    },
+    deleteFromPIL(state, sid) {
+      let len = state.playingList.length
+      for (let i = 0; i < len; i++) {
+        if (sid === state.playingList[i].id) {
+          state.playingList.splice(i, 1)
+          return localStorage.setItem('playingList', JSON.stringify(state.playingList))
+        }
+      }
     },
     change_playMode(state) {
       state.playMode++
@@ -47,6 +57,9 @@ export const playingListAbout = {
       /* if (context.state.playingList[0].id !== list[0].id)  */ context.state.playingList = list
       context.state.playedIndexArray.clear()
       this.dispatch('changeSong', index)
+
+      // 取消FM模式
+      context.dispatch('QUITFM')
 
       // 本次信息存入本地
       localStorage.setItem('playingList', JSON.stringify(context.state.playingList))

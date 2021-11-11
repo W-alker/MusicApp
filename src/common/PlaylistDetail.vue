@@ -47,7 +47,7 @@
         >
           <span class="serialNumber">{{ index + 1 }}</span>
           <div class="songInfo">
-            <h4 class="songName textover-eclipse">{{ item.al.name }}</h4>
+            <h4 class="songName textover-eclipse">{{ item.name }}</h4>
             <h4 class="arName textover-eclipse">{{ songArToStr(item.ar) }}</h4>
           </div>
           <van-icon name="tv-o" class="btn" />

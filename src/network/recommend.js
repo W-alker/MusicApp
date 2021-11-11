@@ -1,17 +1,25 @@
 import { request } from './request'
 
-export function getPersonalFM() {
+export const FM = {
+  get() {
     return request({
-        url: `/personal_fm?timestamp=${Date.now()}`
+      url: `/personal_fm?timestamp=${Date.now()}`
     })
+  },
+  trash(sid) {
+    return request({
+        url: `/fm_trash?id=${sid}&timestamp=${Date.now()}`
+    })
+  }
 }
+
 export function getTodaySongs() {
-    return request({
-        url: '/recommend/songs'
-    })
+  return request({
+    url: '/recommend/songs'
+  })
 }
 export function getTodayPlaylist() {
-    return request({
-        url: '/recommend/resource'
-    })
+  return request({
+    url: '/recommend/resource'
+  })
 }

@@ -1,22 +1,48 @@
 <template>
-  <section class="playing-list-card--fixed  hideScroll">
-    <h3>当前播放</h3>
-    <div class="row actions"></div>
-    <ul class="list">
-      <li
-        v-for="(item, index) in list"
-        :key="index"
-        @click="changeSong(index)"
-        :class="[{ active: item.id === curSongId }]"
-      >
-        <p class="textover-eclipse">
-          <span class="songName">{{ item.al.name }}</span>
-          -
-          {{ songArToStr(item.ar) }}
-        </p>
-        <van-icon name="close" />
-      </li>
-    </ul>
+  <section class="playing-list-card playing-list-card--fixed hideScroll">
+    <div class="head--fixed">
+      <h3>
+        当前播放
+        <span style="font-size: small; opacity: 0.8">({{ list.length }})</span>
+      </h3>
+      <div class="row action-btns" v-cloak>
+        <div class="action-btn btn1" @click="change_playMode">
+          <i :class="['icon', playMode_icon]"></i>
+          {{ playmode_text }}
+        </div>
+        <div class="action-btn">
+          <i
+            class="icon icon-shanchu btn"
+            style="margin-right: 0"
+            @click="deleteFromPIL_All"
+          ></i>
+        </div>
+      </div>
+    </div>
+
+    <div class="container" v-show="!isFM_Mode">
+      <ul class="list">
+        <li
+          v-for="(item, index) in list"
+          :key="index"
+          @click="changeSong(index)"
+          :class="[{ active: item.id === curSongId }, 'list_item']"
+        >
+          <p class="textover-eclipse name">
+            <span class="songName">{{ item.name }}</span>
+            -
+            {{ songArToStr(item.ar) }}
+          </p>
+          <i class="icon icon-cuowu btn" @click="deleteFromPIL(item.id)"></i>
+        </li>
+      </ul>
+    </div>
+    <div class="container fm-mode flex-center" v-show="isFM_Mode">
+      <p>当前播放: 私人FM</p>
+      <p class="name" v-cloak>
+        {{ songName }} <span>- {{ arName }}</span>
+      </p>
+    </div>
   </section>
 </template>
 
@@ -24,20 +50,42 @@
 import { getSongUrl } from "network/song";
 import { songArToStr } from "assets/js/util";
 
+import { mapState } from "vuex";
+import { ontouchActive } from "assets/js/util";
+import { Toast } from "vant";
+
 export default {
   name: "PlayingListCard",
   computed: {
-    songName() {
-      return this.$store.state.ac.songInfo.al.name;
+    ...mapState({
+      songName: (state) => state.ac.songInfo.al.name,
+      arName: (state) => state.ac.songInfo.arName,
+      list: (state) => state.pl.playingList,
+      curSongId: (state) => state.ac.songInfo.id,
+      playMode: (state) => state.pl.playMode,
+
+      isFM_Mode: (state) => state.fm.isFM_Mode,
+    }),
+
+    playMode_icon() {
+      switch (this.playMode) {
+        case 0:
+          return "icon-shunxubofang";
+        case 1:
+          return "icon-suijibofang";
+        case 2:
+          return "icon-danquxunhuan";
+      }
     },
-    arName() {
-      return this.$store.state.ac.songInfo.arName;
-    },
-    list() {
-      return this.$store.state.pl.playingList;
-    },
-    curSongId() {
-      return this.$store.state.ac.songInfo.id;
+    playmode_text() {
+      switch (this.playMode) {
+        case 0:
+          return "顺序播放";
+        case 1:
+          return "随机播放";
+        case 2:
+          return "单曲循环";
+      }
     },
   },
   data() {
@@ -50,41 +98,116 @@ export default {
       },
     };
   },
-  methods: {},
+  methods: {
+    change_playMode() {
+      this.$store.commit("change_playMode");
+    },
+    deleteFromPIL(sid) {
+      console.log(sid);
+      this.$store.commit("deleteFromPIL", sid);
+    },
+    deleteFromPIL_All() {
+      return Toast("暂不支持");
+    },
+  },
+  mounted() {
+    ontouchActive(
+      document.querySelector(".playing-list-card").querySelectorAll(".btn")
+    );
+  },
 };
 </script>
 
 <style scoped lang='scss'>
 .playing-list-card--fixed {
-  width: 3.36rem;
-  height: 4.46rem;
-  margin: 0.19rem;
-  background-color: #fff;
-  border-radius: 0.16rem;
-  padding: 0.16rem;
+  width: 336px;
+  height: 470px;
+  margin: 19px;
+  background-color: var(--themeBgc);
+  border-radius: 16px;
   overflow: auto;
-  color: var(--black);
+  color: var(--qianhui);
+  position: relative;
+  .head--fixed {
+    position: sticky;
+    padding: 16px 0 12px 0;
+    top: 0;
+    background-color:var(--themeBgc);
+    z-index: 20;
+  }
+  h3,
+  .action-btns {
+    padding: 0 16px;
+  }
+}
+.container {
+  height: 100%;
+  padding: 16px 0;
+
+  .btn {
+    display: inline-block;
+    width: 28px;
+    height: 28px;
+    text-align: center;
+    line-height: 28px;
+    opacity: 0.8;
+    &.active {
+      background-color: var(--footbarBgc);
+    }
+  }
+}
+.action-btns {
+  margin-top: 6px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  height: 28px;
+  line-height: 28px;
+
+  .btn1 {
+    display: flex;
+    i {
+      margin-right: 8px;
+    }
+  }
 }
 .list {
-  margin-top: 20px;
+  margin-top: -20px;
   li {
+    padding: 16px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    height: 48px;
+    height: 44px;
     &.active {
-      background-color: red;
+      background-color: var(--footbarBgc);
+      p.name {
+        color: var(--qiuhaitanghong);
+      }
     }
     p {
       font-size: 11px;
-      width: 60%;
+      width: 80%;
       span {
         font-size: 14px;
-        margin-right: 8px;
       }
     }
-    .van-icon {
-      display: inline-block;
+  }
+}
+.fm-mode {
+  flex-direction: column;
+  font-size: 16px;
+  p {
+    &:first-child {
+      font-size: larger;
+      margin-bottom: 10px;
+    }
+  }
+  .name {
+    text-align: center;
+    color: var(--qiuhaitanghong);
+    span {
+      font-size: small;
     }
   }
 }

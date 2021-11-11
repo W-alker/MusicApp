@@ -7,7 +7,7 @@ export function getUserRecord(uid) {
 }
 export function getUserPlaylists(uid) {
   return request({
-    url: `/user/playlist?uid=${uid}`
+    url: `/user/playlist?uid=${uid}&timestamp=${Date.now()}`
   })
 }
 export function getUserAccount() {
@@ -24,7 +24,7 @@ export function getUserDetail(uid) {
 export const personalAbout = {
   getLikelist(uid) {
     return request({
-      url: `/likelist?uid=${uid}`
+      url: `/likelist?uid=${uid}&timestamp=${Date.now()}`
     })
   },
   // 云贝签到

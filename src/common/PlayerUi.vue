@@ -1,66 +1,49 @@
 <template>
   <section class="player-ui">
-    <div class="row top">
+    <div class="row top" v-show="!isFM_Mode">
       <div class="name">
-        <van-notice-bar scrollable :text="songName" class="songName" />
+        <h4 v-text="songName" class="textover-eclipse"></h4>
         <h5 class="arName textover-eclipse">{{ arName }}</h5>
       </div>
+      <i class="icon icon-gengduo"></i>
     </div>
 
-    <main class="container">
-      <div class="main part" :class="{ active: !isShowLyric }">
-        <div class="center">
+    <div class="top" v-show="isFM_Mode">
+      <h3>私人FM</h3>
+      <i class="icon icon-gengduo"></i>
+    </div>
+
+    <main class="center-container">
+      <div class="center">
+        <!-- 主界面 -->
+        <div class="main part" :class="{ active: !isShowLyric }">
           <div class="cover" @click="isShowLyric = true">
             <img :src="coverUrl" alt="" />
           </div>
+          <div class="name" v-show="isFM_Mode">
+            <h4 v-text="songName" class="textover-eclipse"></h4>
+            <h5 v-text="arName" class="textover-eclipse"></h5>
+          </div>
         </div>
-
-        <div class="row info"></div>
-
-        <div class="row actions">
-          <a :href="audioUrl" :download="songName">
-            <i class="icon icon-xiazai1"></i>
-          </a>
-          <i
-            :class="[
-              'icon',
-              { 'icon-xihuan-tianjia': !isLikeSong },
-              { 'icon-xihuan-xuanzhong': isLikeSong },
-            ]"
-            @click="likeSong"
-          ></i>
-          <i class="icon icon-renwuzhongxin-huodepinglun"></i>
-          <i class="icon icon-icon"></i>
+        <!-- 歌词界面 -->
+        <div
+          class="lyric part"
+          :class="{ active: isShowLyric }"
+          @click="isShowLyric = false"
+        >
+          <player-ui-lyric
+            :lyric_withTime="lyric_withTime"
+            :tlyric_withTime="tlyric_withTime"
+            :nolyric="false"
+            :songName="songName"
+          ></player-ui-lyric>
         </div>
-
-        <player-ui-progress></player-ui-progress>
-
-        <ctrl-btns></ctrl-btns>
       </div>
-
-      <div
-        class="lyric part"
-        :class="{ active: isShowLyric }"
-        @click="isShowLyric = false"
-      >
-        <player-ui-lyric
-          :lyric_withTime="lyric_withTime"
-          :tlyric_withTime="tlyric_withTime"
-          :nolyric="false"
-          :songName="songName"
-        ></player-ui-lyric>
-
-        <div class="btns">
-          <i
-            :class="[
-              'icon',
-              { 'icon-zantingtingzhi': !isPause },
-              { 'icon-bofang1': isPause },
-              'pauseBtn',
-            ]"
-            @click="pauseCtrl"
-          ></i>
-        </div>
+      <!-- 底部 -->
+      <div class="bottom">
+        <action-btns v-show="!isFM_Mode"></action-btns>
+        <player-ui-progress></player-ui-progress>
+        <ctrl-btns :isFMUI="isFM_Mode"></ctrl-btns>
       </div>
     </main>
   </section>
@@ -69,40 +52,31 @@
 <script>
 import PlayerUiProgress from "common/childComps/PlayerUiProgress";
 import playerUiLyric from "./childComps/playerUiLyric.vue";
+import ActionBtns from "./childComps/ActionBtns.vue";
 import CtrlBtns from "./childComps/CtrlBtns.vue";
 import { getSongLyric, Lyric, Mlog } from "network/song";
 import { getStyle } from "assets/js/util";
+
+import { mapState } from "vuex";
 
 export default {
   name: "PlayerUi",
   components: {
     PlayerUiProgress,
     playerUiLyric,
+    ActionBtns,
     CtrlBtns,
   },
   computed: {
     // 信息相关
-    sid() {
-      return this.$store.state.ac.songInfo.id;
-    },
-    songName() {
-      return this.$store.state.ac.songInfo.al.name;
-    },
-    arName() {
-      return this.$store.state.ac.songInfo.arName;
-    },
-    isPause() {
-      return this.$store.state.ac.isPause;
-    },
-    coverUrl() {
-      return this.$store.state.ac.songInfo.al.picUrl;
-    },
-    audioUrl() {
-      return this.$store.state.ac.songInfo.url;
-    },
-    isLikeSong() {
-      return this.$store.state.ua.likeList.has(this.sid);
-    },
+    ...mapState({
+      sid: (state) => state.ac.songInfo.id,
+      songName: (state) => state.ac.songInfo.al.name,
+      arName: (state) => state.ac.songInfo.arName,
+      isPause: (state) => state.ac.isPause,
+      coverUrl: (state) => state.ac.songInfo.al.picUrl,
+      isFM_Mode: (state) => state.fm.isFM_Mode,
+    }),
   },
   data() {
     return {
@@ -121,7 +95,6 @@ export default {
     },
     async init_lyric() {
       const res = await Lyric.get(this.sid);
-      console.log(res);
       if (res.lrc) {
         this.nolyric = false;
         this.lyric_withTime = res.lrc.lyric.split("\n");
@@ -136,10 +109,6 @@ export default {
     },
     pauseCtrl() {
       this.$store.commit("playOrPause");
-    },
-
-    likeSong() {
-      this.$store.dispatch("likeSong", this.sid);
     },
 
     change_playMode() {
@@ -171,15 +140,72 @@ export default {
 .player-ui {
   width: 100%;
   height: 100%;
-  padding: 32px;
+  padding: 16px 24px;
   background: var(--commonPageBgc);
   color: #f1f0ed;
   display: flex;
   flex-direction: column;
 
-  main {
+  .row {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .top {
+    display: flex;
     position: relative;
+    width: 100%;
+    height: 40px;
+    justify-content: center;
+    align-items: center;
+    h3 {
+      flex-grow: 1;
+      text-align: center;
+      margin: 0 16px;
+      margin-left: 40px;
+      line-height: 30px;
+    }
+    i {
+      display: inline-block;
+      width: 30px;
+      height: 30px;
+      text-align: center;
+      line-height: 30px;
+    }
+    .name {
+      flex-grow: 1;
+      text-align: center;
+      margin: 0 16px;
+      margin-left: 40px;
+      width: 50%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      .songName {
+        width: 100%;
+        height: 50%;
+        background-color: unset;
+        padding: 0;
+        color: var(--white);
+        font-size: 16px;
+        transition: all ease 8s;
+        text-align: center;
+      }
+      .arName {
+        font-size: 13px;
+        opacity: 0.6;
+      }
+    }
+  }
+
+  main {
     height: 100%;
+    display: flex;
+    flex-direction: column;
     .part {
       width: 100%;
       height: 100%;
@@ -187,7 +213,6 @@ export default {
       left: 0;
       bottom: 0;
       transition: all 0.3s ease;
-
       opacity: 0;
       // display: none;
       &.main {
@@ -211,68 +236,52 @@ export default {
         z-index: 110;
       }
     }
-  }
-
-  .row {
-    display: flex;
-    width: 100%;
-    justify-content: space-between;
-    align-items: center;
-  }
-  .top {
-    height: 6%;
-    justify-content: center;
-    .name {
-      text-align: center;
-      width: 50%;
-      height: 100%;
+    .center {
+      flex-grow: 1;
+      position: relative;
+      height: 550px;
       display: flex;
-      flex-direction: column;
       justify-content: center;
       align-items: center;
-      overflow: hidden;
-      .songName {
-        width: 100%;
-        height: 50%;
-        background-color: unset;
-        padding: 0;
-        color: var(--white);
-        font-size: 16px;
-        transition: all ease 8s;
-      }
-      .arName {
-        font-size: 13px;
-        opacity: 0.6;
-      }
-    }
-  }
-  .center {
-    height: 55%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    .cover {
-      width: calc(100vw - 4em);
-      height: calc(100vw - 4em);
-      border-radius: 16px;
-      overflow: hidden;
-      img {
-        width: 100%;
+      .main {
         height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        .cover {
+          width: 327px;
+          height: 327px;
+          border-radius: 16px;
+          overflow: hidden;
+          img {
+            width: 100%;
+            height: 100%;
+          }
+        }
+        .name {
+          width: 100%;
+          margin-top: 30px;
+          h4,h5 {
+            width: 100%;
+            text-align: center;
+          }
+          h4 {
+            font-size: larger;
+          }
+          h5 {
+            margin-top: 8px;
+          }
+        }
       }
     }
-  }
-
-  .actions {
-    height: 7%;
-    .icon {
-      display: inline-block;
-      font-size: 20px;
+    .bottom {
+      width: 100%;
     }
   }
 
   .player-ui-progress {
-    height: 9%;
+    height: 70px;
   }
 }
 </style>

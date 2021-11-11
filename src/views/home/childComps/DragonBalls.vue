@@ -31,29 +31,30 @@
       :overlay="false"
       closeable
       close-icon-position="top-left"
+      close-icon=" icon icon-xiajiantou"
     >
-      <fm-ui></fm-ui>
+      <player-ui></player-ui>
     </van-popup>
   </div>
 </template>
 
 <script>
 import { getHomePageContent } from "network/home";
-import {getTodaySongs} from 'network/recommend'
+import { getTodaySongs } from "network/recommend";
 import DailyRecommendSongs from "./DailyRecommendSongs.vue";
-import FmUi from './FmUi.vue'
+import PlayerUi from "common/PlayerUi";
 
 export default {
   name: "DragonBalls",
   components: {
     DailyRecommendSongs,
-    FmUi
+    PlayerUi,
   },
   data() {
     return {
       balls: [],
       isShowDaliyList: false,
-      isShowFM:false,
+      isShowFM: false,
 
       dailySongs: [],
       fmSong: {},
@@ -71,8 +72,8 @@ export default {
     },
 
     async showTodayRCMDSongs() {
-      this.$store.dispatch('INITFM')
-      this.isShowFM=true
+      if(!this.$store.state.fm.isFM_Mode) this.$store.dispatch("INITFM");
+      this.isShowFM = true;
     },
   },
   created() {

@@ -15,7 +15,7 @@
     <player-ui-progress></player-ui-progress>
 
     <div class="ctrlBtns">
-        <ctrl-btns></ctrl-btns>
+      <ctrl-btns :isFMUI="true"></ctrl-btns>
     </div>
   </div>
 </template>
@@ -24,12 +24,11 @@
 import PlayerUiProgress from "common/childComps/PlayerUiProgress";
 import CtrlBtns from "common/childComps/CtrlBtns.vue";
 
-
 export default {
   name: "FmUi",
   components: {
     PlayerUiProgress,
-    CtrlBtns
+    CtrlBtns,
   },
   computed: {
     // 信息相关
@@ -155,9 +154,11 @@ export default {
     .songName {
       margin-top: 26px;
       font-size: 18px;
+      text-align: center;
     }
     .arName {
       margin-top: 10px;
+      text-align: center;
     }
   }
 }

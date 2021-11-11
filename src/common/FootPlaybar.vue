@@ -27,8 +27,8 @@
         v-model="isShowPI"
         position="bottom"
         closeable
-        close-icon="revoke"
         close-icon-position="top-left"
+        close-icon=" icon icon-xiajiantou"
         :overlay="false"
         get-container="#app"
         style="width: 100%; height: 100%"
@@ -102,7 +102,7 @@ export default {
 <style scoped lang='scss'>
 .foot-playbar {
   position: fixed;
-  height: .48rem;
+  height: 0.48rem;
   left: 0;
   bottom: var(--footbarHeight);
   width: 100%;
@@ -111,7 +111,6 @@ export default {
 
   z-index: 1070;
   transition: all ease 0.3s;
-  
 }
 .foot-playbar--fixed {
   position: relative;
@@ -156,6 +155,9 @@ export default {
 
 .van-popup {
   background-color: transparent;
+}
+.van-popup__close-icon--top-left {
+  left: 20px !important;
 }
 .van-popup--bottom {
   width: unset;

@@ -10,7 +10,7 @@ export const songAbout = {
       let res
       if (likeList.has(sid)) res =  await likeSong(sid, false)
       else res = await likeSong(sid)
-      if(res.code===200) context.commit('likelist_songChange',sid)
+      if(res.code===200) context.dispatch('getLikelist',sid)
     }
   }
 }

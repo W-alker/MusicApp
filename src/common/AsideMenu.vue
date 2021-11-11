@@ -12,7 +12,7 @@
         <i class="icon icon-youjiantou"></i>
       </li>
       <li @click="yunbeiSign">
-        <i class="fa fa-hand-o-up" aria-hidden="true"></i>
+        <i class="icon icon-yunbeiguanli"></i>
         云贝签到（点击一键签到）
         <i class="icon icon-youjiantou"></i>
       </li>
@@ -217,14 +217,15 @@ export default {
       &.active {
         background-color: rgba(0, 0, 0, 0.4);
       }
-      .fa {
+      i {
         font-size: 0.16rem;
         line-height: 0.43rem;
         float: left;
         margin-right: 0.16rem;
       }
-      .icon {
+      .icon:last-child {
         float: right;
+        margin-right: 0;
       }
     }
   }

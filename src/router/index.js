@@ -25,7 +25,8 @@ const routes = [
         name: "Home",
         component: Home,
         meta: {
-            title: '首页'
+            title: '首页',
+            keepAlive:true
         }
     },
     {
@@ -33,7 +34,8 @@ const routes = [
         name: "User",
         component: User,
         meta: {
-            title: '我的'
+            title: '我的',
+            keepAlive:true
         }
     },
 ];

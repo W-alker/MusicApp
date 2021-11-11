@@ -87,7 +87,6 @@ export default {
     const progress_move = new Hammer(progress_point);
     progress_move.on("panmove", (ev) => {
       // 记录当前偏移量,同时会影响进度条，但是不触发变化事件
-      // if (ev.isFinal) this.panMoveX = 0;
       this.panMoveX = ev.deltaX;
     });
     progress_move.on("panend", (ev) => {

@@ -1,16 +1,17 @@
-import { personalAbout,getUserPlaylists } from 'network/user'
+import { personalAbout, getUserPlaylists } from 'network/user'
 import { getLoginStatus } from 'network/home'
+import { Toast } from 'vant'
 
 export const userAbout = {
   state: {
     account: {},
     profile: {},
     likeList: new Set(),
-    playlists:[]
+    playlists: []
   },
   mutations: {
-    likelist_songChange(state,sid) {
-      if(state.likeList.has(sid)) state.likeList.delete(sid)
+    likelist_songChange(state, sid) {
+      if (state.likeList.has(sid)) state.likeList.delete(sid)
       else state.likeList.add(sid)
     }
   },
@@ -18,8 +19,7 @@ export const userAbout = {
     async init_ua(context) {
       await this.dispatch('getUserInfo')
       this.dispatch('getLikelist')
-      this.dispatch("getPlaylists");
-
+      this.dispatch('getPlaylists')
     },
     async getUserInfo(context) {
       const loginInfo = await getLoginStatus()
@@ -39,7 +39,6 @@ export const userAbout = {
       const res = await getUserPlaylists(context.state.account.id)
       context.state.playlists = res.playlist
     }
-
   },
   getters: {}
 }

@@ -18,7 +18,7 @@ export function getSongUrl(sid) {
 }
 export function likeSong(sid, like = true) {
   return request({
-    url: `/like?id=${sid}&like=${like}`
+    url: `/like?id=${sid}&like=${like}&timestamp=${Date.now()}`
   })
 }
 
