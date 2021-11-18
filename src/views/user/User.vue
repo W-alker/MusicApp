@@ -1,6 +1,5 @@
 <template>
   <main class="hideScroll">
-
     <top></top>
 
     <section class="profile">
@@ -54,18 +53,20 @@
       @showPLD="showPLD"
     ></my-like-music>
 
-    <all-playlists :data='playlists' @showPLD='showPLD'></all-playlists>
+    <all-playlists :data="playlists" @showPLD="showPLD"></all-playlists>
 
     <van-popup
       v-model="isShowPLD"
       :overlay="false"
       position="bottom"
       closeable
+      close-icon=" icon icon-xiajiantou"
+      close-icon-position="top-left"
       get-container="#app"
     >
-      <playlist-detail :pl="curPL" />
+      <playlist-detail :pl="curPL" :key='compUpdateTimer'/>
     </van-popup>
-    
+
     <foot-playbar ref="FootPlaybar" :isSlideDown="isShowPLD" />
     <foot-bar :activeIndex="1" />
   </main>
@@ -78,7 +79,7 @@ import PlaylistDetail from "common/PlaylistDetail";
 
 import FootPlaybar from "common/FootPlaybar";
 import FootBar from "common/FootBar";
-import Top from 'common/Top.vue';
+import Top from "common/Top.vue";
 
 export default {
   name: "User",
@@ -89,11 +90,10 @@ export default {
     PlaylistDetail,
     FootBar,
     FootPlaybar,
-    Top
+    Top,
   },
   computed: {
-
-   userAccount() {
+    userAccount() {
       return this.$store.state.ua.account;
     },
     userProfile() {
@@ -106,11 +106,13 @@ export default {
   data() {
     return {
       isShowPLD: false, //是否显示歌单详情页
+      compUpdateTimer:0,
       curPL: {}, //当前歌单详情
     };
   },
   methods: {
     showPLD(data) {
+      this.compUpdateTimer=new Date().getTime()
       this.curPL = data;
       this.isShowPLD = true;
     },
@@ -129,7 +131,6 @@ main {
   height: 100%;
   overflow: auto;
 }
-
 
 .profile {
   display: flex;

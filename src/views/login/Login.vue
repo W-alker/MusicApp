@@ -140,10 +140,9 @@ export default {
   watch: {
     loginOK() {
       if (this.loginOK) {
-        // 存入公共组件
-        // this.$store.useerInfo.id = this.id;
         // 刷新登录状态
         loginStatus.refresh();
+        this.$store.dispatch('INIT_INFO')
         this.$router.push("/home");
       }
     },
@@ -219,8 +218,8 @@ export default {
           loadingType: "spinner",
         });
         setTimeout(() => {
-          Toast.clear();
           this.loginOK = true;
+          Toast.clear();
         }, 1000);
       }
     });

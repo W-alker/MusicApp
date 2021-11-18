@@ -1,6 +1,6 @@
 <template>
   <div class="row action-btns">
-    <a :href="audioUrl" download>
+    <a :href="downUrl" download>
       <i class="icon icon-xiazai1"></i>
     </a>
     <i
@@ -29,23 +29,33 @@ export default {
       likeList: (state) => state.ua.likeList,
     }),
   },
-  watch: {},
+  watch: {
+    likeList: {
+      hadler() {
+        this.isLikeSong = this.likeList.has(this.sid);
+      },
+      deep: true,
+    },
+  },
   data() {
     return {
       isLikeSong: false,
+      downUrl: "",
     };
   },
   methods: {
-    likeSong() {
-      this.$store.dispatch("likeSong", this.sid);
+    async likeSong() {
+      await this.$store.dispatch("likeSong", this.sid);
       this.isLikeSong = this.likeList.has(this.sid);
     },
   },
-  updated() {
-    this.isLikeSong = this.likeList.has(this.sid);
+  mounted() {
+    this.$nextTick(() => {
+      this.isLikeSong = this.likeList.has(this.sid);
+      this.downUrl = this.audioUrl;
+    });
   },
   created() {
-    this.isLikeSong = this.likeList.has(this.sid);
   },
 };
 </script>

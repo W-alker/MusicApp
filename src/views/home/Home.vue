@@ -41,10 +41,13 @@
       v-model="isShowPLD"
       :overlay="true"
       position="bottom"
+      duration='0.3'
       closeable
+      close-icon=' icon icon-xiajiantou'
+      close-icon-position='top-left'
       get-container="#app"
     >
-      <playlist-detail :pl="curPL" />
+      <playlist-detail :pl="curPL" :key='compUpdateTimer'/>
     </van-popup>
 
     <foot-playbar ref="FootPlaybar" :isSlideDown="isShowPLD" />
@@ -104,6 +107,7 @@ export default {
       curPL: [], // 当前歌单详情
 
       isShowPLD: false, //是否显示歌单详情页
+      compUpdateTimer:0,
     };
   },
   methods: {
@@ -117,6 +121,7 @@ export default {
     },
     // 显示歌单
     showPLD(pl) {
+      this.compUpdateTimer=new Date().getTime()
       this.curPL = pl;
       this.isShowPLD = true;
     },
@@ -124,7 +129,7 @@ export default {
   created() {
     this.INIT_CONTENT();
     // 初始化信息
-    this.$store.dispatch("INIT_INFO");
+    // this.$store.dispatch("INIT_INFO");
     // const record = await getUserRecord(this.userAccount.id)
   },
 };
@@ -136,7 +141,6 @@ export default {
   height: 100%;
   color: aliceblue;
   font-size: 14px;
-  position: relative;
   padding-bottom: var(--bottomBarHeight);
 }
 .top {

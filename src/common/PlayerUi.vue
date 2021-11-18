@@ -29,19 +29,20 @@
         <div
           class="lyric part"
           :class="{ active: isShowLyric }"
-          @click="isShowLyric = false"
         >
           <player-ui-lyric
             :lyric_withTime="lyric_withTime"
             :tlyric_withTime="tlyric_withTime"
             :nolyric="false"
             :songName="songName"
+            :key='sid'
+            @showMain='isShowLyric=false'
           ></player-ui-lyric>
         </div>
       </div>
       <!-- 底部 -->
       <div class="bottom">
-        <action-btns v-show="!isFM_Mode"></action-btns>
+        <action-btns v-show="!isFM_Mode" :key='sid'></action-btns>
         <player-ui-progress></player-ui-progress>
         <ctrl-btns :isFMUI="isFM_Mode"></ctrl-btns>
       </div>
@@ -71,7 +72,7 @@ export default {
     // 信息相关
     ...mapState({
       sid: (state) => state.ac.songInfo.id,
-      songName: (state) => state.ac.songInfo.al.name,
+      songName: (state) => state.ac.songInfo.name,
       arName: (state) => state.ac.songInfo.arName,
       isPause: (state) => state.ac.isPause,
       coverUrl: (state) => state.ac.songInfo.al.picUrl,
@@ -114,21 +115,17 @@ export default {
     change_playMode() {
       this.$store.commit("change_playMode");
     },
-    CHANGE() {
-      this.init_lyric();
-      this.panMoveX = 0;
-      this.activeLyricIndex = 0;
-    },
+    CHANGE() {},
   },
   mounted() {},
   watch: {
     sid() {
-      this.CHANGE();
+      this.$emit("updateComp", this.sid);
     },
   },
   created() {
     // this.init_mlog();
-    this.CHANGE();
+    this.init_lyric();
   },
 };
 </script>
@@ -220,9 +217,10 @@ export default {
       }
       &.lyric {
         z-index: 80;
+        height: 100%;
+        padding: 30px 0;
         .lyric-container {
-          margin-top: 10%;
-          height: 80%;
+          height: 100%;
           transition: all linear 0.3s;
         }
         .btns {
@@ -262,7 +260,8 @@ export default {
         .name {
           width: 100%;
           margin-top: 30px;
-          h4,h5 {
+          h4,
+          h5 {
             width: 100%;
             text-align: center;
           }

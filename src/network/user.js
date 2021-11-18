@@ -27,6 +27,11 @@ export const personalAbout = {
       url: `/likelist?uid=${uid}&timestamp=${Date.now()}`
     })
   },
+  subscribePL(pid,type) { // type:1收藏；2取消收藏
+    return request({
+      url: `/playlist/subscribe?t=${type}&id=${pid}&timestamp=${Date.now()}`
+    })
+  },
   // 云贝签到
   yunbeiSign() {
     return request({

@@ -1,13 +1,15 @@
 <template>
   <div
     class="foot-playbar"
+    id="foot-playbar"
     :style="[
       { bottom: isSlideDown ? '0' : 'var(--footbarHeight)' },
       { zIndex: isSlideDown ? '3060' : '1070' },
       { display: isShowPI ? 'none' : 'block' },
+      { opacity: isHideFootPlayBar ? '0' : '1' },
     ]"
   >
-    <div class="foot-playbar--fixed" @click="showPI">
+    <div class="foot-playbar--fixed" @click="showPI($event)">
       <div class="cover-thumb">
         <img :src="songPicUrl" alt="" />
       </div>
@@ -33,7 +35,7 @@
         get-container="#app"
         style="width: 100%; height: 100%"
       >
-        <player-ui></player-ui>
+        <player-ui :key="compUpdateTimer" @updateComp="updateComp"></player-ui>
       </van-popup>
 
       <van-popup
@@ -41,9 +43,9 @@
         position="bottom"
         overlay
         duration=".15"
-        get-container="#app"
+        @click.stop="0"
       >
-        <playing-list-card></playing-list-card>
+        <playing-list-card style="z-index: 3080"></playing-list-card>
       </van-popup>
     </div>
   </div>
@@ -52,6 +54,7 @@
 <script>
 import PlayerUi from "common/PlayerUi";
 import PlayingListCard from "common/PlayingListCard";
+import { mapState } from "vuex";
 
 export default {
   name: "FootPlaybar",
@@ -69,30 +72,31 @@ export default {
     return {
       isShowPI: false,
       isShowPL: false,
+      compUpdateTimer: 0,
     };
   },
   computed: {
-    songPicUrl() {
-      return this.$store.state.ac.songInfo.al.picUrl;
-    },
-    songName() {
-      return this.$store.state.ac.songInfo.al.name;
-    },
-    arName() {
-      return this.$store.state.ac.songInfo.arName;
-    },
-    isPause() {
-      return this.$store.state.ac.isPause;
-    },
+    ...mapState({
+      isHideFootPlayBar: (state) => state.ui.isHideFootPlayBar,
+      songPicUrl: (state) => state.ac.songInfo.al.picUrl,
+      songName: (state) => state.ac.songInfo.name,
+      arName: (state) => state.ac.songInfo.arName,
+      isPause: (state) => state.ac.isPause,
+    }),
   },
   methods: {
+    updateComp(num) {
+      this.compUpdateTimer =num;
+    },
     playCtrl() {
       this.$store.commit("playOrPause");
     },
-    showPI() {
-      this.isShowPI = true;
+    showPI(e) {
+      if (e.target.classList[0] !== "van-overlay")
+        //防止点击播放列表卡片弹出层遮罩触发事件，弹出层本身已做防冒泡处理
+        this.isShowPI = true;
     },
-    showPL() {
+    showPL(e) {
       this.isShowPL = true;
     },
   },

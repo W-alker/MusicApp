@@ -12,6 +12,7 @@ import 'assets/font/svgFont.js'
 import 'assets/css/reset.scss'
 import 'vant/lib/index.less'
 
+
 Vue.use(Vant)
 
 Vue.config.productionTip = false

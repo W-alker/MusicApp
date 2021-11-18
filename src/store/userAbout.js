@@ -38,6 +38,31 @@ export const userAbout = {
     async getPlaylists(context) {
       const res = await getUserPlaylists(context.state.account.id)
       context.state.playlists = res.playlist
+    },
+    async subscribePL(context, pl, type = 1) {
+      let res
+      for (let i = 0; i < context.state.playlists.length; i++) {
+        if (context.state.playlists[i].id === pl.id) {
+          try {
+            res = await personalAbout.subscribePL(pl.id, 2)
+            if (res.code === 200) {
+              this.dispatch('getPlaylists')
+              return Toast('取消收藏')
+            }
+          } catch (e) {
+            return Toast.fail('服务器错误')
+          }
+        }
+      }
+      try {
+        res = await personalAbout.subscribePL(pl.id, type)
+        if (res.code === 200) {
+          this.dispatch('getPlaylists')
+          return Toast.success('歌单已收藏')
+        }
+      } catch (e) {
+        return Toast.fail('服务器错误')
+      }
     }
   },
   getters: {}

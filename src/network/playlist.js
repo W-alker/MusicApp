@@ -5,3 +5,4 @@ export function getPlaylistDetail(pid) {
     url: `/playlist/detail?id=${pid}`
   })
 }
+

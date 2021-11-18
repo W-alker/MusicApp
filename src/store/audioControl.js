@@ -1,61 +1,56 @@
-import { getSongUrl,checkSong } from 'network/song'
-import { songArToStr,throttle } from 'assets/js/util.js'
-import { Toast } from 'vant';
+import { getSongUrl, checkSong } from 'network/song'
+import { songArToStr, throttle } from 'assets/js/util.js'
+import { Toast } from 'vant'
 
 export const audioControl = {
   state: {
     songInfo: {
-      name: '',
-      id: 447281999,
+      name: 'The Way I Still Love You',
+      id: 28718313,
       pst: 0,
       t: 0,
-      ar: [{ id: 189873, name: '', tns: [], alias: [] }],
-      alia: [''],
+      ar: [{ id: 42608, name: 'Reynard Silva', tns: [], alias: [] }],
+      alia: [],
       pop: 100,
       st: 0,
       rt: null,
       fee: 0,
-      v: 25,
+      v: 4,
       crbt: null,
       cf: '',
       al: {
-        id: 35067010,
-        name: '',
-        picUrl: '',
+        id: 2866545,
+        name: 'Reynard Silva',
+        picUrl: 'http://p3.music.126.net/JyPsd_g00M-4mqXLLtHncw==/5984641790343690.jpg',
         tns: [],
-        pic_str: '',
-        pic: 0
+        pic: 5984641790343690
       },
-      dt: 261915,
-      h: { br: 320000, fid: 0, size: 10479325, vd: -79529 },
-      m: { br: 192000, fid: 0, size: 6287613, vd: -79529 },
-      l: { br: 128000, fid: 0, size: 4191756, vd: -79529 },
+      dt: 226000,
+      h: { br: 320000, fid: 0, size: 9076144, vd: -61509 },
+      m: { br: 192000, fid: 0, size: 5445751, vd: -61509 },
+      l: { br: 128000, fid: 0, size: 3630554, vd: -61509 },
       a: null,
       cd: '1',
-      no: 1,
+      no: 8,
       rtUrl: null,
       ftype: 0,
       rtUrls: [],
       djId: 0,
-      copyright: 0,
+      copyright: 2,
       s_id: 0,
-      mark: 128,
-      originCoverType: 0,
+      mark: 262144,
+      originCoverType: 1,
       originSongSimpleData: null,
-      tagPicList: null,
-      resourceState: true,
-      version: 25,
-      songJumpInfo: null,
       single: 0,
       noCopyrightRcmd: null,
-      mst: 9,
-      cp: 1382818,
       rtype: 0,
       rurl: null,
+      mst: 9,
+      cp: 0,
       mv: 0,
-      publishTime: 1467820800000,
-      url: '', // 这是后加的
-      arName: '' // 这是后加的
+      publishTime: 1393948800000,
+      arName: 'Reynard Silva',
+      url: 'http://m7.music.126.net/20211117115510/6496e0d8f8e16c37d2cb5fc10609e200/ymusic/4b0e/c937/8f7e/465c450cd62e279f2f032385b7f48eb7.mp3'
     }, // 歌曲信息
     isPause: true,
     duration: 0,
@@ -64,7 +59,7 @@ export const audioControl = {
   mutations: {
     recover_ac(state) {
       const data = localStorage.getItem('songInfo')
-      /* if (data)  */ state.songInfo = JSON.parse(data)
+      if (data) state.songInfo = JSON.parse(data)
       state.duration = Number(localStorage.getItem('duration'))
     },
     play(state) {
@@ -89,7 +84,7 @@ export const audioControl = {
     change_playingCourse(state, time) {
       const audio = document.getElementById('audio')
       audio.currentTime = time
-      this.commit('timeUpdate',time)
+      this.commit('timeUpdate', time)
     }
   },
   actions: {
@@ -98,15 +93,15 @@ export const audioControl = {
       context.state.songInfo = songDetail
       context.state.songInfo.arName = songArToStr(context.state.songInfo.ar)
 
-      const check = checkSong(songDetail.id)
-      if(check.success) return Toast.fail('该歌曲暂无版权，无法播放')
+      const check = await checkSong(songDetail.id)
+      if (!check.success) return Toast.fail('该歌曲暂无版权，无法播放')
       //  获取音频链接
       const res = await getSongUrl(songDetail.id)
       context.state.songInfo.url = res.data[0].url
 
       // 更改音频链接
       const audio = document.getElementById('audio')
-      audio.src = res.data[0].url
+      audio.src = context.state.songInfo.url
 
       audio.load()
       // 等待音频可以播放

@@ -1,5 +1,5 @@
 <template>
-  <section class="top topbar">
+  <section class="Top Topbar">
     <i class="icon icon-caidan" @click="isShowMenu = true"></i>
 
     <div class="center">
@@ -39,7 +39,7 @@ export default {
 </script>
 
 <style scoped lang='scss'>
-.topbar {
+.Topbar {
   position: fixed;
   top: 0;
   left: 0;

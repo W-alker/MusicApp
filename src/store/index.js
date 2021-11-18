@@ -9,6 +9,7 @@ import { userAbout } from './userAbout'
 import { songAbout } from './songAbout'
 import { initActions } from './initActions'
 import { fmMode } from './fmMode'
+import { ui } from './uiAbout'
 
 const store = new Vuex.Store({
   modules: {
@@ -17,7 +18,8 @@ const store = new Vuex.Store({
     pl: playingListAbout,
     sa: songAbout,
     init: initActions,
-    fm: fmMode
+    fm: fmMode,
+    ui
   }
 })
 

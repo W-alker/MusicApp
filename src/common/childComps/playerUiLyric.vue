@@ -1,11 +1,6 @@
 <template>
-  <div class="lyric-container hideScroll" >
-    <div
-      class="inner"
-      v-show="!nolyric"
-      :style="{ transform: 'translateY(-' + translateY + 'px)' }"
-      ref="wrapper"
-    >
+  <div class="lyric-container" @click="showMain">
+    <div class="inner" v-show="!nolyric" ref="inner">
       <p
         v-for="(item, index) in lyric"
         :class="{
@@ -24,15 +19,17 @@
 </template>
 
 <script>
-// import BScroll from "@better-scroll/core";
+import BScroll from "@better-scroll/core";
+import { mapState } from "vuex";
+import iScroll from "assets/js/iscroll";
 
 export default {
   name: "playerUiLyric",
   computed: {
-    currentTime() {
-      return this.$store.state.ac.currentTime;
-    },
-    // 对应时间的歌词
+    ...mapState({
+      currentTime: (state) => state.ac.currentTime,
+    }),
+    // 对应时间的歌词,加翻译
     lyric() {
       const res = [];
       const len = this.lyric_withTime.length;
@@ -59,13 +56,6 @@ export default {
       }
       return res;
     },
-    lyricHeight() {
-      let arr = [];
-      for (let i = 0; i < this.$refs.lrc.length; i++) {
-        arr.push(this.$refs.lrc[i].clientHeight + 15);
-      }
-      return arr;
-    },
   },
   props: {
     songName: {
@@ -86,32 +76,57 @@ export default {
   },
   data() {
     return {
+      lyricHeightArr: [],
       activeLyricIndex: 0,
-      activeLyricHeight: 0,
+      activelyricHeightArr: 0,
       translateY: 0,
-      BScroll: {},
+      iscroll: {},
       panMoveY: 0,
     };
   },
   watch: {
     activeLyricIndex() {
-      //   console.log(this.$refs.lrc[this.activeLyricIndex - 1].clientHeight);
       this.translateY = this.moveTranslateY(this.activeLyricIndex);
+      // console.log(this.$refs.lrc[this.activeLyricIndex].innerText);
+        // this.iscroll.scrollToElement(this.$refs.lrc[this.activeLyricIndex],100)
+        this.iscroll = new iScroll(".lyric-container", {
+          mouseWheel: true,
+          bounce: true,
+          scrollbars: true,
+        });
+        this.iscroll.scrollTo(0, -this.translateY);
     },
-    lyric() {
-      this.translateY = 0;
-    },
+    translateY() {},
   },
   mounted() {},
-  updated() {},
+  updated() {
+    let arr = [];
+    for (let i = 0; i < this.$refs.lrc.length; i++) {
+      arr.push(this.$refs.lrc[i].clientHeight + 15);
+    }
+    this.lyricHeightArr = arr;
+    this.init_scroll();
+  },
   created() {},
   methods: {
-    /*     init_scroll() {
-      this.BScroll = new BScroll(this.$refs.wrapper, {
-        scrollY: true,
-        click: true,
+    init_scroll() {
+      // 如果需要手动计算高度
+      /* let innerHeight = 0;
+      const len = this.lyricHeightArr.length;
+      for (let i = 0; i < len; i++) {
+        innerHeight += this.lyricHeightArr[i];
+      }
+      this.$refs.inner.style.height = innerHeight;
+      this.BScroll = new BScroll(".lyric-container", {
+        disableMouse: false,
+        disableTouch: false
+      }) */
+      this.iscroll = new iScroll(".lyric-container", {
+        mouseWheel: true,
+        bounce: true,
+        scrollbars: true,
       });
-    }, */
+    },
     lyricTimeToSeconds(time) {
       return (
         parseInt(time.split(":")[0]) * 60000 +
@@ -142,26 +157,25 @@ export default {
     moveTranslateY(index) {
       let y = 0;
       for (let i = 0; i < index; i++) {
-        y += this.lyricHeight[i];
+        y += this.lyricHeightArr[i];
       }
       return y;
+    },
+    showMain() {
+      this.$emit("showMain");
     },
   },
 };
 </script>
 
 <style scoped lang='scss'>
-/* .lyric-container {
+.lyric-container {
   overflow: hidden;
-} */
+}
 .inner {
-  margin-top: 300px;
   p {
     transition: all linear 0.3s;
     font-size: 14px;
-    /*               white-space: nowrap;
-              overflow: hidden;
-              text-overflow: ellipsis; */
     margin: 15px 0;
     line-height: 20px;
     color: var(--silveryWhite);

@@ -1,6 +1,6 @@
 <template>
-  <section class="playing-list-card playing-list-card--fixed hideScroll">
-    <div class="head--fixed">
+  <section class="playing-list-card playing-list-card--fixed hideScroll" >
+    <div class="head--fixed" v-show="!isFM_Mode">
       <h3>
         当前播放
         <span style="font-size: small; opacity: 0.8">({{ list.length }})</span>

@@ -2,11 +2,7 @@ import { getSongDetail, getSongUrl } from 'network/song'
 
 export const playingListAbout = {
   state: {
-    playingList: [
-      {
-        id: 0
-      }
-    ],
+    playingList: [],
     curIndex: 0,
     playMode: 0, //0：顺序播放；1：随机播放；2：单曲循环
     playedIndexArray: new Set()
@@ -33,13 +29,15 @@ export const playingListAbout = {
   actions: {
     recover_pl(context) {
       const data = JSON.parse(localStorage.getItem('playingList'))
-      // if(data)
-      context.state.playingList = data
-      // 找回curIndex
-      const curId = context.rootState.ac.songInfo.id
-      for (let i = 0; i < data.length; i++) {
-        if (data[i].id === curId) return (context.state.curIndex = i)
+      if(data) {
+        context.state.playingList = data
+        // 找回curIndex
+        const curId = context.rootState.ac.songInfo.id
+        for (let i = 0; i < data.length; i++) {
+          if (data[i].id === curId) return (context.state.curIndex = i)
+        }
       }
+
     },
     async changeSong(context, index) {
       /*       const sid = context.state.playingList[index].id
@@ -54,7 +52,7 @@ export const playingListAbout = {
       // index代表从当前播放列表哪里开始播放
       const { list, index = 0 } = args
       // 判断是否需要重新录入
-      /* if (context.state.playingList[0].id !== list[0].id)  */ context.state.playingList = list
+      context.state.playingList = list
       context.state.playedIndexArray.clear()
       this.dispatch('changeSong', index)
 

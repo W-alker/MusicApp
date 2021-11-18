@@ -7,6 +7,11 @@ export const fmMode = {
     isFM_Mode: false
   },
   actions: {
+    RECOVER_FM(context) {
+      if (JSON.parse(localStorage.getItem('isFM_Mode'))) {
+        context.state.isFM_Mode = true
+      }
+    },
     async INITFM(context) {
       const fm = await FM.get()
       const song = await getSongDetail(fm.data[0].id)
@@ -14,7 +19,7 @@ export const fmMode = {
 
       context.dispatch('init_song', song.songs[0])
       context.state.isFM_Mode = true
-
+      localStorage.setItem('isFM_Mode', true)
     },
     async NEXT_FM() {
       this.dispatch('INITFM')
@@ -26,6 +31,7 @@ export const fmMode = {
     },
     async QUITFM(context) {
       context.state.isFM_Mode = false
+      localStorage.setItem('isFM_Mode', false)
     }
   }
 }
