@@ -50,7 +50,7 @@
       get-container="#app"
       duration=".15"
     >
-      <playing-list-card></playing-list-card>
+      <playing-list-card :key='compUpdateTimer'></playing-list-card>
     </van-popup>
   </div>
 </template>
@@ -92,6 +92,7 @@ export default {
   },
   data() {
     return {
+      compUpdateTimer:0,
       isShowPL: false,
       isLikeSong: false,
     };
@@ -107,6 +108,7 @@ export default {
       this.$store.dispatch("prevSong");
     },
     showPL() {
+      this.compUpdateTimer=Date.now()
       this.isShowPL = true;
     },
 

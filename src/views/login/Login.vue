@@ -143,7 +143,7 @@ export default {
         // 刷新登录状态
         loginStatus.refresh();
         this.$store.dispatch('INIT_INFO')
-        this.$router.push("/home");
+        this.$router.push("/user");
       }
     },
   },

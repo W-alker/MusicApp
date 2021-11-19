@@ -89,12 +89,16 @@ export const audioControl = {
   },
   actions: {
     async init_song(context, songDetail) {
+      try {
+        const check = await checkSong(songDetail.id)
+      } catch (e) {
+        Toast.fail('该歌曲暂无版权，无法播放')
+        return false
+      }
+
       // 歌曲信息存入该模块
       context.state.songInfo = songDetail
       context.state.songInfo.arName = songArToStr(context.state.songInfo.ar)
-
-      const check = await checkSong(songDetail.id)
-      if (!check.success) return Toast.fail('该歌曲暂无版权，无法播放')
       //  获取音频链接
       const res = await getSongUrl(songDetail.id)
       context.state.songInfo.url = res.data[0].url
@@ -113,6 +117,7 @@ export const audioControl = {
 
       // 本次信息存入本地
       localStorage.setItem('songInfo', JSON.stringify(context.state.songInfo))
+      return true
     }
   },
   getters: {}

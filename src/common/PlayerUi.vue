@@ -37,12 +37,13 @@
             :songName="songName"
             :key='sid'
             @showMain='isShowLyric=false'
+            v-if='lyric_withTime.length'
           ></player-ui-lyric>
         </div>
       </div>
       <!-- 底部 -->
       <div class="bottom">
-        <action-btns v-show="!isFM_Mode" :key='sid'></action-btns>
+        <action-btns v-show="!isFM_Mode && !isShowLyric" :key='sid'></action-btns>
         <player-ui-progress></player-ui-progress>
         <ctrl-btns :isFMUI="isFM_Mode"></ctrl-btns>
       </div>

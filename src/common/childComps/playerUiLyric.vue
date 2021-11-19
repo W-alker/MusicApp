@@ -1,5 +1,5 @@
 <template>
-  <div class="lyric-container" @click="showMain">
+  <div class="lyric-container" @click="showMain" ref="lyric_container">
     <div class="inner" v-show="!nolyric" ref="inner">
       <p
         v-for="(item, index) in lyric"
@@ -21,7 +21,7 @@
 <script>
 import BScroll from "@better-scroll/core";
 import { mapState } from "vuex";
-import iScroll from "assets/js/iscroll";
+import IScroll from "assets/js/iscroll-probe";
 
 export default {
   name: "playerUiLyric",
@@ -56,6 +56,13 @@ export default {
       }
       return res;
     },
+    /*     lyricHeightArr() {
+      let arr = [];
+      for (let i = 0; i < this.$refs.lrc.length; i++) {
+        arr.push(this.$refs.lrc[i].clientHeight + 15);
+      }
+      return arr;
+    }, */
   },
   props: {
     songName: {
@@ -76,37 +83,36 @@ export default {
   },
   data() {
     return {
-      lyricHeightArr: [],
       activeLyricIndex: 0,
       activelyricHeightArr: 0,
-      translateY: 0,
+      // translateY: 0,
       iscroll: {},
       panMoveY: 0,
+      lyric_container_height: 0, // 计算容器高度，让歌词居中
     };
   },
   watch: {
+    currentTime() {},
     activeLyricIndex() {
-      this.translateY = this.moveTranslateY(this.activeLyricIndex);
-      // console.log(this.$refs.lrc[this.activeLyricIndex].innerText);
-        // this.iscroll.scrollToElement(this.$refs.lrc[this.activeLyricIndex],100)
-        this.iscroll = new iScroll(".lyric-container", {
-          mouseWheel: true,
-          bounce: true,
-          scrollbars: true,
-        });
-        this.iscroll.scrollTo(0, -this.translateY);
+      // this.translateY = this.moveTranslateY(this.activeLyricIndex);
+      if (this.iscroll.scroller)
+        this.iscroll.scrollToElement(
+          this.$refs.lrc[this.activeLyricIndex],
+          500,
+          0,
+          -(this.lyric_container_height / 2)
+        );
+      // this.iscroll.scrollTo(0, -this.translateY + 230,500);
     },
-    translateY() {},
   },
-  mounted() {},
-  updated() {
-    let arr = [];
-    for (let i = 0; i < this.$refs.lrc.length; i++) {
-      arr.push(this.$refs.lrc[i].clientHeight + 15);
-    }
-    this.lyricHeightArr = arr;
-    this.init_scroll();
+  mounted() {
+    this.$nextTick(() => {
+      this.lyric_container_height = this.$refs.lyric_container.clientHeight;
+      this.$refs.inner.style.padding = this.lyric_container_height / 2 + "px 0";  // 计算外部容器高度，给内部容器设置上下padding以居中
+      this.init_scroll();
+    });
   },
+  updated() {},
   created() {},
   methods: {
     init_scroll() {
@@ -116,15 +122,13 @@ export default {
       for (let i = 0; i < len; i++) {
         innerHeight += this.lyricHeightArr[i];
       }
-      this.$refs.inner.style.height = innerHeight;
-      this.BScroll = new BScroll(".lyric-container", {
-        disableMouse: false,
-        disableTouch: false
-      }) */
-      this.iscroll = new iScroll(".lyric-container", {
+      this.$refs.inner.style.height = innerHeight; */
+      this.iscroll = new IScroll(this.$refs.lyric_container, {
         mouseWheel: true,
-        bounce: true,
-        scrollbars: true,
+        // scrollbars: true,
+        // 解决拖拽卡顿问题
+        scrollX: false,
+        scrollY: true,
       });
     },
     lyricTimeToSeconds(time) {
@@ -154,13 +158,13 @@ export default {
         return true;
       }
     },
-    moveTranslateY(index) {
+    /*     moveTranslateY(index) {
       let y = 0;
       for (let i = 0; i < index; i++) {
         y += this.lyricHeightArr[i];
       }
       return y;
-    },
+    }, */
     showMain() {
       this.$emit("showMain");
     },
@@ -171,10 +175,36 @@ export default {
 <style scoped lang='scss'>
 .lyric-container {
   overflow: hidden;
+  touch-action: none;
+  position: relative;
+  &::before {
+    position: absolute;
+    content: "";
+    display: block;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 40px;
+    z-index: 10;
+    background: linear-gradient(rgba(14, 11, 32, 1), rgba(14, 11, 32, 0));
+  }
+  &::after {
+    position: absolute;
+    content: "";
+    display: block;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 40px;
+    z-index: 10;
+    background: linear-gradient(rgba(14, 11, 32, 0), rgba(14, 11, 32, 1));
+  }
 }
 .inner {
+  box-sizing: content-box;
+  padding: 250px 0;
   p {
-    transition: all linear 0.3s;
+    transition: all linear 0.5s;
     font-size: 14px;
     margin: 15px 0;
     line-height: 20px;
@@ -182,8 +212,8 @@ export default {
     opacity: 0.6;
     text-align: center;
     &.active {
-      font-size: 16px;
       opacity: 1;
+      color: white;
     }
   }
   &-empty {

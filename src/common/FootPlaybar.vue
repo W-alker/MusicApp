@@ -45,7 +45,10 @@
         duration=".15"
         @click.stop="0"
       >
-        <playing-list-card style="z-index: 3080"></playing-list-card>
+        <playing-list-card
+          style="z-index: 3080"
+          :key="compUpdateTimer"
+        ></playing-list-card>
       </van-popup>
     </div>
   </div>
@@ -70,6 +73,7 @@ export default {
   },
   data() {
     return {
+      compUpdateTimer: 0,
       isShowPI: false,
       isShowPL: false,
       compUpdateTimer: 0,
@@ -86,7 +90,7 @@ export default {
   },
   methods: {
     updateComp(num) {
-      this.compUpdateTimer =num;
+      this.compUpdateTimer = num;
     },
     playCtrl() {
       this.$store.commit("playOrPause");
@@ -97,6 +101,7 @@ export default {
         this.isShowPI = true;
     },
     showPL(e) {
+      this.compUpdateTimer = Date.now();
       this.isShowPL = true;
     },
   },

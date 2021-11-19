@@ -71,24 +71,24 @@
         </div>
       </div>
       <ul class="list">
+          <!-- 版权判断的数据返回有问题 -->
         <li
           v-for="(item, index) in list"
           :key="index"
           @click="playStart(index)"
-          :class="[{ active: curSongId === item.id }]"
+          :class="[
+            { active: curSongId === item.id },
+            { nocopyright: 0 && !item.copyright },
+          ]"
         >
           <span class="serialNumber">{{ index + 1 }}</span>
           <div class="songInfo">
             <h4 class="songName textover-eclipse">
               {{ item.name }}
-              <span
-                style="opacity: 0.7"
-                v-show="item.alia.length > 0"
+              <span style="opacity: 0.7" v-show="item.alia.length > 0"
                 >({{ item.alia[0] }})</span
               >
-              <span
-                style="opacity: 0.7"
-                v-if="item.tns"
+              <span style="opacity: 0.7" v-if="item.tns"
                 >({{ item.tns[0] }})</span
               >
             </h4>
@@ -173,7 +173,7 @@ export default {
       this.$store.dispatch("updatePIL", { list: this.list, index });
     },
     subscribePL() {
-      if(this.pl.userId === this.uid) return 0
+      if (this.pl.userId === this.uid) return 0;
       this.$store.dispatch("subscribePL", this.pl);
     },
   },
@@ -375,7 +375,7 @@ export default {
     $li-h: 55px;
     font-size: 15px;
     li {
-    padding: 0 16px;
+      padding: 0 16px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -383,6 +383,11 @@ export default {
       transition: all ease 0.2s;
       &.active {
         background-color: var(--footbarBgc);
+      }
+      &.nocopyright {
+        .songInfo {
+          opacity: 0.4;
+        }
       }
       &:hover {
         background-color: var(--footbarBgc);

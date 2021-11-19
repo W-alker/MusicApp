@@ -1,5 +1,5 @@
 <template>
-  <section class="playing-list-card playing-list-card--fixed hideScroll" >
+  <section class="playing-list-card playing-list-card--fixed">
     <div class="head--fixed" v-show="!isFM_Mode">
       <h3>
         当前播放
@@ -20,13 +20,13 @@
       </div>
     </div>
 
-    <div class="container" v-show="!isFM_Mode">
+    <div class="container" v-show="!isFM_Mode" ref="playing_list_card">
       <ul class="list">
         <li
           v-for="(item, index) in list"
           :key="index"
           @click="changeSong(index)"
-          :class="[{ active: item.id === curSongId }, 'list_item']"
+          :class="[{ list_item_active: item.id === curSongId }, 'list_item']"
         >
           <p class="textover-eclipse name">
             <span class="songName">{{ item.name }}</span>
@@ -53,6 +53,7 @@ import { songArToStr } from "assets/js/util";
 import { mapState } from "vuex";
 import { ontouchActive } from "assets/js/util";
 import { Toast } from "vant";
+import IScroll from "assets/js/iscroll-probe";
 
 export default {
   name: "PlayingListCard",
@@ -90,15 +91,16 @@ export default {
   },
   data() {
     return {
-      songArToStr(ars) {
-        return songArToStr(ars);
-      },
-      async changeSong(index) {
-        this.$store.dispatch("changeSong", index);
-      },
+      iscroll: {},
     };
   },
   methods: {
+    songArToStr(ars) {
+      return songArToStr(ars);
+    },
+    async changeSong(index) {
+      this.$store.dispatch("changeSong", index);
+    },
     change_playMode() {
       this.$store.commit("change_playMode");
     },
@@ -114,6 +116,17 @@ export default {
     ontouchActive(
       document.querySelector(".playing-list-card").querySelectorAll(".btn")
     );
+    this.$nextTick(() => {
+      this.iscroll = new IScroll(this.$refs.playing_list_card, {
+        scrollY: true,
+      });
+      this.iscroll.scrollToElement(
+        document.querySelector(".list_item_active").previousSibling ||
+          // 防止已经是顶部元素
+          document.querySelector(".list_item_active"),
+        1
+      );
+    });
   },
 };
 </script>
@@ -125,14 +138,15 @@ export default {
   margin: 19px;
   background-color: var(--themeBgc);
   border-radius: 16px;
-  overflow: auto;
+  // overflow: auto;
+  overflow: hidden;
   color: var(--qianhui);
   position: relative;
   .head--fixed {
     position: sticky;
     padding: 16px 0 12px 0;
     top: 0;
-    background-color:var(--themeBgc);
+    background-color: var(--themeBgc);
     z-index: 20;
   }
   h3,
@@ -173,13 +187,16 @@ export default {
 }
 .list {
   margin-top: -20px;
+  touch-action: none;
+  box-sizing: content-box;
+  padding-bottom: 95px;
   li {
     padding: 16px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     height: 44px;
-    &.active {
+    &.list_item_active {
       background-color: var(--footbarBgc);
       p.name {
         color: var(--qiuhaitanghong);
