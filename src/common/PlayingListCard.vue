@@ -133,37 +133,37 @@ export default {
 
 <style scoped lang='scss'>
 .playing-list-card--fixed {
-  width: 336px;
-  height: 470px;
-  margin: 19px;
+  width: 3.36rem;
+  height: 4.7rem;
+  margin: 0.19rem;
   background-color: var(--themeBgc);
-  border-radius: 16px;
+  border-radius: 0.16rem;
   // overflow: auto;
   overflow: hidden;
   color: var(--qianhui);
   position: relative;
   .head--fixed {
     position: sticky;
-    padding: 16px 0 12px 0;
+    padding: 0.16rem 0 0.12rem 0;
     top: 0;
     background-color: var(--themeBgc);
     z-index: 20;
   }
   h3,
   .action-btns {
-    padding: 0 16px;
+    padding: 0 0.16rem;
   }
 }
 .container {
   height: 100%;
-  padding: 16px 0;
+  padding: 0.16rem 0;
 
   .btn {
     display: inline-block;
-    width: 28px;
-    height: 28px;
+    width: 0.28rem;
+    height: 0.28rem;
     text-align: center;
-    line-height: 28px;
+    line-height: 0.28rem;
     opacity: 0.8;
     &.active {
       background-color: var(--footbarBgc);
@@ -171,31 +171,32 @@ export default {
   }
 }
 .action-btns {
-  margin-top: 6px;
+  margin-top: 0.06rem;
   display: flex;
   justify-content: space-between;
-  font-size: 14px;
-  height: 28px;
-  line-height: 28px;
+  font-size: 0.14rem;
+  height: 0.28rem;
+  line-height: 0.28rem;
 
   .btn1 {
     display: flex;
     i {
-      margin-right: 8px;
+      margin-right: 0.08rem;
     }
   }
 }
 .list {
-  margin-top: -20px;
+  margin-top: -0.2rem;
   touch-action: none;
   box-sizing: content-box;
-  padding-bottom: 95px;
+  padding-top: 0.2rem;
+  padding-bottom: 0.95rem;
   li {
-    padding: 16px;
+    padding: 0.16rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    height: 44px;
+    height: 0.44rem;
     &.list_item_active {
       background-color: var(--footbarBgc);
       p.name {
@@ -203,21 +204,21 @@ export default {
       }
     }
     p {
-      font-size: 11px;
+      font-size: 0.11rem;
       width: 80%;
       span {
-        font-size: 14px;
+        font-size: 0.14rem;
       }
     }
   }
 }
 .fm-mode {
   flex-direction: column;
-  font-size: 16px;
+  font-size: 0.16rem;
   p {
     &:first-child {
       font-size: larger;
-      margin-bottom: 10px;
+      margin-bottom: 0.1rem;
     }
   }
   .name {

@@ -122,6 +122,7 @@ export default {
   watch: {
     sid() {
       this.$emit("updateComp", this.sid);
+      this.init_lyric()
     },
   },
   created() {
@@ -136,9 +137,12 @@ export default {
   color: red;
 }
 .player-ui {
-  width: 100%;
-  height: 100%;
-  padding: 16px 24px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 0.16rem 0.24rem;
   background: var(--commonPageBgc);
   color: #f1f0ed;
   display: flex;
@@ -154,28 +158,28 @@ export default {
     display: flex;
     position: relative;
     width: 100%;
-    height: 40px;
+    height: 0.4rem;
     justify-content: center;
     align-items: center;
     h3 {
       flex-grow: 1;
       text-align: center;
-      margin: 0 16px;
-      margin-left: 40px;
-      line-height: 30px;
+      margin: 0 0.16rem;
+      margin-left: 0.4rem;
+      line-height: 0.3rem;
     }
     i {
       display: inline-block;
-      width: 30px;
-      height: 30px;
+      width: 0.3rem;
+      height: 0.3rem;
       text-align: center;
-      line-height: 30px;
+      line-height: 0.3rem;
     }
     .name {
       flex-grow: 1;
       text-align: center;
-      margin: 0 16px;
-      margin-left: 40px;
+      margin: 0 0.16rem;
+      margin-left: 0.4rem;
       width: 50%;
       height: 100%;
       display: flex;
@@ -189,12 +193,12 @@ export default {
         background-color: unset;
         padding: 0;
         color: var(--white);
-        font-size: 16px;
+        font-size: 0.16rem;
         transition: all ease 8s;
         text-align: center;
       }
       .arName {
-        font-size: 13px;
+        font-size: 0.13rem;
         opacity: 0.6;
       }
     }
@@ -219,7 +223,7 @@ export default {
       &.lyric {
         z-index: 80;
         height: 100%;
-        padding: 30px 0;
+        padding: 0.3rem 0;
         .lyric-container {
           height: 100%;
           transition: all linear 0.3s;
@@ -238,7 +242,7 @@ export default {
     .center {
       flex-grow: 1;
       position: relative;
-      height: 550px;
+      height: 5.5rem;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -249,9 +253,9 @@ export default {
         align-items: center;
         flex-direction: column;
         .cover {
-          width: 327px;
-          height: 327px;
-          border-radius: 16px;
+          width: 3.27rem;
+          height: 3.27rem;
+          border-radius: 0.16rem;
           overflow: hidden;
           img {
             width: 100%;
@@ -260,7 +264,7 @@ export default {
         }
         .name {
           width: 100%;
-          margin-top: 30px;
+          margin-top: 0.3rem;
           h4,
           h5 {
             width: 100%;
@@ -270,7 +274,7 @@ export default {
             font-size: larger;
           }
           h5 {
-            margin-top: 8px;
+            margin-top: 0.08rem;
           }
         }
       }
@@ -281,7 +285,7 @@ export default {
   }
 
   .player-ui-progress {
-    height: 70px;
+    height: 0.7rem;
   }
 }
 </style>

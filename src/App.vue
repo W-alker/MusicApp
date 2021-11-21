@@ -3,7 +3,7 @@
     <router-view />
     <audio
       :src="audioUrl"
-      style="display:none"
+      style="display: none"
       id="audio"
       controls
       @ended="autoNext"
@@ -14,6 +14,7 @@
 
 <script>
 import { throttle } from "assets/js/util.js";
+import { mapState } from "vuex";
 
 export default {
   name: "App",
@@ -23,16 +24,16 @@ export default {
     };
   },
   computed: {
-    audioUrl() {
-      return this.$store.state.ac.songInfo.url;
-    },
+    ...mapState({
+      audioUrl: (state) => state.ac.songInfo.url,
+    }),
   },
   methods: {
     autoNext() {
       this.$store.dispatch("nextSong");
     },
     timeUpdate(e) {
-      const audio = document.getElementById('audio');
+      const audio = document.getElementById("audio");
       this.$store.commit("timeUpdate", Math.round(audio.currentTime));
     },
   },

@@ -111,7 +111,7 @@ export default {
 <style scoped lang='scss'>
 .foot-playbar {
   position: fixed;
-  height: 0.48rem;
+  height: 0.55rem;
   left: 0;
   bottom: var(--footbarHeight);
   width: 100%;

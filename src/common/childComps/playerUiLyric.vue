@@ -103,7 +103,7 @@ export default {
           -(this.lyric_container_height / 2)
         );
       // this.iscroll.scrollTo(0, -this.translateY + 230,500);
-    },
+    }
   },
   mounted() {
     this.$nextTick(() => {
@@ -113,7 +113,8 @@ export default {
     });
   },
   updated() {},
-  created() {},
+  created() {
+  },
   methods: {
     init_scroll() {
       // 如果需要手动计算高度

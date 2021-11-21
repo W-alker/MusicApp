@@ -128,6 +128,7 @@ export default {
 <style scoped lang='scss'>
 main {
   color: var(--silveryWhite);
+  padding-bottom: var(--bottomBarHeight);
   height: 100%;
   overflow: auto;
 }
