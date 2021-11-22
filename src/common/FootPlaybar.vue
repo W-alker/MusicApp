@@ -126,12 +126,15 @@ export default {
   background-color: var(--footplaybarBgc);
   display: flex;
   align-items: center;
+  height: 100%;
   .cover-thumb {
-    width: 6vh;
-    height: 6vh;
+    margin-left: 0.2rem;
+    width: 0.45rem;
+    height: 0.45rem;
     img {
       width: 100%;
       height: 100%;
+      border-radius: 50%;
     }
   }
 

@@ -9,12 +9,17 @@
     </section> -->
 
     <top>
-      <label for="input-search" class="input-search" slot="center">
+      <label
+        for="input-search"
+        class="input-search"
+        slot="center"
+        @click="showSearchUi"
+      >
         <i class="fa fa-search" aria-hidden="true"></i>
         <input
           type="text"
           name="input-search"
-          placeholder="Where should we go?"
+          :placeholder="defaultSearchKeyword"
         />
       </label>
     </top>
@@ -25,7 +30,7 @@
 
     <block-rcmd-playlists
       :data="blocks[1]"
-      @showPLD='showPLD'
+      @showPLD="showPLD"
       v-if="blocks.length !== 0"
     ></block-rcmd-playlists>
 
@@ -41,13 +46,27 @@
       v-model="isShowPLD"
       :overlay="true"
       position="bottom"
-      duration='0.3'
+      duration="0.3"
       closeable
-      close-icon=' icon icon-xiajiantou'
-      close-icon-position='top-left'
+      close-icon=" icon icon-xiajiantou"
+      close-icon-position="top-left"
       get-container="#app"
     >
-      <playlist-detail :pl="curPL" :key='compUpdateTimer'/>
+      <playlist-detail :pl="curPL" :key="compUpdateTimer" />
+    </van-popup>
+
+    <van-popup
+      v-model="isShowSearchUi"
+        position="bottom"
+        closeable
+        close-icon-position="top-left"
+        close-icon=" icon icon-xiajiantou"
+        :overlay="false"
+        get-container="#app"
+        style="width: 100%; height: 100%"
+        duration='.15'
+    >
+      <search-ui></search-ui>
     </van-popup>
 
     <foot-playbar ref="FootPlaybar" :isSlideDown="isShowPLD" />
@@ -60,6 +79,7 @@ import Top from "common/Top.vue";
 import Banner from "./childComps/Banner.vue";
 import DragonBalls from "./childComps/DragonBalls";
 import BlockRcmdPlaylists from "./childComps/BlockRcmdPlaylists";
+import SearchUi from "common/SearchUi";
 
 import PlaylistDetail from "common/PlaylistDetail";
 
@@ -71,8 +91,7 @@ import PersonalizedPlaylist from "./childComps/PersonalizedPlaylist";
 import HighqualityPlaylist from "./childComps/HighqualityPlaylist.vue";
 
 import { getHomePageContent, getBanner, getLoginStatus } from "network/home";
-import { getSongUrl, getSongDetail } from "network/song";
-import { getUserRecord, getUserInfo, getUserAccount } from "network/user";
+import { getDefaultSearchKeyword } from "network/search";
 
 export default {
   name: "Home",
@@ -88,6 +107,7 @@ export default {
     FootPlaybar,
 
     PlaylistDetail,
+    SearchUi,
   },
   computed: {
     userAccount() {
@@ -102,12 +122,14 @@ export default {
       homePageContent: {},
       banners: [],
       blocks: [],
+      defaultSearchKeyword: "",
 
       userInfo: {},
       curPL: [], // 当前歌单详情
 
       isShowPLD: false, //是否显示歌单详情页
-      compUpdateTimer:0,
+      compUpdateTimer: 0,
+      isShowSearchUi: false,
     };
   },
   methods: {
@@ -118,12 +140,18 @@ export default {
       getBanner().then((res) => {
         this.banners = res.banners;
       });
+      // 获取默认搜索词
+      const res2 = await getDefaultSearchKeyword();
+      this.defaultSearchKeyword = res2.data.showKeyword;
     },
     // 显示歌单
     showPLD(pl) {
-      this.compUpdateTimer=new Date().getTime()
+      this.compUpdateTimer = new Date().getTime();
       this.curPL = pl;
       this.isShowPLD = true;
+    },
+    showSearchUi() {
+      this.isShowSearchUi = true;
     },
   },
   created() {

@@ -1,6 +1,6 @@
 <template>
   <div class="row action-btns">
-    <a :href="downUrl" download>
+    <a href="" download="" ref="downloadLink" target="_blank">
       <i class="icon icon-xiazai1"></i>
     </a>
     <i
@@ -25,6 +25,8 @@ export default {
   computed: {
     ...mapState({
       sid: (state) => state.ac.songInfo.id,
+      sname: (state) => state.ac.songInfo.name,
+      arName: (state) => state.ac.songInfo.arName,
       audioUrl: (state) => state.ac.songInfo.url,
       likeList: (state) => state.ua.likeList,
     }),
@@ -52,11 +54,11 @@ export default {
   mounted() {
     this.$nextTick(() => {
       this.isLikeSong = this.likeList.has(this.sid);
-      this.downUrl = this.audioUrl;
+      this.$refs.downloadLink.href = this.audioUrl;
+      this.$refs.downloadLink.download = this.sname + " - " + this.arName;
     });
   },
-  created() {
-  },
+  created() {},
 };
 </script>
 

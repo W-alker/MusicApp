@@ -83,7 +83,7 @@ export default {
   data() {
     return {
       isShowPL: false,
-      isShowLyric: true,
+      isShowLyric: false,
       nolyric: false,
       lyric_withTime: [],
       tlyric_withTime: [],
@@ -205,7 +205,7 @@ export default {
   }
 
   main {
-    height: 100%;
+    height: calc(100% - 34px);
     display: flex;
     flex-direction: column;
     .part {

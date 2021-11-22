@@ -5,7 +5,8 @@ export function request(options) {
   return new Promise((resolve, reject) => {
     // 1.创建axios的实例对象
     const instance = axios.create({
-      baseURL: 'http://101.43.18.248:3000',
+      // baseURL: 'http://101.43.18.248:3000',
+      baseURL: 'http://localhost:3000',
       timeout: 3000,
       withCredentials: true //关键
     })
