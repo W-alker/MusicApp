@@ -8,13 +8,8 @@ import 'vant/lib/index.css'
 import 'assets/font/font.css'
 import 'assets/font/svgFont.css'
 import 'assets/font/svgFont.js'
-// import { Icon } from 'vant';
 import 'assets/css/reset.scss'
 import 'vant/lib/index.less'
-
-/* import IScrollView from 'vue-iscroll-view'
-import IScroll from 'iscroll'
-Vue.use(IScrollView, IScroll) */
 
 
 Vue.use(Vant)

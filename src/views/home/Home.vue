@@ -57,21 +57,21 @@
 
     <van-popup
       v-model="isShowSearchUi"
-        position="bottom"
-        closeable
-        close-icon-position="top-left"
-        close-icon=" icon icon-xiajiantou"
-        :overlay="false"
-        get-container="#app"
-        style="width: 100%; height: 100%"
-        duration='.15'
+      position="bottom"
+      closeable
+      close-icon-position="top-left"
+      close-icon=" icon icon-xiajiantou"
+      :overlay="false"
+      get-container="#app"
+      style="width: 100%; height: 100%"
+      duration=".15"
     >
-      <search-ui></search-ui>
+      <search-ui :key="Date.now()"></search-ui>
     </van-popup>
 
-    <foot-playbar ref="FootPlaybar" :isSlideDown="isShowPLD" />
+    <foot-playbar ref="FootPlaybar" :isSlideDown="isShowPLD || isShowSearchUi" />
     <foot-bar :activeIndex="0" />
-  </main>
+  </main> 
 </template>
 
 <script>
@@ -90,8 +90,11 @@ import NewAlbumsList from "./childComps/NewAlbumsList.vue";
 import PersonalizedPlaylist from "./childComps/PersonalizedPlaylist";
 import HighqualityPlaylist from "./childComps/HighqualityPlaylist.vue";
 
-import { getHomePageContent, getBanner, getLoginStatus } from "network/home";
+import { getHomePageContent, getBanner } from "network/home";
 import { getDefaultSearchKeyword } from "network/search";
+import { loginStatus } from "network/login";
+import { Toast } from "vant";
+import {mapState} from 'vuex'
 
 export default {
   name: "Home",
@@ -110,12 +113,10 @@ export default {
     SearchUi,
   },
   computed: {
-    userAccount() {
-      return this.$store.state.ua.account;
-    },
-    userProfile() {
-      return this.$store.state.ua.profile;
-    },
+    ...mapState({
+      userAccount: (state) => state.ua.account,
+      userProfile: (state) => state.ua.profile,
+    }),
   },
   data() {
     return {
@@ -155,10 +156,20 @@ export default {
     },
   },
   created() {
+    // 判断登录状
+    loginStatus.check().then((res) => {
+      if (res.code === 200 && res.account) {
+        if (!Object.keys(this.userAccount).length) {
+          this.$store.dispatch("INIT_INFO");
+        }
+      } else {
+        Toast.fail("登录状态验证失败，请重新登录!");
+        setTimeout(() => {
+          this.$router.push("/login");
+        }, 300);
+      }
+    });
     this.INIT_CONTENT();
-    // 初始化信息
-    // this.$store.dispatch("INIT_INFO");
-    // const record = await getUserRecord(this.userAccount.id)
   },
 };
 </script>
@@ -180,43 +191,6 @@ export default {
   font-size: 15px;
   margin-bottom: 14px;
 }
-/* .profile {
-  height: 5vh;
-  display: flex;
-  justify-content: space-between;
-  line-height: 5vh;
-  .nickname {
-    font-size: 19px;
-    font-weight: 400;
-  }
-  .avatar {
-    width: 5vh;
-    height: 5vh;
-    background: #ffffff;
-    border-radius: 50%;
-    position: relative;
-    .badge {
-      display: inline-block;
-      position: absolute;
-      top: -0.5vh;
-      right: -0.5vh;
-      width: 2vh;
-      height: 2vh;
-      background: #0e0b20;
-      border: 1px solid #ef019f;
-      border-radius: 50%;
-      color: #fff;
-      line-height: 2vh;
-      text-align: center;
-      font-size: 0.12rem;
-    }
-    img {
-      width: 100%;
-      height: 100%;
-      border-radius: 50%;
-    }
-  }
-} */
 
 .input-search {
   width: 100%;

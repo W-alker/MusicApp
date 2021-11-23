@@ -105,7 +105,6 @@ export default {
       this.$store.commit("change_playMode");
     },
     deleteFromPIL(sid) {
-      console.log(sid);
       this.$store.commit("deleteFromPIL", sid);
     },
     deleteFromPIL_All() {
@@ -119,12 +118,13 @@ export default {
     this.$nextTick(() => {
       this.iscroll = new IScroll(this.$refs.playing_list_card, {
         scrollY: true,
+        mouseWheel:true
       });
       this.iscroll.scrollToElement(
-        document.querySelector(".list_item_active").previousSibling ||
-          // 防止已经是顶部元素
-          document.querySelector(".list_item_active"),
-        1
+        document.querySelector(".list_item_active"),
+        1,
+        0,
+        -44
       );
     });
   },
@@ -189,7 +189,7 @@ export default {
   margin-top: -0.2rem;
   touch-action: none;
   box-sizing: content-box;
-  padding-top: 0.2rem;
+  padding-top: 0.1rem;
   padding-bottom: 0.95rem;
   li {
     padding: 0.16rem;

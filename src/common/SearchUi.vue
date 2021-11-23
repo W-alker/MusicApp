@@ -20,7 +20,7 @@
             val
           }}</span>
         </div>
-        <i class="icon icon-shanchu btn"></i>
+        <i class="icon icon-shanchu btn" @click.stop="clear_searchHistory"></i>
       </div>
 
       <div class="hotSearch">
@@ -50,20 +50,34 @@
         </li>
       </ul>
     </div>
+
     <div class="wrapper searchRes" v-show="Object.keys(search_res).length">
-      <van-tabs v-model="searchRes_activeTabIndex">
-        <van-tab title="单曲">
-          <div class="searchRes_songs hideScroll">
-            <ul>
-              <li v-for="(item, idx) in search_res.songs">
-                  <h5 class="songName">{{item.name}}</h5>
-                  <p class="info">{{item.ar[0].name}} - {{item.al.name}}</p> 
-                  <p v-show="item.alia" class="alia">{{item.alia[0]}}</p>
-              </li>
-            </ul>
-          </div>
-        </van-tab>
-      </van-tabs>
+      <div class="searchRes_songs searchRes_inner">
+        <h4 class="searchRes_title">单曲</h4>
+        <div class="searchRes_list" ref="searchRes_list">
+          <ul>
+            <li v-for="(item, idx) in search_res.songs" @click="playSong(item)">
+              <div class="info">
+                <h5 class="songName" v-html="highLightKw(item.name)"></h5>
+                <p
+                  class="ar"
+                  v-html="
+                    highLightKw(item.ar[0].name) +
+                    '-' +
+                    highLightKw(item.al.name)
+                  "
+                ></p>
+                <p
+                  v-show="item.alia"
+                  class="alia"
+                  v-html="highLightKw(item.alia[0])"
+                ></p>
+              </div>
+              <i class="icon icon-icon"></i>
+            </li>
+          </ul>
+        </div>
+      </div>
     </div>
   </section>
 </template>
@@ -75,6 +89,10 @@ import {
   getSearchSuggests,
   getSearchRes,
 } from "network/search";
+import IScroll from "assets/js/iscroll-probe";
+import { ontouchActive } from "assets/js/util";
+import { mapState } from "vuex";
+import { Toast, Dialog } from "vant";
 
 export default {
   name: "SearchUi",
@@ -83,13 +101,50 @@ export default {
       defaultSearchKeyword: "",
       hotSearch: [],
       search_input: "",
-      search_history: ["ddd", "cccc", "wewqewew", "ewrewrer", "erewrwerewr"],
+      search_history: [],
       search_suggests: [],
       search_res: {},
       searchRes_activeTabIndex: 0,
+      iscroll: {},
     };
   },
+  watch: {
+    search_input() {
+      if (!this.search_input) this.search_res = {};
+    },
+  },
+  computed: {
+    ...mapState({
+      sid: (state) => state.ac.songInfo.id,
+    }),
+  },
   methods: {
+    highLightKw(str) {
+      if (str)
+        return str.replace(
+          this.search_input,
+          `<span class='highLight' style='color:var(--qinlan)'>${this.search_input}</span>`
+        );
+      return "";
+    },
+    playSong(s) {
+      this.$store.commit("addToPIL", s);
+      this.$store.dispatch("init_song", s);
+    },
+    clear_searchHistory() {
+      Dialog.confirm({
+        message: "清空搜索历史？",
+      })
+        .then(() => {
+          this.search_history=[];
+          localStorage.setItem(
+            "search_history",
+            JSON.stringify(this.search_history)
+          );
+          Toast("清空搜索历史");
+        })
+        .catch(() => {});
+    },
     async INIT_INFO() {
       const res = await getDefaultSearchKeyword();
       this.defaultSearchKeyword = res.data.showKeyword;
@@ -105,13 +160,32 @@ export default {
       this.search_suggests = res.result.allMatch;
     },
     async search(text) {
-      if (!text) text = this.search_input || this.defaultSearchKeyword;
-      const res = await getSearchRes(text, 1, 0);
+      this.search_input = this.search_input.trim();
+      this.search_input =
+        text || this.search_input || this.defaultSearchKeyword;
+
+      const res = await getSearchRes(this.search_input, 1, 0);
       this.search_res = res.result;
+
+      setTimeout(() => {
+        this.iscroll = new IScroll(this.$refs.searchRes_list, {
+          scrollY: true,
+        });
+      }, 20);
+
+      // 成功后记录历史
+      this.search_history.push(this.search_input);
+      localStorage.setItem(
+        "search_history",
+        JSON.stringify(this.search_history)
+      );
     },
   },
   created() {
     this.INIT_INFO();
+    // 恢复搜索历史
+    if (localStorage.getItem("search_history"))
+      this.search_history = JSON.parse(localStorage.getItem("search_history"));
   },
 };
 </script>
@@ -125,21 +199,25 @@ export default {
   bottom: 0;
   background-color: var(--commonPageBgc);
   color: var(--silveryWhite);
+  padding: 20px 0;
 
-  padding: 20px 16px;
   input {
-    width: calc(100% - 60px);
-    margin: 0 16px 0 40px;
+    width: calc(100% - 88px);
+    margin: 0 32px 0 56px;
     padding: 0 8px 8px 8px;
     border-bottom: 1px solid var(--qianhui);
+    font-size: 14px;
   }
 
   .wrapper {
-      height: calc(100% - 30px);
+    margin-top: 16px;
+    height: calc(100% - 30px);
   }
 
   .historySearch {
     margin-top: 16px;
+    padding: 0 16px;
+
     display: flex;
     align-items: center;
     font-size: 14px;
@@ -169,6 +247,8 @@ export default {
   .hotSearch {
     margin-top: 16px;
     font-size: 14px;
+    padding: 0 16px;
+
     h4 {
       margin-bottom: 10px;
     }
@@ -206,8 +286,9 @@ export default {
   }
 
   .searchSuggests {
+    padding: 0 16px;
+
     ul {
-      margin-top: 14px;
       li {
         margin-left: 24px;
         color: var(--sliveryWhite);
@@ -230,34 +311,71 @@ export default {
     }
   }
 
-  .searchRes_songs {
-      height: 100%;
-      ul {
-          li {
-              display: flex;
-              flex-direction: column;
-              justify-content: center;
-
-              font-size: 11px;
-              opacity: .8;
-              .songName {
-                  color: var(--White);
-                  font-size: 14px;
-                  opacity: 1;
-              }
-              .info,.alia {
-              color: var(--silveryWhite);
-                  opacity: 0.9;
-              }
-          }
-      }
-  }
-}
-.van-tabs {
-    height: 100%;
-    color: var(--white);
-    .van-tabs__content,.van-tab__pane {
-        height: calc(100% - 30px);
+  .searchRes {
+    padding-bottom: 0.2rem;
+    overflow: hidden;
+    .searchRes_inner {
+      overflow: hidden;
     }
+    .searchRes_title {
+      margin-bottom: 16px;
+      padding: 0 16px;
+    }
+    .searchRes_list {
+      overflow: hidden;
+      height: calc(100% - 40px);
+      box-shadow: 0 0 5px 5px var(--anlongdanzi);
+      padding: 16px 0;
+      ul {
+        padding-bottom: var(--footbarHeight);
+      }
+    }
+  }
+
+  .searchRes_songs {
+    height: 100%;
+    ul {
+      li {
+        display: flex;
+        font-size: 11px;
+        padding: 8px 16px;
+        &:hover {
+          background-color: var(--anlongdanzi);
+        }
+        &.active {
+          background-color: var(--anlongdanzi);
+        }
+        .info {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+
+          .songName {
+            color: var(--White);
+            font-size: 14px;
+            opacity: 1;
+            font-weight: normal;
+            line-height: 20px;
+          }
+          .ar,
+          .alia {
+            color: var(--silveryWhite);
+            opacity: 0.9;
+            line-height: 18px;
+          }
+          .alia {
+            font-size: 10px;
+          }
+        }
+        i {
+          display: flex;
+          width: 30px;
+          justify-content: center;
+          align-items: center;
+        }
+      }
+    }
+  }
 }
 </style>

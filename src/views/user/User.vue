@@ -64,7 +64,7 @@
       close-icon-position="top-left"
       get-container="#app"
     >
-      <playlist-detail :pl="curPL" :key='compUpdateTimer'/>
+      <playlist-detail :pl="curPL" :key="compUpdateTimer" />
     </van-popup>
 
     <foot-playbar ref="FootPlaybar" :isSlideDown="isShowPLD" />
@@ -81,6 +81,10 @@ import FootPlaybar from "common/FootPlaybar";
 import FootBar from "common/FootBar";
 import Top from "common/Top.vue";
 
+import { loginStatus } from "network/login";
+import { Toast } from "vant";
+import { mapState } from "vuex";
+
 export default {
   name: "User",
   components: {
@@ -93,33 +97,41 @@ export default {
     Top,
   },
   computed: {
-    userAccount() {
-      return this.$store.state.ua.account;
-    },
-    userProfile() {
-      return this.$store.state.ua.profile;
-    },
-    playlists() {
-      return this.$store.state.ua.playlists;
-    },
+    ...mapState({
+      userAccount: (state) => state.ua.account,
+      userProfile: (state) => state.ua.profile,
+      playlists: (state) => state.ua.playlists,
+    }),
   },
   data() {
     return {
       isShowPLD: false, //是否显示歌单详情页
-      compUpdateTimer:0,
+      compUpdateTimer: 0,
       curPL: {}, //当前歌单详情
     };
   },
   methods: {
     showPLD(data) {
-      this.compUpdateTimer=new Date().getTime()
+      this.compUpdateTimer = new Date().getTime();
       this.curPL = data;
       this.isShowPLD = true;
     },
   },
   created() {
-    if (Object.keys(this.$store.state.ua.account).length === 0)
-      this.$store.dispatch("INIT_INFO");
+    // 判断登录状
+    loginStatus.check().then((res) => {
+      if (res.code === 200 && res.account) {
+
+        if (!Object.keys(this.userAccount).length) {
+          this.$store.dispatch("INIT_INFO");
+        }
+      } else {
+        Toast.fail("登录状态验证失败，请重新登录!");
+        setTimeout(() => {
+          this.$router.push("/login");
+        }, 300);
+      }
+    });
   },
   mounted() {},
 };

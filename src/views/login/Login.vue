@@ -142,7 +142,7 @@ export default {
       if (this.loginOK) {
         // 刷新登录状态
         loginStatus.refresh();
-        this.$store.dispatch('INIT_INFO')
+        this.$store.dispatch("INIT_INFO");
         this.$router.push("/user");
       }
     },

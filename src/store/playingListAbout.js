@@ -1,4 +1,5 @@
 import { getSongDetail, getSongUrl } from 'network/song'
+import { Toast } from 'vant'
 
 export const playingListAbout = {
   state: {
@@ -9,11 +10,18 @@ export const playingListAbout = {
   },
   mutations: {
     addToPIL(state, song) {
-      state.playingList.push(song)
+      const len  = state.playingList.length
+      for(let i = 0;i<len;i++) {
+        if(state.playingList[i].id===song.id){
+          return
+        }
+      }
+      state.playingList.unshift(song)
       localStorage.setItem('playingList', JSON.stringify(state.playingList))
     },
     deleteFromPIL(state, sid) {
       let len = state.playingList.length
+      if(len==1) return Toast('暂不支持')
       for (let i = 0; i < len; i++) {
         if (sid === state.playingList[i].id) {
           state.playingList.splice(i, 1)
