@@ -178,7 +178,7 @@ export default {
   overflow: hidden;
   touch-action: none;
   position: relative;
-  &::before {
+/*   &::before {
     position: absolute;
     content: "";
     display: block;
@@ -187,7 +187,6 @@ export default {
     right: 0;
     height: 40px;
     z-index: 10;
-    background: linear-gradient(rgba(14, 11, 32, 1), rgba(14, 11, 32, 0));
   }
   &::after {
     position: absolute;
@@ -198,8 +197,7 @@ export default {
     right: 0;
     height: 40px;
     z-index: 10;
-    background: linear-gradient(rgba(14, 11, 32, 0), rgba(14, 11, 32, 1));
-  }
+  } */
 }
 .inner {
   box-sizing: content-box;

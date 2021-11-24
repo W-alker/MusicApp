@@ -1,18 +1,20 @@
 import { getSongDetail, getSongUrl } from 'network/song'
+
 import { Toast } from 'vant'
 
 export const playingListAbout = {
   state: {
     playingList: [],
     curIndex: 0,
-    playMode: 0, //0：顺序播放；1：随机播放；2：单曲循环
-    playedIndexArray: new Set()
+    playMode: 0, //0：顺序播放；1：随机播放；2：单曲循环; 3: 心动模式
+    playedIndexArray: new Set(),
+
   },
   mutations: {
     addToPIL(state, song) {
-      const len  = state.playingList.length
-      for(let i = 0;i<len;i++) {
-        if(state.playingList[i].id===song.id){
+      const len = state.playingList.length
+      for (let i = 0; i < len; i++) {
+        if (state.playingList[i].id === song.id) {
           return
         }
       }
@@ -21,7 +23,7 @@ export const playingListAbout = {
     },
     deleteFromPIL(state, sid) {
       let len = state.playingList.length
-      if(len==1) return Toast('暂不支持')
+      if (len == 1) return Toast('暂不支持')
       for (let i = 0; i < len; i++) {
         if (sid === state.playingList[i].id) {
           state.playingList.splice(i, 1)
@@ -29,13 +31,12 @@ export const playingListAbout = {
         }
       }
     },
-    change_playMode(state) {
-      state.playMode++
-      if (state.playMode === 3) state.playMode = 0
-    }
+
   },
   actions: {
-    recover_pl(context) {
+    async recover_pl(context) {
+      context.state.playMode = JSON.parse(localStorage.getItem('playMode'))
+
       const data = JSON.parse(localStorage.getItem('playingList'))
       if (data) {
         context.state.playingList = data
@@ -53,10 +54,15 @@ export const playingListAbout = {
       const songDetail = context.state.playingList[index]
       // 调用ac音频控制模块播放歌曲
       const isOk = await context.dispatch('init_song', songDetail, { root: true })
-       context.state.curIndex = index
-       if (!isOk){
+      context.state.curIndex = index
+      if (!isOk) {
         context.dispatch('nextSong')
       }
+    },
+    change_playMode(context) {
+      context.state.playMode++
+      if (context.state.playMode === 3) context.state.playMode = 0
+      localStorage.setItem('playMode',context.state.playMode)
     },
     updatePIL(context, args) {
       // index代表从当前播放列表哪里开始播放
@@ -72,6 +78,7 @@ export const playingListAbout = {
       // 本次信息存入本地
       localStorage.setItem('playingList', JSON.stringify(context.state.playingList))
     },
+
     nextSong(context) {
       const index = context.state.curIndex
       // 如果已经全部播完就重新计数

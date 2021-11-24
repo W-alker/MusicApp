@@ -32,6 +32,8 @@
             <span class="songName">{{ item.name }}</span>
             -
             {{ songArToStr(item.ar) }}
+
+            <span v-show="item.recommended">【荐】</span>
           </p>
           <i class="icon icon-cuowu btn" @click="deleteFromPIL(item.id)"></i>
         </li>
@@ -47,7 +49,6 @@
 </template>
 
 <script>
-import { getSongUrl } from "network/song";
 import { songArToStr } from "assets/js/util";
 
 import { mapState } from "vuex";
@@ -63,6 +64,7 @@ export default {
       arName: (state) => state.ac.songInfo.arName,
       list: (state) => state.pl.playingList,
       curSongId: (state) => state.ac.songInfo.id,
+      curSongInfo: (state) => state.ac.songInfo,
       playMode: (state) => state.pl.playMode,
 
       isFM_Mode: (state) => state.fm.isFM_Mode,
@@ -76,7 +78,10 @@ export default {
           return "icon-suijibofang";
         case 2:
           return "icon-danquxunhuan";
+        case 3:
+          return "icon-xindong";
       }
+      return "icon-shunxubofang";
     },
     playmode_text() {
       switch (this.playMode) {
@@ -86,6 +91,8 @@ export default {
           return "随机播放";
         case 2:
           return "单曲循环";
+        case 3:
+          return "心动模式";
       }
     },
   },
@@ -102,7 +109,8 @@ export default {
       this.$store.dispatch("changeSong", index);
     },
     change_playMode() {
-      this.$store.commit("change_playMode");
+      this.$store.dispatch("change_playMode");
+
     },
     deleteFromPIL(sid) {
       this.$store.commit("deleteFromPIL", sid);
@@ -112,13 +120,14 @@ export default {
     },
   },
   mounted() {
+    if (this.isFM_Mode) return;
     ontouchActive(
       document.querySelector(".playing-list-card").querySelectorAll(".btn")
     );
     this.$nextTick(() => {
       this.iscroll = new IScroll(this.$refs.playing_list_card, {
         scrollY: true,
-        mouseWheel:true
+        mouseWheel: true,
       });
       this.iscroll.scrollToElement(
         document.querySelector(".list_item_active"),

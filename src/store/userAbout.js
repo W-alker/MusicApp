@@ -18,8 +18,8 @@ export const userAbout = {
   actions: {
     async init_ua(context) {
       await this.dispatch('getUserInfo')
+      await this.dispatch('getPlaylists')
       this.dispatch('getLikelist')
-      this.dispatch('getPlaylists')
     },
     async getUserInfo(context) {
       const loginInfo = await getLoginStatus()
@@ -34,6 +34,7 @@ export const userAbout = {
       for (let i = 0; i < len; i++) {
         context.state.likeList.add(list.ids[i])
       }
+
     },
     async getPlaylists(context) {
       const res = await getUserPlaylists(context.state.account.id)

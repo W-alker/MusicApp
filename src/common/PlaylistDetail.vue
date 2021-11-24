@@ -2,7 +2,7 @@
   <section class="playlist-detail hideScroll">
     <h3 class="top-head">
       <span class="title">歌单</span>
-      <i class="fa fa-search"></i>
+      <i class="fa fa-search" @click='searchInPL'></i>
       <i class="icon icon-icon"></i>
     </h3>
     <div class="intro">
@@ -170,12 +170,16 @@ export default {
     },
     playStart(index = 0) {
       // 如果是第一次使用该列表，(虽然updatePIL方法已经有处理)
-      this.$store.dispatch("updatePIL", { list: this.list, index });
+      this.$store.dispatch("updatePIL", { list: this.list, index,pid:this.pid });
     },
     subscribePL() {
       if (this.pl.userId === this.uid) return 0;
       this.$store.dispatch("subscribePL", this.pl);
     },
+    //搜索歌单
+    searchInPL() {
+      
+    }
   },
   created() {},
   mounted() {
@@ -407,12 +411,14 @@ export default {
           font-weight: normal;
           line-height: 18px;
           margin-bottom: 4px;
+          font-size: 14px;
         }
         .arName {
           font-weight: normal;
           font-size: smaller;
           line-height: 15px;
           opacity: 0.7;
+          font-size: 11px;
         }
       }
       .btn {

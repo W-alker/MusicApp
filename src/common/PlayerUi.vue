@@ -1,5 +1,7 @@
 <template>
   <section class="player-ui">
+    <div class="bg" :style="{ backgroundImage: 'url(' + coverUrl + ')' }"></div>
+
     <div class="row top" v-show="!isFM_Mode">
       <div class="name">
         <h4 v-text="songName" class="textover-eclipse"></h4>
@@ -26,24 +28,24 @@
           </div>
         </div>
         <!-- 歌词界面 -->
-        <div
-          class="lyric part"
-          :class="{ active: isShowLyric }"
-        >
+        <div class="lyric part" :class="{ active: isShowLyric }">
           <player-ui-lyric
             :lyric_withTime="lyric_withTime"
             :tlyric_withTime="tlyric_withTime"
             :nolyric="false"
             :songName="songName"
-            :key='sid'
-            @showMain='isShowLyric=false'
-            v-if='lyric_withTime.length'
+            :key="sid"
+            @showMain="isShowLyric = false"
+            v-if="lyric_withTime.length"
           ></player-ui-lyric>
         </div>
       </div>
       <!-- 底部 -->
       <div class="bottom">
-        <action-btns v-show="!isFM_Mode && !isShowLyric" :key='sid'></action-btns>
+        <action-btns
+          v-show="!isFM_Mode && !isShowLyric"
+          :key="sid"
+        ></action-btns>
         <player-ui-progress></player-ui-progress>
         <ctrl-btns :isFMUI="isFM_Mode"></ctrl-btns>
       </div>
@@ -112,17 +114,13 @@ export default {
     pauseCtrl() {
       this.$store.commit("playOrPause");
     },
-
-    change_playMode() {
-      this.$store.commit("change_playMode");
-    },
     CHANGE() {},
   },
   mounted() {},
   watch: {
     sid() {
       this.$emit("updateComp", this.sid);
-      this.init_lyric()
+      this.init_lyric();
     },
   },
   created() {
@@ -143,10 +141,44 @@ export default {
   right: 0;
   bottom: 0;
   padding: 0.16rem 0.24rem;
-  background: var(--commonPageBgc);
   color: #f1f0ed;
   display: flex;
   flex-direction: column;
+  background-size: cover;
+    background-color: var(--commonPageBgc);
+
+  .bg {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--commonPageBgc);
+    background-image: var(--bg);
+    z-index: -1;
+    transform: scale(1.5);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+    -webkit-filter: blur(20px);
+    -moz-filter: blur(20px);
+    -o-filter: blur(20px);
+    -ms-filter: blur(20px);
+    filter: brightness(60%) blur(20px);
+    &::after {
+      content: "";
+      display: block;
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      background-color: rgba(0, 0, 0, 0.7);
+    }
+  }
 
   .row {
     display: flex;

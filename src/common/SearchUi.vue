@@ -199,76 +199,76 @@ export default {
   bottom: 0;
   background-color: var(--commonPageBgc);
   color: var(--silveryWhite);
-  padding: 20px 0;
+  padding: 0.2rem 0;
 
   input {
-    width: calc(100% - 88px);
-    margin: 0 32px 0 56px;
-    padding: 0 8px 8px 8px;
-    border-bottom: 1px solid var(--qianhui);
-    font-size: 14px;
+    width: calc(100% - 0.88rem);
+    margin: 0 0.32rem 0 0.56rem;
+    padding: 0 0.08rem 0.08rem 0.08rem;
+    border-bottom: 0.01rem solid var(--qianhui);
+    font-size: 0.14rem;
   }
 
   .wrapper {
-    margin-top: 16px;
-    height: calc(100% - 30px);
+    margin-top: 0.16rem;
+    height: calc(100% - 0.3rem);
   }
 
   .historySearch {
-    margin-top: 16px;
-    padding: 0 16px;
+    margin-top: 0.16rem;
+    padding: 0 0.16rem;
 
     display: flex;
     align-items: center;
-    font-size: 14px;
-    height: 30px;
-    line-height: 30px;
+    font-size: 0.14rem;
+    height: 0.3rem;
+    line-height: 0.3rem;
     .container {
       flex: 1;
-      margin: 0 16px;
+      margin: 0 0.16rem;
       display: flex;
       .tag {
-        margin-right: 8px;
+        margin-right: 0.08rem;
         display: inline-block;
-        height: 25px;
-        padding: 0 12px;
+        height: 0.25rem;
+        padding: 0 0.12rem;
         background-color: var(--anlongdanzi);
-        border-radius: 16px;
-        line-height: 25px;
+        border-radius: 0.16rem;
+        line-height: 0.25rem;
       }
     }
     .icon.btn {
-      font-size: 14px;
-      width: 30px;
-      height: 30px;
+      font-size: 0.14rem;
+      width: 0.3rem;
+      height: 0.3rem;
       text-align: center;
     }
   }
   .hotSearch {
-    margin-top: 16px;
-    font-size: 14px;
-    padding: 0 16px;
+    margin-top: 0.16rem;
+    font-size: 0.14rem;
+    padding: 0 0.16rem;
 
     h4 {
-      margin-bottom: 10px;
+      margin-bottom: 0.1rem;
     }
     .container {
       ul {
         display: flex;
         flex-wrap: wrap;
-        border-radius: 26px;
+        border-radius: 0.26rem;
         background: linear-gradient(145deg, #110f20, #141227);
-        box-shadow: 7px 7px 14px #0c0b16;
-        padding: 12px;
+        box-shadow: 0.07rem 0.07rem 0.14rem #0c0b16;
+        padding: 0.12rem;
         li {
-          height: 35px;
+          height: 0.35rem;
           width: 50%;
-          line-height: 35px;
-          padding-left: 4px;
+          line-height: 0.35rem;
+          padding-left: 0.04rem;
           .serialNumber {
             display: inline-block;
             height: 100%;
-            width: 20px;
+            width: 0.2rem;
             opacity: 0.7;
           }
           &:hover {
@@ -286,23 +286,23 @@ export default {
   }
 
   .searchSuggests {
-    padding: 0 16px;
+    padding: 0 0.16rem;
 
     ul {
       li {
-        margin-left: 24px;
+        margin-left: 0.24rem;
         color: var(--sliveryWhite);
-        height: 40px;
-        line-height: 40px;
-        padding-bottom: 6px;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        height: 0.4rem;
+        line-height: 0.4rem;
+        padding-bottom: 0.06rem;
+        border-bottom: 0.01rem solid rgba(255, 255, 255, 0.2);
         position: relative;
         i {
           display: inline-block;
           position: absolute;
-          left: -24px;
+          left: -0.24rem;
           opacity: 0.7;
-          line-height: 40px;
+          line-height: 0.4rem;
         }
         &:hover {
           background-color: rgba(153, 153, 153, 0.1);
@@ -312,20 +312,20 @@ export default {
   }
 
   .searchRes {
-    padding-bottom: 0.2rem;
+    padding-bottom: 20px;
     overflow: hidden;
     .searchRes_inner {
       overflow: hidden;
     }
     .searchRes_title {
-      margin-bottom: 16px;
-      padding: 0 16px;
+      margin-bottom: 0.16rem;
+      padding: 0 0.16rem;
     }
     .searchRes_list {
       overflow: hidden;
-      height: calc(100% - 40px);
-      box-shadow: 0 0 5px 5px var(--anlongdanzi);
-      padding: 16px 0;
+      height: calc(100% - 0.4rem);
+      box-shadow: 0 0 0.05rem 0.05rem var(--anlongdanzi);
+      padding: 0.16rem 0;
       ul {
         padding-bottom: var(--footbarHeight);
       }
@@ -337,8 +337,8 @@ export default {
     ul {
       li {
         display: flex;
-        font-size: 11px;
-        padding: 8px 16px;
+        font-size: 0.11rem;
+        padding: 0.08rem 0.16rem;
         &:hover {
           background-color: var(--anlongdanzi);
         }
@@ -353,24 +353,24 @@ export default {
 
           .songName {
             color: var(--White);
-            font-size: 14px;
+            font-size: 0.14rem;
             opacity: 1;
             font-weight: normal;
-            line-height: 20px;
+            line-height: 0.2rem;
           }
           .ar,
           .alia {
             color: var(--silveryWhite);
             opacity: 0.9;
-            line-height: 18px;
+            line-height: 0.18rem;
           }
           .alia {
-            font-size: 10px;
+            font-size: 0.1rem;
           }
         }
         i {
           display: flex;
-          width: 30px;
+          width: 0.3rem;
           justify-content: center;
           align-items: center;
         }

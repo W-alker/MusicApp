@@ -50,7 +50,7 @@
       get-container="#app"
       duration=".15"
     >
-      <playing-list-card :key='compUpdateTimer'></playing-list-card>
+      <playing-list-card :key="compUpdateTimer"></playing-list-card>
     </van-popup>
   </div>
 </template>
@@ -87,12 +87,15 @@ export default {
           return "icon-suijibofang";
         case 2:
           return "icon-danquxunhuan";
+        case 3:
+          return "icon-xindong";
       }
+      return "icon-shunxubofang";
     },
   },
   data() {
     return {
-      compUpdateTimer:0,
+      compUpdateTimer: 0,
       isShowPL: false,
       isLikeSong: false,
     };
@@ -108,7 +111,7 @@ export default {
       this.$store.dispatch("prevSong");
     },
     showPL() {
-      this.compUpdateTimer=Date.now()
+      this.compUpdateTimer = Date.now();
       this.isShowPL = true;
     },
 
@@ -118,22 +121,33 @@ export default {
     },
 
     change_playMode() {
-      this.$store.commit("change_playMode");
+      this.$store.dispatch("change_playMode");
+      if (this.isLikePL && this.playMode === 3) {
+        this.$store.dispatch("changeIntelligencePIL", {
+          id: this.curSongId,
+          pid: 0,
+          sid: this.sid,
+        });
+        this.$store.dispatch("init_song", this.list[0]);
+      } else if (this.isLikePL && this.playMode !== 3) {
+        // 如果是新推荐的歌曲，取消心动模式的话播放列表是找不到这首歌会出问题，自动切到第一首防止报错
+        if (this.curSongInfo.recommended) {
+          this.$store.dispatch("init_song", this.list[0]);
+        }
+      }
     },
 
     fm_trash() {
       this.$store.dispatch("FM_TRASH");
     },
     nextFM() {
-      this.$store.dispatch('NEXT_FM')
-    }
+      this.$store.dispatch("NEXT_FM");
+    },
   },
   updated() {
     this.isLikeSong = this.likeList.has(this.sid);
-    
   },
-  created() {
-  },
+  created() {},
 };
 </script>
 

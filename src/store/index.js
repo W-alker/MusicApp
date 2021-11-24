@@ -10,6 +10,7 @@ import { songAbout } from './songAbout'
 import { initActions } from './initActions'
 import { fmMode } from './fmMode'
 import { ui } from './uiAbout'
+import {intellgenceMode} from './intelligenceMode'
 
 const store = new Vuex.Store({
   modules: {
@@ -19,7 +20,8 @@ const store = new Vuex.Store({
     sa: songAbout,
     init: initActions,
     fm: fmMode,
-    ui
+    ui,
+    itm:intellgenceMode
   }
 })
 

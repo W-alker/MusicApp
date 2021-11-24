@@ -1,6 +1,14 @@
 <template>
-  <section class="playlist-detail hideScroll">
-    <div class="top" :style="{backgroundImage:list[0].coverImgUrl}">
+  <section class="daily-rcmd-songs hideScroll" @touchmove="scroll($event)">
+    <div class="tp">
+      <h3>每日推荐</h3>
+    </div>
+    <div
+      class="head"
+      :style="{ backgroundImage: 'url(' + list[0].al.picUrl + ')' }"
+      ref="head"
+    >
+      <h4>{{ new Date().getMonth() + 1 }} / {{ new Date().getDate() }}</h4>
     </div>
     <div class="list-container">
       <div class="ctrlBtns left">
@@ -20,12 +28,23 @@
           @click="playStart(index)"
           :class="[{ active: curSongId === item.id }]"
         >
-          <span class="serialNumber">{{ index + 1 }}</span>
+          <div
+            class="cover"
+            :style="{ backgroundImage: 'url(' + item.al.picUrl + ')' }"
+          ></div>
           <div class="songInfo">
-            <h4 class="songName textover-eclipse">{{ item.al.name }}</h4>
-            <h4 class="arName textover-eclipse">{{ songArToStr(item.ar) }}</h4>
+            <h4 class="songName textover-eclipse">
+              {{ item.name }}
+              <span style="opacity: 0.8" v-show="item.alia.length"
+                >({{ item.alia[0] }})</span
+              >
+            </h4>
+            <h4 class="arName textover-eclipse">
+              {{ songArToStr(item.ar) }}
+              <span> - {{ item.al.name }}</span>
+            </h4>
           </div>
-          <van-icon name="tv-o" class="btn" />
+          <van-icon name="tv-o" class="btn" v-show="item.mv !== 0" />
           <i class="icon icon-icon btn"></i>
         </li>
       </ul>
@@ -48,9 +67,14 @@ export default {
     curSongId() {
       return this.$store.state.ac.songInfo.id;
     },
+    offsetTop() {
+      return this.$refs.head.offsetTop;
+    },
   },
   data() {
-    return {};
+    return {
+      headCover: "",
+    };
   },
   methods: {
     songArToStr(ars) {
@@ -66,6 +90,7 @@ export default {
       // 如果不是则直接更改歌曲就行
       else this.$store.dispatch("changeSong", index);
     },
+    scroll(e) {},
   },
   created() {},
   mounted() {},
@@ -73,153 +98,144 @@ export default {
 </script>
 
 <style scoped lang='scss'>
-.playlist-detail {
-  width: 100vw;
-  height: 100vh;
-  background-color: var(--commonPageBgc);
-  color: var(--silveryWhite);
+.daily-rcmd-songs {
+  background-color: var(--footplaybarBgc);
+  position: relative;
+  height: 100%;
+  width: 100%;
 }
-.top {
-  height: 200px;
+.tp {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  height: 0.55rem;
+  z-index: 20;
+  background-color: var(--footplaybarBgc);
 
-}
-.pl-info {
-  margin-top: 30px;
   display: flex;
-  .cover {
-    width: 120px;
-    height: 120px;
-    background-color: #fff;
-    border-radius: 8px;
-    overflow: hidden;
-    margin-right: 16px;
-    background-size: 100% 100%;
-    position: relative;
-    .playcount {
-      position: absolute;
-      right: 4px;
-      top: 4px;
-      display: inline-block;
-      padding: 4px;
-      font-size: 11px;
-      background-color: rgba(0, 0, 0, 0.6);
-      border-radius: 6px;
-      .icon {
-        font-size: smaller;
-        vertical-align: middle;
-      }
-    }
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 0.16rem;
+  color: var(--silveryWhite);
+  h3 {
   }
-  .info {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    max-width: calc(100% - 120px - 16px);
-    .listName {
-      font-size: 18px;
-    }
-    .author {
-      font-size: 14px;
-      font-weight: normal;
-      .avatar-thumb {
-        width: 25px;
-        height: 25px;
-        vertical-align: middle;
-        border-radius: 50%;
-      }
-      span {
-        margin-left: 10px;
-        opacity: 0.8;
-      }
-    }
-    .editBtn {
-      font-size: 12px;
-      opacity: 0.8;
-      padding-right: 2em;
-      position: relative;
-      .icon {
-        position: absolute;
-        right: 0;
-      }
-    }
+}
+.head {
+  height: 2rem;
+  background-position: center center;
+  background-size: cover;
+  position: relative;
+  h4 {
+    position: absolute;
+    bottom: 0.2rem;
+    left: 0.2rem;
+    color: var(--silveryWhite);
+    font-size: 0.24rem;
   }
 }
 .list-container {
-  margin-top: 30px;
-  padding: 16px;
+  position: relative;
+  margin-top: 0.16rem;
   padding-bottom: var(--footplaybarHeight);
 
-  background-color: var(--silveryWhite);
-  color: var(--black);
+  background-color: var(--footplaybarBgc);
+  color: var(--silveryWhite);
+
   .ctrlBtns {
+    padding: 0 0.16rem;
+
+    position: sticky;
+    top: 0.55rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    height: 40px;
-    position: sticky;
-    top: 0;
-    background-color: var(--silveryWhite);
+    height: 0.4rem;
     z-index: 30;
+    background-color: var(--footplaybarBgc);
+
     .btn {
       cursor: pointer;
     }
     .btn-playAll {
-      height: 25px;
-      line-height: 25px;
+      height: 0.4rem;
+      line-height: 0.4rem;
       font-weight: bold;
+      flex-grow: 1;
       .van-icon {
-        margin-right: 6px;
-        font-size: x-large;
+        margin-right: 0.06rem;
+        font-size: 0.26rem;
         vertical-align: middle;
         color: var(--auroraRed);
       }
+      &:hover {
+        background-color: var(--footbarBgc);
+      }
     }
     .right {
+      display: flex;
+      align-items: center;
       .btn {
         display: inline-block;
-        margin-left: 10px;
-        width: 25px;
-        height: 25px;
-        font-size: 20px;
-        line-height: 25px;
+        margin-left: 0.1rem;
+        width: 0.3rem;
+        height: 0.3rem;
+        font-size: 0.2rem;
+        line-height: 0.3rem;
         text-align: center;
       }
     }
   }
   .list {
-    $li-h: 48px;
+    $li-h: 0.55rem;
+    font-size: 0.15rem;
     li {
+      padding: 0 0.16rem;
       display: flex;
       justify-content: space-between;
+      align-items: center;
       height: $li-h;
       transition: all ease 0.2s;
       &.active {
-        background-color: red;
+        background-color: var(--footbarBgc);
       }
-      .serialNumber {
-        display: inline-block;
-        width: 6%;
-        height: $li-h;
-        line-height: $li-h;
-        text-align: center;
+      &.nocopyright {
+        .songInfo {
+          opacity: 0.4;
+        }
+      }
+      &:hover {
+        background-color: var(--footbarBgc);
+      }
+      .cover {
+        width: 0.42rem;
+        height: 0.42rem;
+        background-size: 100% 100%;
+        border-radius: px;
       }
       .songInfo {
-        width: 64%;
-        line-height: $li-h / 2;
+        width: 60%;
+        flex-grow: 1;
+        padding: 0 0.12rem;
         .songName {
           font-weight: normal;
+          line-height: 0.18rem;
+          margin-bottom: 0.04rem;
+          font-size: 0.14rem;
         }
         .arName {
           font-weight: normal;
           font-size: smaller;
+          line-height: 0.15rem;
+          opacity: 0.7;
+          font-size: 0.1rem;
         }
       }
       .btn {
         display: inline-block;
-        width: 28px;
+        width: 0.3rem;
         height: $li-h;
         line-height: $li-h;
-        font-size: 20px;
+        font-size: 0.2rem;
         text-align: center;
       }
     }

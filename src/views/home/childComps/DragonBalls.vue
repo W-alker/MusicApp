@@ -60,6 +60,11 @@ export default {
       fmSong: {},
     };
   },
+  watch:{
+    isShowDaliyList() {
+      this.isShowDaliyList?this.$emit('showDailyList',true):this.$emit('showDailyList',false)
+    }
+  },
   methods: {
     async INIT() {
       const res = await getHomePageContent.DragonBalls();

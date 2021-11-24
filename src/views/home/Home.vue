@@ -26,7 +26,7 @@
 
     <banner :banners="banners" />
 
-    <dragon-balls></dragon-balls>
+    <dragon-balls @showDailyList='showDailyList'></dragon-balls>
 
     <block-rcmd-playlists
       :data="blocks[1]"
@@ -69,7 +69,7 @@
       <search-ui :key="Date.now()"></search-ui>
     </van-popup>
 
-    <foot-playbar ref="FootPlaybar" :isSlideDown="isShowPLD || isShowSearchUi" />
+    <foot-playbar ref="FootPlaybar" :isSlideDown="isShowPLD || isShowSearchUi || isShowDailyList" />
     <foot-bar :activeIndex="0" />
   </main> 
 </template>
@@ -131,6 +131,7 @@ export default {
       isShowPLD: false, //是否显示歌单详情页
       compUpdateTimer: 0,
       isShowSearchUi: false,
+      isShowDailyList:false
     };
   },
   methods: {
@@ -154,6 +155,9 @@ export default {
     showSearchUi() {
       this.isShowSearchUi = true;
     },
+    showDailyList(v) {
+      this.isShowDailyList=v
+    }
   },
   created() {
     // 判断登录状

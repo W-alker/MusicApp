@@ -3,8 +3,8 @@
     class="myLikeMusic box"
     ref="myLikeMusicBox"
     @click="showPLD"
-    @touchstart="()=>this.$refs.myLikeMusicBox.classList.add('active')"
-    @touchend="()=>this.$refs.myLikeMusicBox.classList.remove('active')"
+    @touchstart="() => this.$refs.myLikeMusicBox.classList.add('active')"
+    @touchend="() => this.$refs.myLikeMusicBox.classList.remove('active')"
   >
     <div
       class="cover"
@@ -16,7 +16,7 @@
       <p>我喜欢的音乐</p>
       <span v-cloak>{{ detail.trackCount }}首</span>
     </div>
-    <div class="intelligencePlay_btn">
+    <div class="intelligencePlay_btn" @click.stop="intelligenceMode">
       <i class="icon icon-xindong"></i>
       心动模式
     </div>
@@ -40,6 +40,14 @@ export default {
     showPLD() {
       this.$emit("showPLD", this.detail);
     },
+    intelligenceMode() {
+      this.$store.dispatch("changeIntelligencePIL", {
+        id: this.detail.tracks[parseInt(Math.random() * this.detail.trackCount)]
+          .id,
+        pid: this.detail.id,
+      });
+      // this.$store.dispatch('init_song',this.$store.state.pl.playingList[0])
+    },
   },
   mounted() {
     this.$nextTick(async () => {
@@ -59,7 +67,7 @@ export default {
   transition: all ease 0.3s;
   background-color: var(--silveryWhite);
   &.active {
-    background-color: rgba(146, 146, 144,1);
+    background-color: rgba(146, 146, 144, 1);
   }
   .cover {
     width: 50px;
