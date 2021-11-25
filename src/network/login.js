@@ -3,7 +3,7 @@ import { request } from './request'
 export const loginStatus = {
   async check() {
     let res = await request({
-      url: `/login/status`
+      url: `/login/status?timestamp=${Date.now()}`
     })
     return res.data
   },
@@ -13,14 +13,14 @@ export const loginStatus = {
     })
   }
 }
+export function logout() {
+  return request({
+    url: '/logout'
+  })
+}
 
 export async function signUp(info) {
-  let {
-    phone,
-    pwd,
-    captcha,
-    nickname
-  } = info
+  let { phone, pwd, captcha, nickname } = info
   let res = await request({
     url: `/register/cellphone?phone=${phone}&password=${pwd}&captcha=${captcha}&nickname=${nickname}`
   })

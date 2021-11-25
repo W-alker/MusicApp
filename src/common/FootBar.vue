@@ -45,7 +45,7 @@ export default {
     border-width: 0;
   }
   &-item {
-    font-size: 11px;
+    font-size: 0.11rem;
     color: var(--silveryWhite);
 
     &--active {

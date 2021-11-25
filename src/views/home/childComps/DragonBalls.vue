@@ -101,26 +101,26 @@ export default {
   ul {
     display: flex;
     li {
-      font-size: 12px;
-      margin-right: 5px;
+      font-size: 0.12rem;
+      margin-right: 0.05rem;
       a {
-        width: 60px;
+        width: 0.6rem;
         flex-direction: column;
         color: var(--silveryWhite);
 
         .icon {
           border-radius: 50%;
-          width: 45px;
-          height: 45px;
+          width: 0.45rem;
+          height: 0.45rem;
           background-color: var(--darkRed);
           img {
-            width: 45px;
-            height: 45px;
+            width: 0.45rem;
+            height: 0.45rem;
             // background-color: red;
           }
         }
         p {
-          margin-top: 8px;
+          margin-top: 0.08rem;
           text-align: center;
         }
       }

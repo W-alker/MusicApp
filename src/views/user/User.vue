@@ -1,6 +1,8 @@
 <template>
   <main class="hideScroll">
-    <top></top>
+    <top>
+      <van-icon name="search" slot="right" @click="isShowSearchUi = true" />
+    </top>
 
     <section class="profile">
       <div class="avatar"><img :src="userProfile.avatarUrl" alt="" /></div>
@@ -67,6 +69,20 @@
       <playlist-detail :pl="curPL" :key="compUpdateTimer" />
     </van-popup>
 
+    <van-popup
+      v-model="isShowSearchUi"
+      position="bottom"
+      closeable
+      close-icon-position="top-left"
+      close-icon=" icon icon-xiajiantou"
+      :overlay="false"
+      get-container="#app"
+      style="width: 100%; height: 100%"
+      duration=".15"
+    >
+      <search-ui :key="Date.now()"></search-ui>
+    </van-popup>
+
     <foot-playbar ref="FootPlaybar" :isSlideDown="isShowPLD" />
     <foot-bar :activeIndex="1" />
   </main>
@@ -80,6 +96,7 @@ import PlaylistDetail from "common/PlaylistDetail";
 import FootPlaybar from "common/FootPlaybar";
 import FootBar from "common/FootBar";
 import Top from "common/Top.vue";
+import SearchUi from "common/SearchUi";
 
 import { loginStatus } from "network/login";
 import { Toast } from "vant";
@@ -90,6 +107,7 @@ export default {
   components: {
     MyLikeMusic,
     AllPlaylists,
+    SearchUi,
 
     PlaylistDetail,
     FootBar,
@@ -106,6 +124,7 @@ export default {
   data() {
     return {
       isShowPLD: false, //是否显示歌单详情页
+      isShowSearchUi: false,
       compUpdateTimer: 0,
       curPL: {}, //当前歌单详情
     };
@@ -120,8 +139,8 @@ export default {
   created() {
     // 判断登录状
     loginStatus.check().then((res) => {
+      console.log("进入用户界面", res);
       if (res.code === 200 && res.account) {
-
         if (!Object.keys(this.userAccount).length) {
           this.$store.dispatch("INIT_INFO");
         }
@@ -132,6 +151,10 @@ export default {
         }, 300);
       }
     });
+
+    // 恢复上次的信息
+    if (!this.$store.state.init.recovered)
+      this.$store.dispatch("recover_lastStatus");
   },
   mounted() {},
 };
@@ -147,14 +170,14 @@ main {
 
 .profile {
   display: flex;
-  height: 45px;
-  margin: 20px 15px;
+  height: 0.45rem;
+  margin: 0.2rem 0.15rem;
   justify-content: flex-start;
   align-items: center;
   position: relative;
   .avatar {
-    width: 45px;
-    height: 45px;
+    width: 0.45rem;
+    height: 0.45rem;
     img {
       width: 100%;
       height: 100%;
@@ -164,31 +187,31 @@ main {
   .info {
     margin-left: 1em;
     .nickname {
-      font-size: 16px;
+      font-size: 0.16rem;
     }
   }
   .icon {
     position: absolute;
     right: 0;
-    font-size: 24px;
+    font-size: 0.24rem;
   }
 }
 
 .box {
   background-color: var(--silveryWhite);
-  border-radius: 10px;
-  padding: 12px 16px;
-  margin-top: 16px;
+  border-radius: 0.1rem;
+  padding: 0.12rem 0.16rem;
+  margin-top: 0.16rem;
   color: var(--black);
-  font-size: 14px;
+  font-size: 0.14rem;
 }
 .column {
-  padding: 20px 10px;
+  padding: 0.2rem 0.1rem;
   ul {
     display: flex;
     flex-wrap: wrap;
     color: var(--shuiniuhui);
-    font-size: 12px;
+    font-size: 0.12rem;
 
     li {
       width: 25%;
@@ -196,12 +219,12 @@ main {
       justify-content: center;
       align-items: center;
       flex-direction: column;
-      margin-top: 20px;
+      margin-top: 0.2rem;
       &:nth-of-type(-n + 4) {
         margin-top: 0;
       }
       .icon {
-        font-size: 30px;
+        font-size: 0.3rem;
         color: var(--themeRed);
       }
     }

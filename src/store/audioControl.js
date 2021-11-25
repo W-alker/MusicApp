@@ -53,24 +53,25 @@ export const audioControl = {
       url: 'http://m7.music.126.net/20211117115510/6496e0d8f8e16c37d2cb5fc10609e200/ymusic/4b0e/c937/8f7e/465c450cd62e279f2f032385b7f48eb7.mp3'
     }, // 歌曲信息
     isPause: true,
-    duration: 0,
+    duration: 226.895692,
     currentTime: 0
   },
   mutations: {
     recover_ac(state) {
       const data = localStorage.getItem('songInfo')
       if (data) state.songInfo = JSON.parse(data)
-      state.duration = Number(localStorage.getItem('duration'))
+
+      // state.duration = Number(localStorage.getItem('duration'))
     },
     play(state) {
       const audio = document.getElementById('audio')
       audio.play()
-      state.isPause = false
+      if (!audio.paused) state.isPause = false
     },
     pause(state) {
       const audio = document.getElementById('audio')
       audio.pause()
-      state.isPause = true
+      if(audio.paused) state.isPause = true
     },
     playOrPause(state) {
       const audio = document.getElementById('audio')

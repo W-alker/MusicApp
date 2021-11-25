@@ -45,7 +45,7 @@ export default {
   left: 0;
   right: 0;
   z-index: 1060;
-  padding: 12px 16px 12px 16px;
+  padding: 0.12rem 0.16rem 0.12rem 0.16rem;
   background-color: var(--themeBgc);
 
   display: flex;
@@ -54,7 +54,7 @@ export default {
   height: var(--topBarHeight);
 
   .van-icon,
-  .icon {
+  .fa, .icon {
     display: inline-block;
     height: 0.24rem;
     width: 0.24rem;
@@ -63,7 +63,7 @@ export default {
   }
   .center {
     flex-grow: 1;
-    margin: 0 10px;
+    margin: 0 0.1rem;
   }
   .right {
     height: 0.24rem;

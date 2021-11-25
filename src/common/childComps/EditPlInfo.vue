@@ -38,10 +38,10 @@ export default {
   width: 100%;
   height: 100%;
   background-color: var(--silveryWhite);
-  padding: 16px;
+  padding: 0.16rem;
   h3 {
-    margin-left: 40px;
-    line-height: 22px;
+    margin-left: 0.4rem;
+    line-height: 0.22rem;
   }
 }
 </style>

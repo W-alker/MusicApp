@@ -76,13 +76,13 @@ export default {
 
 <style lang="scss" scoped>
 @mixin neumorphism {
-  border-radius: 10px;
+  border-radius: 0.1rem;
   background: #46464c;
-  box-shadow: -5px 5px 10px #353539, 5px -5px 10px #58585f;
+  box-shadow: -0.05rem 0.05rem 0.1rem #353539, 0.05rem -0.05rem 0.1rem #58585f;
 }
 
 main {
-  padding: 30px 20px;
+  padding: 0.3rem 0.2rem;
   width: 100%;
   height: 100%;
   overflow: scroll;
@@ -95,34 +95,34 @@ main {
 
 .profile {
   img {
-    width: 88px;
-    height: 88px;
+    width: 0.88rem;
+    height: 0.88rem;
     float: left;
-    margin-right: 20px;
+    margin-right: 0.2rem;
   }
 }
 
 .btn-group {
-  margin: 20px 10px;
+  margin: 0.2rem 0.1rem;
   .btn-playAll {
-    width: 26px;
-    height: 26px;
+    width: 0.26rem;
+    height: 0.26rem;
     background-color: rgba(255, 55, 55, 0.8);
     text-align: center;
-    line-height: 26px;
+    line-height: 0.26rem;
     border-radius: 50%;
     font-size: smaller;
   }
 }
 
 .tracks_list {
-  margin-top: 30px;
-  //   padding: 10px 0;
+  margin-top: 0.3rem;
+  //   padding: 0.1rem 0;
   //   @include neumorphism;
   .song_sec {
-    height: 60px;
-    margin: 7px 0;
-    padding: 5px 10px;
+    height: 0.6rem;
+    margin: 0.07rem 0;
+    padding: 0.05rem 0.1rem;
     position: relative;
     &:hover {
       background-color: rgb(80, 80, 80);
@@ -131,16 +131,16 @@ main {
   .song_num {
     float: left;
     display: block;
-    width: 50px;
+    width: 0.5rem;
     height: 100%;
-    line-height: 50px;
+    line-height: 0.5rem;
     text-align: center;
-    margin-right: 10px;
+    margin-right: 0.1rem;
   }
   .song_name {
-    width: calc(100% - 110px);
-    height: 25px;
-    line-height: 25px;
+    width: calc(100% - 1.1rem);
+    height: 0.25rem;
+    line-height: 0.25rem;
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
@@ -155,17 +155,17 @@ main {
     top: 0;
     right: 0;
     display: block;
-    width: 50px;
+    width: 0.5rem;
     height: 100%;
     text-align: center;
-    line-height: 60px;
+    line-height: 0.6rem;
     &:hover {
       background-color: rgb(80, 80, 80);
     }
   }
   .cover_pic {
-    width: 40px;
-    height: 40px;
+    width: 0.4rem;
+    height: 0.4rem;
   }
 }
 </style>

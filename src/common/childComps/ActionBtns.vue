@@ -10,7 +10,7 @@
         { 'icon-xihuan1': isLikeSong },
       ]"
       @click="likeSong"
-      style="font-size: 22px"
+      style="font-size: 0.22rem"
     ></i>
     <i class="icon icon-renwuzhongxin-huodepinglun"></i>
     <i class="icon icon-icon"></i>
@@ -64,11 +64,11 @@ export default {
 
 <style scoped lang='scss'>
 .action-btns {
-  height: 30px;
-  padding: 0 20px;
+  height: 0.3rem;
+  padding: 0 0.2rem;
   .icon {
     display: inline-block;
-    font-size: 20px;
+    font-size: 0.2rem;
     &.icon-xihuan1 {
       color: var(--darkRed);
     }

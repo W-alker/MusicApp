@@ -25,6 +25,7 @@
 
 <script>
 import { getPlaylistDetail } from "network/playlist";
+import { Toast } from "vant";
 
 export default {
   name: "MyLikeMusic",
@@ -41,11 +42,15 @@ export default {
       this.$emit("showPLD", this.detail);
     },
     intelligenceMode() {
-      this.$store.dispatch("changeIntelligencePIL", {
+      return Toast({
+        message: "存在bug，暂不开放",
+        icon: "info-o",
+      });
+      /* this.$store.dispatch("changeIntelligencePIL", {
         id: this.detail.tracks[parseInt(Math.random() * this.detail.trackCount)]
           .id,
         pid: this.detail.id,
-      });
+      }); */
       // this.$store.dispatch('init_song',this.$store.state.pl.playingList[0])
     },
   },
@@ -70,39 +75,39 @@ export default {
     background-color: rgba(146, 146, 144, 1);
   }
   .cover {
-    width: 50px;
-    height: 50px;
+    width: 0.5rem;
+    height: 0.5rem;
 
     background-size: 100% 100%;
-    border-radius: 10px;
+    border-radius: 0.1rem;
     overflow: hidden;
     .icon {
       display: block;
       width: 100%;
       height: 100%;
-      line-height: 48px;
+      line-height: 0.48rem;
       text-align: center;
-      font-size: 26px;
+      font-size: 0.26rem;
       background-color: rgba(0, 0, 0, 0.4);
       color: var(--silveryWhite);
     }
   }
   .info {
-    margin: 0 10px;
+    margin: 0 0.1rem;
     span {
       font-size: smaller;
       color: var(--shenhui);
     }
   }
   .intelligencePlay_btn {
-    height: 25px;
-    line-height: 25px;
-    padding: 0 8px;
-    font-size: 11px;
+    height: 0.25rem;
+    line-height: 0.25rem;
+    padding: 0 0.08rem;
+    font-size: 0.11rem;
     position: absolute;
-    right: 16px;
-    border-radius: 20px;
-    border: 1px solid #999;
+    right: 0.16rem;
+    border-radius: 0.2rem;
+    border: 0.01rem solid #999;
     i {
       vertical-align: middle;
     }

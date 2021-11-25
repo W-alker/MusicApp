@@ -115,16 +115,16 @@ export default {
     height: #{$track-h}px;
     background-color: #fff;
     position: relative;
-    border-radius: 6px;
+    border-radius: 0.06rem;
     .pivot {
       position: absolute;
       height: 100%;
       background-color: rgb(99, 65, 65);
-      border-radius: 6px;
+      border-radius: 0.06rem;
       .point {
         position: absolute;
         right: 0;
-        top: -3px;
+        top: -0.03rem;
         width: #{$track-h + 6}px;
         height: #{$track-h + 6}px;
         border-radius: 50%;
@@ -138,7 +138,7 @@ export default {
     display: flex;
     justify-content: space-between;
     margin-top: 1em;
-    font-size: 12px;
+    font-size: 0.12rem;
   }
 }
 </style>

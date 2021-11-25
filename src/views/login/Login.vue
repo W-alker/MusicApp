@@ -77,7 +77,7 @@
       <h3><span>其他登录方式</span></h3>
       <div class="cont" @click="bottom_hint">
         <svg class="icon" aria-hidden="true">
-          <use xlink:href="#icon-QQ"></use>
+          <use xlink:href="#icon-qq1"></use>
         </svg>
         <svg class="icon" aria-hidden="true">
           <use xlink:href="#icon-weixin1"></use>
@@ -234,19 +234,25 @@ export default {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 0 0.3rem;
-  height: 100%;
+  padding: 0 30px;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  overflow: hidden;
 }
 .logo {
   margin-top: 12vh;
   height: 18vh;
   img {
-    width: 25vw;
-    height: 25vw;
-    border-radius: 0.16rem;
+    width: 1rem;
+    height: 1rem;
+    border-radius: 16px;
   }
 }
 main {
+  flex: 1;
   width: 100%;
   height: 55vh;
   display: flex;
@@ -263,10 +269,10 @@ form {
     line-height: 7vh;
     position: relative;
     .van-icon {
-      max-width: 26px;
+      max-width: 0.26rem;
       position: absolute;
       top: 1.8vh;
-      font-size: 26px;
+      font-size: 0.26rem;
       color: rgba(255, 255, 255, 0.6);
       &:first-of-type {
         left: 0;
@@ -280,9 +286,9 @@ form {
     font-size: 2vh;
     width: 100%;
     height: 100%;
-    padding-left: 0.4rem;
+    padding-left: 40px;
     background-color: transparent;
-    border-bottom: 1px solid #838383;
+    border-bottom: 0.01rem solid #838383;
     &::-webkit-input-placeholder {
       color: #fff;
     }
@@ -293,7 +299,7 @@ form {
     width: 90%;
     height: 5vh;
     background-color: transparent;
-    border: 1px solid rgb(233, 233, 233);
+    border: 0.01rem solid rgb(233, 233, 233);
     color: rgb(35, 97, 255);
     transition: all ease 0.2s;
     &.active {
@@ -305,7 +311,7 @@ form {
 }
 footer {
   width: 100%;
-  height: 15vh;
+  min-height: 12vh;
   padding-top: 1vh;
   h3 {
     display: flex;
@@ -313,8 +319,8 @@ footer {
     @mixin line {
       content: "";
       display: inline-block;
-      width: calc((100% - 1.2rem) / 2);
-      height: 1px;
+      width: calc((100% - 120px) / 2);
+      height: 0.01rem;
       background-color: #fff;
     }
     &::before,
@@ -322,8 +328,8 @@ footer {
       @include line;
     }
     span {
-      width: 1.2rem;
-      font-size: 0.16rem;
+      width: 120px;
+      font-size: 16px;
       color: #fff;
       text-align: center;
     }
@@ -331,11 +337,11 @@ footer {
   .cont {
     display: flex;
     justify-content: space-between;
-    padding: 0.2rem;
+    padding: 20px;
     .icon {
       display: inline-block;
-      width: 0.5rem;
-      height: 0.35rem;
+      width: 50px;
+      height: 35px;
       cursor: pointer;
     }
   }

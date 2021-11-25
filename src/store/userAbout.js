@@ -1,5 +1,7 @@
 import { personalAbout, getUserPlaylists } from 'network/user'
 import { getLoginStatus } from 'network/home'
+
+import { getPlaylistDetail } from 'network/playlist'
 import { Toast } from 'vant'
 
 export const userAbout = {
@@ -7,7 +9,8 @@ export const userAbout = {
     account: {},
     profile: {},
     likeList: new Set(),
-    playlists: []
+    playlists: [],
+    likePL: {},
   },
   mutations: {
     likelist_songChange(state, sid) {
@@ -35,10 +38,14 @@ export const userAbout = {
         context.state.likeList.add(list.ids[i])
       }
 
+      
     },
     async getPlaylists(context) {
       const res = await getUserPlaylists(context.state.account.id)
       context.state.playlists = res.playlist
+
+      const res2 = await getPlaylistDetail(context.state.playlists[0].id)
+      context.state.likePL = res2.playlist
     },
     async subscribePL(context, pl, type = 1) {
       let res
@@ -66,5 +73,7 @@ export const userAbout = {
       }
     }
   },
-  getters: {}
+  getters: {
+    
+  }
 }

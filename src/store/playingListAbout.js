@@ -7,8 +7,7 @@ export const playingListAbout = {
     playingList: [],
     curIndex: 0,
     playMode: 0, //0：顺序播放；1：随机播放；2：单曲循环; 3: 心动模式
-    playedIndexArray: new Set(),
-
+    playedIndexArray: new Set()
   },
   mutations: {
     addToPIL(state, song) {
@@ -30,12 +29,11 @@ export const playingListAbout = {
           return localStorage.setItem('playingList', JSON.stringify(state.playingList))
         }
       }
-    },
-
+    } 
   },
   actions: {
     async recover_pl(context) {
-      context.state.playMode = JSON.parse(localStorage.getItem('playMode'))
+      context.state.playMode = JSON.parse(localStorage.getItem('playMode')) || 0
 
       const data = JSON.parse(localStorage.getItem('playingList'))
       if (data) {
@@ -46,6 +44,7 @@ export const playingListAbout = {
           if (data[i].id === curId) return (context.state.curIndex = i)
         }
       }
+
     },
     async changeSong(context, index) {
       /*       const sid = context.state.playingList[index].id
@@ -59,10 +58,12 @@ export const playingListAbout = {
         context.dispatch('nextSong')
       }
     },
-    change_playMode(context) {
-      context.state.playMode++
+    change_playMode(context, mode) {
+      if (mode) context.state.playMode = mode
+      else context.state.playMode++
+
       if (context.state.playMode === 3) context.state.playMode = 0
-      localStorage.setItem('playMode',context.state.playMode)
+      localStorage.setItem('playMode', context.state.playMode)
     },
     updatePIL(context, args) {
       // index代表从当前播放列表哪里开始播放
@@ -80,6 +81,8 @@ export const playingListAbout = {
     },
 
     nextSong(context) {
+      if(!context.state.playingList.length) return
+
       const index = context.state.curIndex
       // 如果已经全部播完就重新计数
       if ((context.state.playedIndexArray.size === context.state.playingList, length))
@@ -105,6 +108,8 @@ export const playingListAbout = {
       else return this.dispatch('changeSong', index)
     },
     prevSong(context) {
+      if(!context.state.playingList.length) return
+
       const index = context.state.curIndex
       // 如果已经全部播完就重新计数
       if ((context.state.playedIndexArray.size === context.state.playingList, length))
@@ -130,5 +135,9 @@ export const playingListAbout = {
       else return this.dispatch('changeSong', index)
     }
   },
-  getters: {}
+  getters: {
+    /*    likePL(state, getters, rootState,rootGetters) {
+      // return rootGetters.ua.likePlayList
+    } */
+  }
 }

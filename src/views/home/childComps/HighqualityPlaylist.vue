@@ -46,7 +46,7 @@ export default {
 
 <style scoped lang='scss'>
 section {
-  margin-top: 20px;
+  margin-top: 0.2rem;
 }
 .inner {
   overflow: auto;
@@ -63,12 +63,12 @@ section {
         width: 100%;
         height: 20vw;
         background-color: #fff;
-        border-radius: 10px;
+        border-radius: 0.1rem;
       }
       .list-name {
           text-align: center;
-          margin-top: 5px;
-          font-size: 12px;
+          margin-top: 0.05rem;
+          font-size: 0.12rem;
       }
     }
   }

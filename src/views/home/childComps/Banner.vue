@@ -40,12 +40,12 @@ export default {
 
 <style scoped lang='scss'>
 section {
-  margin: 20px 0;
+  margin: 0.2rem 0;
   width: 100%;
   height: 16.5vh;
 }
 .van-swipe {
-  border-radius: 10px;
+  border-radius: 0.1rem;
   height: 100%;
   .van-swipe-item {
     background-color: rgb(89, 67, 67);
@@ -57,13 +57,13 @@ section {
       bottom: 0;
       right: 0;
       display: inline-block;
-      padding: 0 10px;
-      height: 20px;
-      line-height: 20px;
+      padding: 0 0.1rem;
+      height: 0.2rem;
+      line-height: 0.2rem;
       background-color: #fff;
-      border-top-left-radius: 6px;
+      border-top-left-radius: 0.06rem;
       color: #fff;
-      font-size: 12px;
+      font-size: 0.12rem;
     }
   }
 }

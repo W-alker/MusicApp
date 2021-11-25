@@ -31,8 +31,13 @@
           <i class="icon icon-youjiantou"></i>
         </li>
         <li @click='showSuggestion'>
-          <i class="fa fa-paper-plane" aria-hidden="true"></i>
-          提交改进建议或反馈
+          <i class="fa fa-paper-plane" aria-hidden="true" style="font-size:13px"></i>
+          提交反馈
+          <i class="icon icon-youjiantou"></i>
+        </li>
+        <li @click='signOut'>
+          <i class="fa fa-sign-out" aria-hidden="true"></i>
+          退出登录
           <i class="icon icon-youjiantou"></i>
         </li>
       </ul>
@@ -45,38 +50,42 @@
                <img :src="item.avatarUrl" alt="" class="avatar">
                <div class="info">
                   <p v-cloak>{{item.nickname}} <span class="userAgent">来自 {{item.userAgent}}</span></p>
-                  <p class="text textover-eclipse" v-cloak>建议：{{item.text}}</p>
+                  <p class="text textover-eclipse" v-cloak>反馈：{{item.text}}</p>
                </div>
              </li>
            </div>
-           <li v-if="suggests.length===0">暂无建议</li>
+           <li v-if="suggests.length===0">暂无反馈</li>
         </ul>
       </div>
 
       <div class="bottom">
-        <h4>项目源码（欢迎提交issue）</h4>
+        <h4>项目源码（国内建议用gitee或gitlab）</h4>
         <div class="links">
-        <a href="https://gitlab.com/W_alker/MusicApp" target="_blank">
-        <i class="fa fa-gitlab" aria-hidden="true"></i>
-        </a>
-        <a href="https://githab.com/W_alker/MusicApp" target="_blank">
-        <i class="fa fa-github" aria-hidden="true"></i>
-        </a>
-        </div>
+          <a href="https://gitee.com/W-alker/music-app" target="_blank">
+            <i class="fa fa-git-square" aria-hidden="true"></i>
+          </a>
+          <a href="https://gitlab.com/W_alker/MusicApp" target="_blank">
+            <i class="fa fa-gitlab" aria-hidden="true"></i>
+          </a>
+          <a href="https://githab.com/W_alker/MusicApp" target="_blank">
+            <i class="fa fa-github" aria-hidden="true"></i>
+          </a>
+      </div>
 
       </div>
 
       <van-popup v-model="isShowAbout" get-container='#app'>
           <div class="introduction">
             <h4>关于该网站</h4> 
-            <p>该网站为本人毕设作品，采用Vue2开发，模仿网易云移动端App，实现一般音乐网站的主要功能。<br/>
+            <p>该网站为本人毕设作品，采用 <strong>Vue2 + Vant </strong> 开发，模仿网易云移动端App，简单实现一般音乐网站的主要功能。<br/>
               数据接口来自
               <a href="https://binaryify.github.io/NeteaseCloudMusicApi/" target="_blank">网易云音乐API</a>。<br/>
                <br/>
-              网站尚在开发还有很多问题，为促进网站网站开发和完善，欢迎大家提交建议和bug反馈。有git账号的可以直接在仓库提交issue；或者你也可以点击 “提交改进建议”，填写并发送信息，我在后台可以看到消息。<br/>
-              我会陆续处理这些问题和建议，也可以是一些要求，比如新增一些功能，甚至可以是一些想听但没有版权的歌之类。我会尽量满足和实现。<br/>
+              网站尚在开发，现在仅仅是一个初稿或者说雏形，还有很多问题，为促进网站网站开发和完善，欢迎大家提交建议和bug反馈。<br/>
+              有git账号的可以直接在仓库提交issue；或者你也可以使用下方的 “提交反馈”。<br/>
               欢迎各位参与。<br/>
               <br/>
+              【<strong>注意</strong>：服务器比较垃圾，因此会出现数据没及时返回的情况，因此尽量不要频繁操作。】<br/>
               【<strong>声明</strong>：该网站仅作学习之用，开源（虽然写的很烂）。本网站不会窃取任何用户相关信息及侵犯隐私。】
               </p>
           </div>
@@ -95,7 +104,8 @@
 <script>
 import { ontouchActive } from "assets/js/util.js";
 import { personalAbout, Msg } from "network/user";
-import { Toast } from "vant";
+import { logout } from "network/login";
+import { Toast, Dialog } from "vant";
 
 import NoticeMsg from "./childComps/NoticeMsg.vue";
 import SubmitSuggestion from "./childComps/SubmitSuggestion.vue";
@@ -159,6 +169,22 @@ export default {
     suggestSubmitOK() {
       this.getSuggests();
       this.isShowSuggestion = false;
+    },
+    async signOut() {
+      Dialog.confirm({
+        message: "确定要退出登录吗？",
+      })
+        .then(async () => {
+          const res = await logout();
+          localStorage.clear();
+          Toast({
+            message: "退出登录",
+          });
+          this.$router.push("/login");
+        })
+        .catch(() => {
+          return;
+        });
     },
   },
   mounted() {

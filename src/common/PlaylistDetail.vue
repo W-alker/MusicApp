@@ -196,7 +196,7 @@ export default {
   color: var(--silveryWhite);
 }
 .intro {
-  padding: 16px;
+  padding: 0.16rem;
   position: relative;
 }
 .top-head {
@@ -205,18 +205,18 @@ export default {
   z-index: 30;
   display: flex;
   align-items: center;
-  padding-left: 60px;
+  padding-left: 0.6rem;
   width: 100%;
-  height: 55px;
+  height: 0.55rem;
   background-color: var(--themeBgc);
   .title {
     flex-grow: 1;
   }
   i {
     display: block;
-    width: 40px;
-    height: 40px;
-    line-height: 40px;
+    width: 0.4rem;
+    height: 0.4rem;
+    line-height: 0.4rem;
     text-align: center;
     border-radius: 50%;
     &:hover {
@@ -225,26 +225,26 @@ export default {
   }
 }
 .pl-info {
-  margin-top: 60px;
+  margin-top: 0.6rem;
   display: flex;
   .cover {
-    width: 120px;
-    height: 120px;
+    width: 1.2rem;
+    height: 1.2rem;
     background-color: #fff;
-    border-radius: 8px;
+    border-radius: 0.08rem;
     overflow: hidden;
-    margin-right: 16px;
+    margin-right: 0.16rem;
     background-size: 100% 100%;
     position: relative;
     .playcount {
       position: absolute;
-      right: 4px;
-      top: 4px;
+      right: 0.04rem;
+      top: 0.04rem;
       display: inline-block;
-      padding: 4px;
-      font-size: 11px;
+      padding: 0.04rem;
+      font-size: 0.11rem;
       background-color: rgba(0, 0, 0, 0.6);
-      border-radius: 6px;
+      border-radius: 0.06rem;
       .icon {
         font-size: smaller;
         vertical-align: middle;
@@ -255,33 +255,33 @@ export default {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    max-width: calc(100% - 120px - 16px);
+    max-width: calc(100% - 1.2rem - 0.16rem);
     .listName {
       display: block;
-      font-size: 18px;
+      font-size: 0.18rem;
       flex-grow: 1;
     }
     .author {
-      margin-bottom: 16px;
-      font-size: 12px;
+      margin-bottom: 0.16rem;
+      font-size: 0.12rem;
       font-weight: normal;
       .avatar-thumb {
-        width: 22px;
-        height: 22px;
+        width: 0.22rem;
+        height: 0.22rem;
         vertical-align: middle;
         border-radius: 50%;
       }
       span {
-        margin-left: 10px;
+        margin-left: 0.1rem;
         opacity: 0.8;
       }
     }
     .editBtn {
-      font-size: 11px;
+      font-size: 0.11rem;
       opacity: 0.8;
       padding-right: 2em;
       position: relative;
-      line-height: 15px;
+      line-height: 0.15rem;
       .icon {
         position: absolute;
         right: 0;
@@ -291,37 +291,37 @@ export default {
 }
 .list-container {
   position: relative;
-  margin-top: 30px;
-  padding: 30px 0;
+  margin-top: 0.3rem;
+  padding: 0.3rem 0;
   padding-bottom: var(--footplaybarHeight);
 
   background-color: var(--footplaybarBgc);
   color: var(--silveryWhite);
   .actionBtns {
     position: absolute;
-    top: -20px;
+    top: -0.2rem;
     left: 50%;
     transform: translateX(-50%);
-    padding: 0 16px;
+    padding: 0 0.16rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    width: 280px;
-    height: 40px;
+    width: 2.8rem;
+    height: 0.4rem;
     background-color: var(--footbarBgc);
-    border-radius: 20px;
+    border-radius: 0.2rem;
     .btn {
       flex-grow: 1;
       display: flex;
       justify-content: center;
-      border-right: 1px solid var(--silveryWhite);
-      font-size: 14px;
-      height: 20px;
-      line-height: 20px;
+      border-right: 0.01rem solid var(--silveryWhite);
+      font-size: 0.14rem;
+      height: 0.2rem;
+      line-height: 0.2rem;
       i {
-        line-height: 20px;
-        margin-right: 6px;
-        font-size: 16px;
+        line-height: 0.2rem;
+        margin-right: 0.06rem;
+        font-size: 0.16rem;
       }
       &:last-child {
         border-right: none;
@@ -332,14 +332,14 @@ export default {
     }
   }
   .ctrlBtns {
-    padding: 0 16px;
+    padding: 0 0.16rem;
 
     position: sticky;
-    top: 55px;
+    top: 0.55rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    height: 40px;
+    height: 0.4rem;
     z-index: 30;
     background-color: var(--footplaybarBgc);
 
@@ -347,13 +347,13 @@ export default {
       cursor: pointer;
     }
     .btn-playAll {
-      height: 40px;
-      line-height: 40px;
+      height: 0.4rem;
+      line-height: 0.4rem;
       font-weight: bold;
       flex-grow: 1;
       .van-icon {
-        margin-right: 6px;
-        font-size: 26px;
+        margin-right: 0.06rem;
+        font-size: 0.26rem;
         vertical-align: middle;
         color: var(--auroraRed);
       }
@@ -366,20 +366,20 @@ export default {
       align-items: center;
       .btn {
         display: inline-block;
-        margin-left: 10px;
-        width: 30px;
-        height: 30px;
-        font-size: 20px;
-        line-height: 30px;
+        margin-left: 0.1rem;
+        width: 0.3rem;
+        height: 0.3rem;
+        font-size: 0.2rem;
+        line-height: 0.3rem;
         text-align: center;
       }
     }
   }
   .list {
-    $li-h: 55px;
-    font-size: 15px;
+    $li-h: 0.55rem;
+    font-size: 0.15rem;
     li {
-      padding: 0 16px;
+      padding: 0 0.16rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -398,7 +398,7 @@ export default {
       }
       .serialNumber {
         display: inline-block;
-        width: 26px;
+        width: 0.26rem;
         height: $li-h;
         line-height: $li-h;
         text-align: center;
@@ -406,27 +406,27 @@ export default {
       .songInfo {
         width: 60%;
         flex-grow: 1;
-        padding: 0 12px;
+        padding: 0 0.12rem;
         .songName {
           font-weight: normal;
-          line-height: 18px;
-          margin-bottom: 4px;
-          font-size: 14px;
+          line-height: 0.18rem;
+          margin-bottom: 0.04rem;
+          font-size: 0.14rem;
         }
         .arName {
           font-weight: normal;
           font-size: smaller;
-          line-height: 15px;
+          line-height: 0.15rem;
           opacity: 0.7;
-          font-size: 11px;
+          font-size: 0.11rem;
         }
       }
       .btn {
         display: inline-block;
-        width: 30px;
+        width: 0.3rem;
         height: $li-h;
         line-height: $li-h;
-        font-size: 20px;
+        font-size: 0.2rem;
         text-align: center;
       }
     }

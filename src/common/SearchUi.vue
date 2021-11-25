@@ -16,9 +16,12 @@
       <div class="historySearch">
         <span style="font-weight: bold">历史</span>
         <div class="container hideScroll">
-          <span class="tag" v-for="(val, idx) in search_history">{{
-            val
-          }}</span>
+          <span
+            class="tag"
+            v-for="(val, idx) in search_history"
+            @click="search(val,false)"
+            >{{ val }}</span
+          >
         </div>
         <i class="icon icon-shanchu btn" @click.stop="clear_searchHistory"></i>
       </div>
@@ -136,7 +139,7 @@ export default {
         message: "清空搜索历史？",
       })
         .then(() => {
-          this.search_history=[];
+          this.search_history = [];
           localStorage.setItem(
             "search_history",
             JSON.stringify(this.search_history)
@@ -159,7 +162,7 @@ export default {
       const res = await getSearchSuggests(this.search_input);
       this.search_suggests = res.result.allMatch;
     },
-    async search(text) {
+    async search(text, remember = true) {
       this.search_input = this.search_input.trim();
       this.search_input =
         text || this.search_input || this.defaultSearchKeyword;
@@ -174,11 +177,13 @@ export default {
       }, 20);
 
       // 成功后记录历史
-      this.search_history.push(this.search_input);
-      localStorage.setItem(
-        "search_history",
-        JSON.stringify(this.search_history)
-      );
+      if (remember) {
+        this.search_history.push(this.search_input);
+        localStorage.setItem(
+          "search_history",
+          JSON.stringify(this.search_history)
+        );
+      }
     },
   },
   created() {

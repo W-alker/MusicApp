@@ -38,8 +38,7 @@ export default {
     },
   },
   created() {
-    // 恢复上次的信息
-    this.$store.dispatch("recover_lastStatus");
+       
   },
   // 销毁之前将本次信息储存到本地以下次恢复
   /*   beforeDestroy() {

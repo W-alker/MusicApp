@@ -185,7 +185,7 @@ export default {
     top: 0;
     left: 0;
     right: 0;
-    height: 40px;
+    height: 0.4rem;
     z-index: 10;
   }
   &::after {
@@ -195,18 +195,18 @@ export default {
     bottom: 0;
     left: 0;
     right: 0;
-    height: 40px;
+    height: 0.4rem;
     z-index: 10;
   } */
 }
 .inner {
   box-sizing: content-box;
-  padding: 250px 0;
+  padding: 2.5rem 0;
   p {
     transition: all linear 0.5s;
-    font-size: 14px;
-    margin: 15px 0;
-    line-height: 20px;
+    font-size: 0.14rem;
+    margin: 0.15rem 0;
+    line-height: 0.2rem;
     color: var(--silveryWhite);
     opacity: 0.6;
     text-align: center;

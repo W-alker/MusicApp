@@ -146,15 +146,15 @@ export default {
   flex-direction: column;
   background-size: cover;
     background-color: var(--commonPageBgc);
-
+    overflow: hidden;
   .bg {
     content: "";
     display: block;
     position: absolute;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
+    bottom: 0;
+    right: 0;
     background-color: var(--commonPageBgc);
     background-image: var(--bg);
     z-index: -1;

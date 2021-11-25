@@ -8,7 +8,7 @@
       </button>
     </h3>
 
-    <div class="wrapper playlists-show-wrapper hideScroll">
+    <div class="wrapper playlists-show-wrapper" ref='wrapper1'>
       <ul ref="content" class="playlists-show-list">
         <li
           v-for="(item, index) in pls"
@@ -37,6 +37,7 @@
 <script>
 import { playcountComputed } from "assets/js/util";
 import { getPlaylistDetail } from "network/playlist";
+import IScroll from "assets/js/iscroll-probe";
 
 export default {
   name: "BlockRcmdPlaylists",
@@ -49,7 +50,9 @@ export default {
     },
   },
   data() {
-    return {};
+    return {
+      iscroll: {},
+    };
   },
   methods: {
     palycount(v) {
@@ -58,27 +61,40 @@ export default {
     async showPLD(pid) {
       console.log(pid);
       const res = await getPlaylistDetail(pid);
-      this.$emit('showPLD',res.playlist)
+      this.$emit("showPLD", res.playlist);
     },
+  },
+  mounted() {
+    this.$nextTick(() => {
+      this.iscroll = new IScroll(
+        this.$refs.wrapper1,
+        {
+          scrollX: true,
+        }
+      );
+    });
   },
 };
 </script>
 
 <style scoped lang='scss'>
+.playlists-show-wrapper {
+  overflow: hidden;
+}
 .block-rcmd-playlists {
-  margin-top: 10px;
+  margin-top: 0.1rem;
   background-color: var(--anlanzi);
   .tit {
-    height: 50px;
+    height: 0.5rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
     .block-top-btn {
-      padding: 2px 10px;
+      padding: 0.02rem 0.1rem;
       background-color: transparent;
-      border: 1px solid var(--shenhui);
-      border-radius: 20px;
-      font-size: 12px;
+      border: 0.01rem solid var(--shenhui);
+      border-radius: 0.2rem;
+      font-size: 0.12rem;
       text-align: center;
     }
   }

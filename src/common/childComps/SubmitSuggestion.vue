@@ -50,34 +50,34 @@ export default {
 .submit-suggestion {
   width: 70vw;
   // height: 40vh;
-  padding: 0 16px;
+  padding: 0 0.16rem;
   background-color: var(--silveryWhite);
-  border-radius: 12px;
+  border-radius: 0.12rem;
   flex-direction: column;
-  font-size: 14px;
+  font-size: 0.14rem;
 
   label {
     width: 100%;
     text-align: start;
-    margin: 14px 0;
+    margin: 0.14rem 0;
   }
   textarea {
     width: 100%;
-    padding: 12px;
+    padding: 0.12rem;
     background-color: var(--qianhui);
   }
   input {
     width: 100%;
     background-color: var(--qianhui);
-    margin-bottom: 10px;
-    padding: 12px;
+    margin-bottom: 0.1rem;
+    padding: 0.12rem;
   }
   button {
     width: 100%;
-    padding: 8px;
+    padding: 0.08rem;
     background-color: var(--blue);
-    border-radius: 8px;
-    margin: 14px 0;
+    border-radius: 0.08rem;
+    margin: 0.14rem 0;
   }
 }
 </style>

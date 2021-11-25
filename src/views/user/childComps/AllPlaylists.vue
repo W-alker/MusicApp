@@ -176,30 +176,30 @@ export default {
 <style scoped lang='scss'>
 .box {
   background-color: var(--silveryWhite);
-  border-radius: 10px;
-  // padding: 12px 16px;
-  margin-top: 16px;
+  border-radius: 0.1rem;
+  // padding: 0.12rem 0.16rem;
+  margin-top: 0.16rem;
   color: var(--black);
-  font-size: 14px;
+  font-size: 0.14rem;
 }
 $touchColor: rgba(0, 0, 0, 0.4);
 .playlists {
-  margin-top: 16px;
+  margin-top: 0.16rem;
   .tab {
     .tab_navs {
       display: flex;
       align-items: center;
-      height: 30px;
+      height: 0.3rem;
       .tab_nav {
         width: 50%;
         text-align: center;
         transition: all ease .3s;
         p {
-          line-height: 12px;
+          line-height: 0.12rem;
           opacity: 0.8;
         }
         &:first-child p {
-          border-right: 1px solid #999;
+          border-right: 0.01rem solid #999;
         }
         &.active p {
           position: relative;
@@ -209,33 +209,33 @@ $touchColor: rgba(0, 0, 0, 0.4);
           transform-style: preserve-3d;
           &::before {
             position: absolute;
-            bottom: -5px;
+            bottom: -0.05rem;
             content: "";
             display: inline-block;
-            height: 6px;
+            height: 0.06rem;
             width: 4em;
             background-color: var(--darkRed);
-            border-radius: 3px;
-            transform: translateZ(-1px); // Z轴方向位移-1px
+            border-radius: 0.03rem;
+            transform: translateZ(-0.01rem); // Z轴方向位移-0.01rem
           }
         }
       }
     }
     .tab_items {
       .tab_item {
-        padding: 20px 0 14px 0;
+        padding: 0.2rem 0 0.14rem 0;
         h4:first-child {
-          padding: 0 16px;
+          padding: 0 0.16rem;
           display: flex;
           justify-content: space-between;
           align-items: center;
-          font-size: 12px;
+          font-size: 0.12rem;
           color: var(--shenhui);
           font-weight: normal;
-          margin-bottom: 6px;
+          margin-bottom: 0.06rem;
           .icon {
             display: inline-block;
-            width: 28px;
+            width: 0.28rem;
             text-align: center;
           }
         }
@@ -244,25 +244,25 @@ $touchColor: rgba(0, 0, 0, 0.4);
             display: flex;
             align-items: center;
             position: relative;
-            padding: 6px 16px;
+            padding: 0.06rem 0.16rem;
             transition: all 0.5s ease;
 
             &.active {
               background-color: rgba(0, 0, 0, 0.4);
             }
             .cover {
-              width: 48px;
-              height: 48px;
-              border-radius: 8px;
+              width: 0.48rem;
+              height: 0.48rem;
+              border-radius: 0.08rem;
               background-color: rgb(172, 172, 172);
               background-size: 100% 100%;
             }
             .info {
-              margin-left: 10px;
-              font-size: 14px;
+              margin-left: 0.1rem;
+              font-size: 0.14rem;
               p {
-                width: 220px;
-                max-width: 220px;
+                width: 2.2rem;
+                max-width: 2.2rem;
               }
               span {
                 font-size: smaller;
@@ -271,9 +271,9 @@ $touchColor: rgba(0, 0, 0, 0.4);
             }
             .icon {
               position: absolute;
-              right: 16px;
+              right: 0.16rem;
               top: 20%;
-              width: 28px;
+              width: 0.28rem;
               height: 60%;
               display: flex;
               justify-content: center;
@@ -291,27 +291,27 @@ $touchColor: rgba(0, 0, 0, 0.4);
   }
 }
 .van-popup {
-  border-top-left-radius: 16px;
-  border-top-right-radius: 16px;
+  border-top-left-radius: 0.16rem;
+  border-top-right-radius: 0.16rem;
   background-color: var(--silveryWhite) !important;
   color: var(--anlongdanzi);
-  font-size: 14px;
+  font-size: 0.14rem;
   h4 {
-    padding: 12px;
-    border-bottom: 1px solid var(--qianhui);
+    padding: 0.12rem;
+    border-bottom: 0.01rem solid var(--qianhui);
     opacity: 0.8;
     font-size: small;
     font-weight: normal;
   }
   ul {
-    margin-bottom: 10px;
+    margin-bottom: 0.1rem;
     li {
-      padding: 0 12px;
-      height: 40px;
-      line-height: 40px;
+      padding: 0 0.12rem;
+      height: 0.4rem;
+      line-height: 0.4rem;
       .icon,
       .van-icon {
-        margin-right: 12px;
+        margin-right: 0.12rem;
       }
       &.active {
         background-color: $touchColor;

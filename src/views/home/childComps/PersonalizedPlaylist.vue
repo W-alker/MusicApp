@@ -1,7 +1,7 @@
 <template>
-  <section>
+  <section class="personalized-playlist">
     <h3 class="sec-tit">你的每日私荐歌单</h3>
-    <div class="inner hideScroll playlists-show-wrapper" ref="wrapper">
+    <div class="inner playlists-show-wrapper" ref="wrapper2">
       <ul ref="content" class="playlists-show-list">
         <li v-for="(item, index) in recommnedPlaylists" @click="showPLD(item)">
           <div
@@ -25,6 +25,7 @@ import { getTodayPlaylist } from "network/recommend";
 import { playcountComputed } from "assets/js/util";
 
 import { getPlaylistDetail } from "network/playlist.js";
+import IScroll from "assets/js/iscroll-probe";
 
 // import BScroll from "@better-scroll/core";
 
@@ -33,7 +34,7 @@ export default {
   data() {
     return {
       recommnedPlaylists: [],
-      scroll: {},
+      iscroll: {},
       contentWidth: 0,
     };
   },
@@ -53,29 +54,32 @@ export default {
       const res = await getPlaylistDetail(pl.id);
       this.$emit("showPLD", res.playlist);
     },
-    /*     init_scroll() {
-      this.scroll = new BScroll(this.$refs.wrapper, {
+    init_scroll() {
+      this.iscroll = new IScroll(this.$refs.wrapper2, {
         scrollX: true,
       });
-    }, */
+    },
   },
   watch: {
     contentWidth() {
-      // this.init_scroll();
+      this.init_scroll();
     },
   },
   mounted() {
-    this.$nextTick(() => {});
+    this.$nextTick(() => {
+    });
   },
-  async created() {
+  created() {
     this.getTodayPlaylist();
   },
 };
 </script>
 
 <style lang='scss' scoped>
-section {
-  margin-top: 20px;
+.playlists-show-wrapper {
+  overflow: hidden;
 }
-
+section {
+  margin-top: 0.2rem;
+}
 </style>

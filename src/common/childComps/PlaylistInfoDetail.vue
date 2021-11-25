@@ -45,7 +45,7 @@ export default {
 <style scoped lang='scss'>
 .container {
   height: 100%;
-  padding: 80px 30px;
+  padding: 0.8rem 0.3rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -59,7 +59,7 @@ export default {
     z-index: 30;
     content: "";
     display: block;
-    height: 80px;
+    height: 0.8rem;
     background: linear-gradient(var(--themeBgc), rgba(0, 0, 0, 0));
   }
   .bottom-overlay {
@@ -67,49 +67,49 @@ export default {
     bottom: 0;
     left: 0;
     right: 0;
-    height: 60px;
+    height: 0.6rem;
     background-color: var(--themeBgc);
     &::after {
       position: absolute;
-      top: -60px;
+      top: -0.6rem;
       left: 0;
       right: 0;
       content: "";
       display: block;
-      height: 60px;
+      height: 0.6rem;
       background: linear-gradient(rgba(0, 0, 0, 0), var(--themeBgc));
     }
   }
 }
 .cover {
-  width: 220px;
-  height: 220px;
-  border-radius: 20px;
+  width: 2.2rem;
+  height: 2.2rem;
+  border-radius: 0.2rem;
 }
 .title {
   width: 100%;
-  margin: 20px 0 40px 0;
-  font-size: 16px;
+  margin: 0.2rem 0 0.4rem 0;
+  font-size: 0.16rem;
   text-align: center;
 }
 .tags {
   width: 100%;
-  font-size: 14px;
+  font-size: 0.14rem;
   .tag {
-    font-size: 12px;
-    margin-left: 10px;
+    font-size: 0.12rem;
+    margin-left: 0.1rem;
     display: inline-block;
-    height: 22px;
-    line-height: 22px;
-    padding: 0 8px;
+    height: 0.22rem;
+    line-height: 0.22rem;
+    padding: 0 0.08rem;
     background-color: rgba(255, 255, 255, 0.3);
-    border-radius: 12px;
+    border-radius: 0.12rem;
   }
 }
 .description {
   width: 100%;
   opacity: 0.8;
-  margin-top: 20px;
-  font-size: 14px;
+  margin-top: 0.2rem;
+  font-size: 0.14rem;
 }
 </style>

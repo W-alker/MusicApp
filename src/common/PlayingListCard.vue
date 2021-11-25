@@ -94,6 +94,7 @@ export default {
         case 3:
           return "心动模式";
       }
+      return '顺序播放'
     },
   },
   data() {
@@ -129,6 +130,7 @@ export default {
         scrollY: true,
         mouseWheel: true,
       });
+      if(!this.isFM_Mode.length) return
       this.iscroll.scrollToElement(
         document.querySelector(".list_item_active"),
         1,

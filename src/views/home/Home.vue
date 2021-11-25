@@ -26,7 +26,7 @@
 
     <banner :banners="banners" />
 
-    <dragon-balls @showDailyList='showDailyList'></dragon-balls>
+    <dragon-balls @showDailyList="showDailyList"></dragon-balls>
 
     <block-rcmd-playlists
       :data="blocks[1]"
@@ -69,9 +69,12 @@
       <search-ui :key="Date.now()"></search-ui>
     </van-popup>
 
-    <foot-playbar ref="FootPlaybar" :isSlideDown="isShowPLD || isShowSearchUi || isShowDailyList" />
+    <foot-playbar
+      ref="FootPlaybar"
+      :isSlideDown="isShowPLD || isShowSearchUi || isShowDailyList"
+    />
     <foot-bar :activeIndex="0" />
-  </main> 
+  </main>
 </template>
 
 <script>
@@ -86,7 +89,6 @@ import PlaylistDetail from "common/PlaylistDetail";
 import FootPlaybar from "common/FootPlaybar";
 import FootBar from "common/FootBar";
 
-import NewAlbumsList from "./childComps/NewAlbumsList.vue";
 import PersonalizedPlaylist from "./childComps/PersonalizedPlaylist";
 import HighqualityPlaylist from "./childComps/HighqualityPlaylist.vue";
 
@@ -94,7 +96,7 @@ import { getHomePageContent, getBanner } from "network/home";
 import { getDefaultSearchKeyword } from "network/search";
 import { loginStatus } from "network/login";
 import { Toast } from "vant";
-import {mapState} from 'vuex'
+import { mapState } from "vuex";
 
 export default {
   name: "Home",
@@ -131,7 +133,7 @@ export default {
       isShowPLD: false, //是否显示歌单详情页
       compUpdateTimer: 0,
       isShowSearchUi: false,
-      isShowDailyList:false
+      isShowDailyList: false,
     };
   },
   methods: {
@@ -156,12 +158,13 @@ export default {
       this.isShowSearchUi = true;
     },
     showDailyList(v) {
-      this.isShowDailyList=v
-    }
+      this.isShowDailyList = v;
+    },
   },
   created() {
     // 判断登录状
     loginStatus.check().then((res) => {
+      console.log('进入首页',res);
       if (res.code === 200 && res.account) {
         if (!Object.keys(this.userAccount).length) {
           this.$store.dispatch("INIT_INFO");
@@ -173,6 +176,9 @@ export default {
         }, 300);
       }
     });
+    // 恢复上次的信息
+    if (!this.$store.state.init.recovered)
+      this.$store.dispatch("recover_lastStatus");
     this.INIT_CONTENT();
   },
 };
@@ -183,7 +189,7 @@ export default {
   width: 100%;
   height: 100%;
   color: aliceblue;
-  font-size: 14px;
+  font-size: 0.14rem;
   padding-bottom: var(--bottomBarHeight);
 }
 .top {
@@ -192,18 +198,20 @@ export default {
   width: 100%;
 }
 .sec-tit {
-  font-size: 15px;
-  margin-bottom: 14px;
+  font-size: 0.15rem;
+  margin-bottom: 0.14rem;
 }
 
 .input-search {
   width: 100%;
-  height: 30px;
+  height: 0.3rem;
   position: relative;
-  font-size: 14px;
-  line-height: 30px;
+  font-size: 0.14rem;
+  line-height: 0.3rem;
   .fa {
-    margin: 0 16px;
+    font-size: 0.14rem !important;
+    margin: 0 0.16rem;
+    opacity: .7;
   }
   input {
     display: block;
@@ -212,14 +220,14 @@ export default {
     position: absolute;
     left: 0;
     top: 0;
-    padding-left: 35px;
+    padding-left: 0.35rem;
     background: rgba(255, 255, 255, 0.05);
-    border-radius: 15px;
+    border-radius: 0.15rem;
   }
 }
 
 .recommend {
-  margin-top: 20px;
+  margin-top: 0.2rem;
 }
 
 .van-popup {
