@@ -130,8 +130,28 @@ export default {
         });
       }
     },
+    async signUp() {
+      try {
+        // 开始注册
+        let res = await signUp(this.signUpInfo);
+        if (res.code !== 200)
+          return Toast({
+            message: res.message,
+            icon: "warning-o",
+          });
+        Toast({
+          message: res.message || "注册成功",
+          icon: "passed",
+        });
+        this.$emit("popupClose");
+      } catch (err) {
+        return Toast({
+          message: "未知错误。",
+          icon: "warning-o",
+        });
+      }
+    },
     async submit() {
-
       // 输入验证
       if (!this.signUpInfo.phone || !this.signUpInfo.captcha)
         return Toast({
@@ -168,33 +188,15 @@ export default {
           title: "密码修改确认",
           message: "检测到您的手机号已经注册，继续执行将修改密码。是否确认？",
         })
-          .then(async () => {
-            try {
-              // 开始注册
-              let res = await signUp(this.signUpInfo);
-              if (res.code !== 200)
-                return Toast({
-                  message: res.message,
-                  icon: "warning-o",
-                });
-              Toast({
-                message: res.message || '注册成功',
-                icon: "passed",
-              });
-              this.$emit('popupClose')
-            } catch (err) {
-              return Toast({
-                message: "未知错误。",
-                icon: "warning-o",
-              });
-            }
-          })
+          .then(() => this.signUp())
           .catch(() => {
             return Toast({
               message: "操作取消",
               icon: "info-o",
             });
           });
+      } else {
+        this.signUp()
       }
     },
   },

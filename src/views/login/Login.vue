@@ -123,8 +123,8 @@ export default {
       uniKey: "",
       interval: {},
       qrStatus: "",
-      id: "18609664546",
-      pwd: "walker314",
+      id: "",
+      pwd: "",
       input_pwd_type: "password",
       loginOK: false,
       popup_useVerifycode_show: false,
@@ -164,22 +164,27 @@ export default {
       if (isPoneAvailable(this.id)) {
         // 检验是否注册
         let isPhoneExist = await usePhone.isPhoneExist(this.id);
+
         if (isPhoneExist) {
           let res = await usePhone.login(this.id, this.pwd);
           if (res.code !== 200)
             return Notify({ type: "danger", message: res.message });
+          localStorage.setItem("cookie", encodeURIComponent(res.cookie));
           this.loginOK = true;
         }
       } else if (isNeteaseEmail(this.id)) {
         let res = await useEmail.login(this.id, this.pwd);
+
         if (res.code !== 200)
           return Notify({ type: "danger", message: res.message });
+        localStorage.setItem("cookie", encodeURIComponent(res.cookie));
         this.loginOK = true;
       } else Toast.fail("账号输入有误");
     },
     verifycode_login() {
       this.popup_useVerifycode_show = true;
     },
+
     getQr() {
       getKey().then((res) => {
         this.unikey = res.data.unikey;
@@ -209,7 +214,7 @@ export default {
 
   created() {
     loginStatus.check().then((res) => {
-      console.log(res);
+      console.log("登录页状态：", res);
       if (res.code === 200 && res.account) {
         Toast.loading({
           duration: 0, // 持续展示 toast

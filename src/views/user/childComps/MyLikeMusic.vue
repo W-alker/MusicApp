@@ -10,7 +10,6 @@
       class="cover"
       :style="{ backgroundImage: 'url(' + detail.coverImgUrl + ')' }"
     >
-      <i class="icon icon-xihuan1"></i>
     </div>
     <div class="info">
       <p>我喜欢的音乐</p>
@@ -81,16 +80,6 @@ export default {
     background-size: 100% 100%;
     border-radius: 0.1rem;
     overflow: hidden;
-    .icon {
-      display: block;
-      width: 100%;
-      height: 100%;
-      line-height: 0.48rem;
-      text-align: center;
-      font-size: 0.26rem;
-      background-color: rgba(0, 0, 0, 0.4);
-      color: var(--silveryWhite);
-    }
   }
   .info {
     margin: 0 0.1rem;

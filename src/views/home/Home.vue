@@ -162,6 +162,7 @@ export default {
     },
   },
   created() {
+    loginStatus.refresh();
     // 判断登录状
     loginStatus.check().then((res) => {
       console.log('进入首页',res);

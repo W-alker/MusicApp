@@ -30,6 +30,7 @@ export default {
       formdata.set("text", this.text);
       formdata.set("nickname", this.$store.state.ua.profile.nickname);
       formdata.set("avatarUrl", this.$store.state.ua.profile.avatarUrl);
+      formdata.set("time", `${new Date().getMonth()+1}.${new Date().getDate()}`);
 
       const res = await Axios({
         url: "/suggest/submit",

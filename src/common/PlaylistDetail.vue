@@ -194,6 +194,9 @@ export default {
   height: 100vh;
   background-color: var(--commonPageBgc);
   color: var(--silveryWhite);
+  // padding-bottom: var(--footplaybarHeight);
+  display: flex;
+  flex-direction: column;
 }
 .intro {
   padding: 0.16rem;
@@ -290,11 +293,11 @@ export default {
   }
 }
 .list-container {
+  flex-grow: 1;
   position: relative;
   margin-top: 0.3rem;
   padding: 0.3rem 0;
   padding-bottom: var(--footplaybarHeight);
-
   background-color: var(--footplaybarBgc);
   color: var(--silveryWhite);
   .actionBtns {

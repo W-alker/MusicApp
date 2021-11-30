@@ -83,7 +83,7 @@
       <search-ui :key="Date.now()"></search-ui>
     </van-popup>
 
-    <foot-playbar ref="FootPlaybar" :isSlideDown="isShowPLD" />
+    <foot-playbar ref="FootPlaybar" :isSlideDown="isShowPLD || isShowSearchUi" />
     <foot-bar :activeIndex="1" />
   </main>
 </template>
@@ -138,6 +138,7 @@ export default {
   },
   created() {
     // 判断登录状
+    loginStatus.refresh();
     loginStatus.check().then((res) => {
       console.log("进入用户界面", res);
       if (res.code === 200 && res.account) {

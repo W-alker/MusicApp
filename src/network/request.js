@@ -8,7 +8,7 @@ export function request(options) {
       baseURL: 'http://luxy.run:3000/',
       // baseURL: 'http://localhost:3000',
       timeout: 3000,
-      withCredentials: true //关键
+      withCredentials: true, //关键
     })
 
     // 过滤器(拦截器)

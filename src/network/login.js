@@ -9,7 +9,7 @@ export const loginStatus = {
   },
   refresh() {
     return request({
-      url: `/login/refresh`
+      url: `/login/refresh?timestamp=${Date.now()}`
     })
   }
 }
@@ -57,11 +57,6 @@ export const useEmail = {
 }
 
 export const useVerifyCode = {
-  login(phone, pwd) {
-    return request({
-      url: `/login?email=${email}&password=${pwd}&timstamp=${Date.now()}`
-    })
-  },
   getCaptcha(phoneNumber) {
     return request({
       url: `/captcha/sent?phone=${phoneNumber}&timstamp=${Date.now()}`

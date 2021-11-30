@@ -49,8 +49,8 @@
              <li v-for="(item,index) in suggests">
                <img :src="item.avatarUrl" alt="" class="avatar">
                <div class="info">
-                  <p v-cloak>{{item.nickname}} <span class="userAgent">来自 {{item.userAgent}}</span></p>
-                  <p class="text textover-eclipse" v-cloak>反馈：{{item.text}}</p>
+                  <p v-cloak>{{item.nickname}} <span class="userAgent">来自 {{item.userAgent}} - </span></p>
+                  <p class="text textover-eclipse" v-cloak>{{item.time}}: {{item.text}}</p>
                </div>
              </li>
            </div>
@@ -59,7 +59,7 @@
       </div>
 
       <div class="bottom">
-        <h4>项目源码（国内建议用gitee或gitlab）</h4>
+        <h4>项目源码：</h4>
         <div class="links">
           <a href="https://gitee.com/W-alker/music-app" target="_blank">
             <i class="fa fa-git-square" aria-hidden="true"></i>
@@ -67,9 +67,9 @@
           <a href="https://gitlab.com/W_alker/MusicApp" target="_blank">
             <i class="fa fa-gitlab" aria-hidden="true"></i>
           </a>
-          <a href="https://githab.com/W_alker/MusicApp" target="_blank">
+<!--           <a href="https://githab.com/W_alker/MusicApp" target="_blank">
             <i class="fa fa-github" aria-hidden="true"></i>
-          </a>
+          </a> -->
       </div>
 
       </div>
@@ -154,6 +154,7 @@ export default {
       this.isShowSuggestion = true;
     },
     async getSuggests() {
+      this.suggests.length=0
       const res = await Axios({
         url: "/suggest/get",
         method: "get",
@@ -164,7 +165,7 @@ export default {
         for (let i = 0; i < Math.min(data.length, 30); i++) {
           this.suggests.push(JSON.parse(data[i]));
         }
-      } else Toast.fail("提交失败！");
+      } else Toast.fail("获取失败！");
     },
     suggestSubmitOK() {
       this.getSuggests();
@@ -270,17 +271,22 @@ export default {
   .ul3 {
     margin-top: 0.25rem;
     // max-height: 3.6rem;
-    padding-bottom: 0.06rem;
+    padding-bottom: 0.2rem;
     .tit {
-      margin-bottom: 0.1rem;
+      margin-bottom: 0.06rem;
       color: var(--brightRed);
+      font-size: 0.14rem;
     }
     .container {
-      max-height: 3.3rem;
+      max-height: 3rem;
+    }
+    ul {
+      margin-top: 0;
+      padding: .06rem 0;
     }
     li {
-      height: 0.5rem;
-      font-size: 0.14rem;
+      height: 0.45rem;
+      font-size: 0.12rem;
       display: flex;
       align-items: center;
       .avatar {
@@ -296,32 +302,40 @@ export default {
           line-height: 0.2rem;
           &:first-child {
             .userAgent {
-              font-size: 0.11rem;
+              font-size: 0.1rem;
             }
           }
         }
         .text {
           max-width: 2.08rem;
-          font-size: 0.12rem;
+          font-size: 0.11rem;
         }
       }
     }
   }
 
   .bottom {
-    position: absolute;
-    bottom: 0.16rem;
+/*     position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0; */
+    // padding: 0.12rem;
+    background-color: var(--themeBgc);
+    display: flex;
+    align-items: center;
+
     h4 {
-      font-size: 0.14rem;
+      margin-right: 0.1rem;
+      font-size: 0.12rem;
       font-weight: normal;
-      margin-bottom: 0.08rem;
     }
     .links {
+      display: flex;
       a {
         display: inline-block;
         margin-right: 0.14rem;
         width: 0.35rem;
-        font-size: 0.26rem;
+        font-size: 0.24rem;
       }
     }
   }

@@ -167,7 +167,7 @@ export default {
     -moz-filter: blur(20px);
     -o-filter: blur(20px);
     -ms-filter: blur(20px);
-    filter: brightness(60%) blur(20px);
+    filter: blur(20px);
     &::after {
       content: "";
       display: block;
@@ -176,7 +176,7 @@ export default {
       right: 0;
       bottom: 0;
       left: 0;
-      background-color: rgba(0, 0, 0, 0.7);
+      background-color: rgba(0, 0, 0, 0.6);
     }
   }
 

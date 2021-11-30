@@ -43,7 +43,7 @@
 </template>
 
 <script>
-import { useVerifyCode } from "network/login";
+import { useVerifyCode, usePhone } from "network/login";
 import { Toast } from "vant";
 
 export default {
@@ -82,8 +82,12 @@ export default {
     },
     async submit() {
       let res = await useVerifyCode.verifyCaptcha(this.phoneNumber, this.code);
-      if (res.code === 200) this.$emit("loginOk", true);
-      else
+      if (res.code === 200 && res.data) {
+        // 验证码正确，调用登录接口
+        const sign = await usePhone.login(this.phoneNumber, 0, this.code);
+        if (sign.code !== 200) return Toast.fail("验证码有误！");
+        else this.$emit("loginOk", true);
+      } else
         Toast({
           message: "验证码错误",
           icon: "warning-o",
